@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingSystem.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingSystem.DTO", "TicketingSystem.DTO\TicketingSystem.DTO.csproj", "{9C8EF30D-7749-41E0-9130-CA1A931FB666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketingSystem.Website", "TicketingSystem.Website\TicketingSystem.Website.csproj", "{FB0B5120-6A62-4B19-BA2E-9CC5469C684F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketingSystem.RazorWebsite", "TicketingSystem.RazorWebsite\TicketingSystem.RazorWebsite.csproj", "{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{9C8EF30D-7749-41E0-9130-CA1A931FB666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C8EF30D-7749-41E0-9130-CA1A931FB666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C8EF30D-7749-41E0-9130-CA1A931FB666}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB0B5120-6A62-4B19-BA2E-9CC5469C684F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB0B5120-6A62-4B19-BA2E-9CC5469C684F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB0B5120-6A62-4B19-BA2E-9CC5469C684F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB0B5120-6A62-4B19-BA2E-9CC5469C684F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

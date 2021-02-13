@@ -8,10 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketingSystem.Domain.Application;
-using TicketingSystem.Domain.Models;
 using TicketingSystem.Infrastructure;
 
-namespace TicketingSystem.Website
+namespace TicketingSystem.RazorWebsite
 {
     public class Startup
     {
@@ -26,11 +25,10 @@ namespace TicketingSystem.Website
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TicketingSystemDbContext>(options => options.UseSqlServer(Configuration.GetValue<string>("SqlConnectionString")));
-            services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddScoped<TicketingSystemDataInitializer>();
             services.AddMediatR(typeof(Startup));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<TicketingSystemDbContext>();
             services.AddRazorPages();
         }
@@ -44,15 +42,6 @@ namespace TicketingSystem.Website
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TicketingSystemDataInitializer dataInitializer)
         {
-            //Ensure database is created
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                using (var context = scope.ServiceProvider.GetService<TicketingSystemDbContext>())
-                {
-                    context.Database.EnsureCreated();
-                }
-            }
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

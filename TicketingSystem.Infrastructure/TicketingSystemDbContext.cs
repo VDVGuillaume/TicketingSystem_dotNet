@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Infrastructure
 {
-    public class TicketingSystemDbContext : IdentityDbContext<ApplicationUser>
+    public class TicketingSystemDbContext : IdentityDbContext
     {
 
         // public DbSet<Model> Models {get;set;}
