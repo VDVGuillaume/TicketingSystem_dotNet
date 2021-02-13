@@ -1,8 +1,0 @@
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\bin\Debug\netcoreapp3.1\TicketingSystem.DTO.deps.json
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\bin\Debug\netcoreapp3.1\TicketingSystem.DTO.dll
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\bin\Debug\netcoreapp3.1\TicketingSystem.DTO.pdb
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\obj\Debug\netcoreapp3.1\TicketingSystem.DTO.AssemblyInfoInputs.cache
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\obj\Debug\netcoreapp3.1\TicketingSystem.DTO.AssemblyInfo.cs
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\obj\Debug\netcoreapp3.1\TicketingSystem.DTO.csproj.CoreCompileInputs.cache
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\obj\Debug\netcoreapp3.1\TicketingSystem.DTO.dll
-D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.DTO\obj\Debug\netcoreapp3.1\TicketingSystem.DTO.pdb
