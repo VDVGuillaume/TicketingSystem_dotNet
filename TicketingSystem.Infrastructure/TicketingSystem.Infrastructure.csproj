@@ -12,9 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CommandHandlers\" />
     <Folder Include="EntityConfigurations\" />
-    <Folder Include="QueryHandlers\" />
   </ItemGroup>
 
   <ItemGroup>

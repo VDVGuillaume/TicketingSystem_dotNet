@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Infrastructure
 {
     public class TicketingSystemDbContext : IdentityDbContext
     {
-
-        // public DbSet<Model> Models {get;set;}
+        public DbSet<UserLogin> UserLogins { get; set; }
         public TicketingSystemDbContext(DbContextOptions<TicketingSystemDbContext> options) : base(options)
         {
             

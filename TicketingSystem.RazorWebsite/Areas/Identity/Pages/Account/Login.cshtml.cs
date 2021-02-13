@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MediatR;
+using TicketingSystem.Domain.Application.Commands;
+using System;
 
 namespace TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account
 {
@@ -81,6 +83,7 @@ namespace TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                await _mediator.Send(new CreateUserLoginCommand { Date = DateTime.Now, Username = Input.Email, Success = result.Succeeded});
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

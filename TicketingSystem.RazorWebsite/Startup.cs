@@ -7,8 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 using TicketingSystem.Domain.Application;
+using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Infrastructure;
+using TicketingSystem.Infrastructure.QueryHandlers;
 
 namespace TicketingSystem.RazorWebsite
 {
@@ -35,6 +38,26 @@ namespace TicketingSystem.RazorWebsite
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            // Mediator itself
+            builder
+                .RegisterType<Mediator>()
+                .As<IMediator>()
+                .InstancePerLifetimeScope();
+
+            // request & notification handlers
+            builder.Register<ServiceFactory>(context =>
+            {
+                var c = context.Resolve<IComponentContext>();
+                return t => c.Resolve(t);
+            });
+
+            //// finally register our custom code (individually, or via assembly scanning)
+            //// - requests & handlers as transient, i.e. InstancePerDependency()
+            //// - pre/post-processors as scoped/per-request, i.e. InstancePerLifetimeScope()
+            //// - behaviors as transient, i.e. InstancePerDependency()
+            builder.RegisterAssemblyTypes(typeof(DomainModule).GetTypeInfo().Assembly).AsImplementedInterfaces(); // via assembly scan
+            builder.RegisterAssemblyTypes(typeof(InfrastructureModule).GetTypeInfo().Assembly).AsImplementedInterfaces(); // via assembly scan
+
             builder.RegisterModule(new DomainModule());
             builder.RegisterModule(new InfrastructureModule());
         }
