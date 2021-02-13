@@ -1,11 +1,14 @@
 using Autofac;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketingSystem.Domain.Application;
+using TicketingSystem.Domain.Models;
 using TicketingSystem.Infrastructure;
 
 namespace TicketingSystem.Website
@@ -22,10 +25,14 @@ namespace TicketingSystem.Website
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-
             services.AddDbContext<TicketingSystemDbContext>(options => options.UseSqlServer(Configuration.GetValue<string>("SqlConnectionString")));
             services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddScoped<TicketingSystemDataInitializer>();
+            services.AddMediatR(typeof(Startup));
+
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<TicketingSystemDbContext>();
+            services.AddRazorPages();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -35,7 +42,7 @@ namespace TicketingSystem.Website
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TicketingSystemDataInitializer dataInitializer)
         {
             //Ensure database is created
             using (var scope = app.ApplicationServices.CreateScope())
@@ -49,6 +56,7 @@ namespace TicketingSystem.Website
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -62,12 +70,15 @@ namespace TicketingSystem.Website
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
+
+            dataInitializer.InitializeData();
         }
     }
 }

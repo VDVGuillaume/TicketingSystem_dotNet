@@ -10,6 +10,7 @@ namespace TicketingSystem.Infrastructure
         // public DbSet<Model> Models {get;set;}
         public TicketingSystemDbContext(DbContextOptions<TicketingSystemDbContext> options) : base(options)
         {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
