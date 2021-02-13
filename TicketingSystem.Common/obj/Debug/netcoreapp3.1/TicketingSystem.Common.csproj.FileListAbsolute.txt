@@ -1,0 +1,9 @@
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\bin\Debug\netcoreapp3.1\TicketingSystem.Common.deps.json
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\bin\Debug\netcoreapp3.1\TicketingSystem.Common.dll
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\bin\Debug\netcoreapp3.1\TicketingSystem.Common.pdb
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\obj\Debug\netcoreapp3.1\TicketingSystem.Common.csprojAssemblyReference.cache
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\obj\Debug\netcoreapp3.1\TicketingSystem.Common.AssemblyInfoInputs.cache
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\obj\Debug\netcoreapp3.1\TicketingSystem.Common.AssemblyInfo.cs
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\obj\Debug\netcoreapp3.1\TicketingSystem.Common.csproj.CoreCompileInputs.cache
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\obj\Debug\netcoreapp3.1\TicketingSystem.Common.dll
+D:\School\2020_2021_semester_1\groepsproject\2021-dotnet-tile_g02\TicketingSystem.Common\obj\Debug\netcoreapp3.1\TicketingSystem.Common.pdb
