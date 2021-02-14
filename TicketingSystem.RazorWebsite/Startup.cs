@@ -77,7 +77,7 @@ namespace TicketingSystem.RazorWebsite
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -92,7 +92,9 @@ namespace TicketingSystem.RazorWebsite
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=Ticket}/{action=Index}/{id?}");
             });
 
             dataInitializer.InitializeData();
