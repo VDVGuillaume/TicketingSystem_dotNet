@@ -6,7 +6,7 @@ using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Domain.Application.Commands
 {
-    public class CreateUserLoginCommand : BaseCommand<UserLogin>
+    public class CreateUserLoginAttemptCommand : BaseCommand<UserLoginAttempt>
     {
         public DateTime Date { get; set; }
         public string Username { get; set; }

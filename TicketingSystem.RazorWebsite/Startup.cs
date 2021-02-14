@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Reflection;
 using TicketingSystem.Domain.Application;
 using TicketingSystem.Domain.Application.Queries;
@@ -31,8 +32,13 @@ namespace TicketingSystem.RazorWebsite
             services.AddScoped<TicketingSystemDataInitializer>();
             services.AddMediatR(typeof(Startup));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<TicketingSystemDbContext>();
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = DateTime.Now.AddYears(10) - DateTime.Now;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+            }).AddEntityFrameworkStores<TicketingSystemDbContext>();
             services.AddRazorPages();
         }
 

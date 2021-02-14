@@ -9,21 +9,21 @@ using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Infrastructure.CommandHandlers
 {
-    public class CreateUserLoginCommandHandler : BaseCommandHandler<CreateUserLoginCommand, UserLogin>
+    public class CreateUserLoginAttemptCommandHandler : BaseCommandHandler<CreateUserLoginAttemptCommand, UserLoginAttempt>
     {
-        public CreateUserLoginCommandHandler(IMediator mediator, TicketingSystemDbContext dbContext) : base(mediator, dbContext)
+        public CreateUserLoginAttemptCommandHandler(IMediator mediator, TicketingSystemDbContext dbContext) : base(mediator, dbContext)
         {
         }
 
-        public async override Task<UserLogin> ExecuteCommandAsync(CreateUserLoginCommand request, CancellationToken cancellationToken)
+        public async override Task<UserLoginAttempt> ExecuteCommandAsync(CreateUserLoginAttemptCommand request, CancellationToken cancellationToken)
         {
-            var userlogin = new UserLogin
+            var userlogin = new UserLoginAttempt
             {
                 Date = request.Date,
                 Success = request.Success,
                 Username = request.Username
             };
-            await _dbContext.UserLogins.AddAsync(userlogin);
+            await _dbContext.UserLoginAttempts.AddAsync(userlogin);
             _dbContext.SaveChanges();
 
             return userlogin;

@@ -46,8 +46,7 @@ namespace TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string Username { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -80,10 +79,9 @@ namespace TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                await _mediator.Send(new CreateUserLoginCommand { Date = DateTime.Now, Username = Input.Email, Success = result.Succeeded});
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                await _mediator.Send(new CreateUserLoginAttemptCommand { Date = DateTime.Now, Username = Input.Username, Success = result.Succeeded});
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

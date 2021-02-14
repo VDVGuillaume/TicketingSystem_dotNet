@@ -2,7 +2,7 @@
 
 namespace TicketingSystem.Domain.Models
 {
-    public class UserLogin
+    public class UserLoginAttempt
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EntityConfigurations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TicketingSystem.Domain\TicketingSystem.Domain.csproj" />
   </ItemGroup>
 

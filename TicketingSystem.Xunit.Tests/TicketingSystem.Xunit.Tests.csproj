@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,6 +19,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TicketingSystem.Common\TicketingSystem.Common.csproj" />
+    <ProjectReference Include="..\TicketingSystem.Domain\TicketingSystem.Domain.csproj" />
+    <ProjectReference Include="..\TicketingSystem.DTO\TicketingSystem.DTO.csproj" />
+    <ProjectReference Include="..\TicketingSystem.Infrastructure\TicketingSystem.Infrastructure.csproj" />
+    <ProjectReference Include="..\TicketingSystem.RazorWebsite\TicketingSystem.RazorWebsite.csproj" />
   </ItemGroup>
 
 </Project>
