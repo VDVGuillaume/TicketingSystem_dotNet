@@ -38,10 +38,10 @@ namespace TicketingSystem.Domain.Models
 
         }
 
+        private Ticket()
+        {
 
-
-
-
+        }
 
 
 

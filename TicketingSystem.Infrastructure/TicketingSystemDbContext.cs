@@ -8,6 +8,8 @@ namespace TicketingSystem.Infrastructure
     public class TicketingSystemDbContext : IdentityDbContext
     {
         public DbSet<UserLoginAttempt> UserLoginAttempts { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+
         public TicketingSystemDbContext(DbContextOptions<TicketingSystemDbContext> options) : base(options)
         {
             
@@ -17,6 +19,7 @@ namespace TicketingSystem.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserLoginAttemptEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TicketEntityTypeConfiguration());
         }
     }
 }
