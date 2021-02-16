@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingSystem.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingSystem.DTO", "TicketingSystem.DTO\TicketingSystem.DTO.csproj", "{9C8EF30D-7749-41E0-9130-CA1A931FB666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketingSystem.RazorWebsite", "TicketingSystem.RazorWebsite\TicketingSystem.RazorWebsite.csproj", "{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingSystem.RazorWebsite", "TicketingSystem.RazorWebsite\TicketingSystem.RazorWebsite.csproj", "{B363DEF3-4DE2-4010-8C95-28AAEB9F322F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketingSystem.Xunit.Tests", "TicketingSystem.Xunit.Tests\TicketingSystem.Xunit.Tests.csproj", "{8DD36621-9CBF-4E6B-82A9-BD6371FA40EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingSystem.Xunit.Tests", "TicketingSystem.Xunit.Tests\TicketingSystem.Xunit.Tests.csproj", "{8DD36621-9CBF-4E6B-82A9-BD6371FA40EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
