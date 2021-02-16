@@ -80,7 +80,7 @@ namespace TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                await _mediator.Send(new CreateUserLoginAttemptCommand { Date = DateTime.Now, Username = Input.Username, Success = result.Succeeded});
+                var loginAttempt = await _mediator.Send(new CreateUserLoginAttemptCommand { Date = DateTime.Now, Username = Input.Username, Success = result.Succeeded});
 
                 if (result.Succeeded)
                 {
@@ -94,7 +94,8 @@ namespace TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                    ModelState.AddModelError(string.Empty, "User account locked out.");
+                    return Page();
                 }
                 else
                 {
