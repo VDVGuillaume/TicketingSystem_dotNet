@@ -40,6 +40,7 @@ namespace TicketingSystem.RazorWebsite
                 options.Lockout.MaxFailedAccessAttempts = 5;
             }).AddEntityFrameworkStores<TicketingSystemDbContext>();
             services.AddRazorPages();
+            services.AddControllers();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
