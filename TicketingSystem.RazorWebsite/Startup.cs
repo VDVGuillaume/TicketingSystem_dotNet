@@ -41,11 +41,11 @@ namespace TicketingSystem.RazorWebsite
             }).AddEntityFrameworkStores<TicketingSystemDbContext>();
             services.AddRazorPages();
             services.AddControllers();
+            services.AddSignalR();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Mediator itself
             builder
                 .RegisterType<Mediator>()
                 .As<IMediator>()
@@ -96,6 +96,8 @@ namespace TicketingSystem.RazorWebsite
                 endpoints.MapControllerRoute(
                    name: "default",
                    pattern: "{controller=Ticket}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
 
             dataInitializer.InitializeData();
