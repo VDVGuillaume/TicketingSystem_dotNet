@@ -1,14 +1,19 @@
-﻿@page
-@model TicketingSystem.RazorWebsite.Pages.DashboardModel
+﻿@model IndexModel
 @{
+    ViewData["Title"] = "Dashboard";
 }
 
 <h1></h1>
 
 <div class="container">
     <div class="row">
-        <div class="col-md">
-            <h2>Openstaande tickets</h2>
+        <div class="col-lg">
+            <a href="Ticket/" class="title-subtitle-link">
+                <h2>
+                    Openstaande tickets
+                    <span>Alle tickets</span>
+                </h2>
+            </a>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -18,12 +23,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="pointer-event" onclick="location.href = 'Tickets/Details?TicketID=1'" style="cursor:pointer">
+                    <tr class="pointer-event" onclick="location.href = 'Ticket/Details?TicketID=1'" style="cursor:pointer">
                         <th scope="row">1</th>
                         <td>De titel van het ticket is hier zichtbaar... Beperken in aantal tekens?</td>
                         <td class="text-warning">In behandeling</td>
                     </tr>
-                    <tr class="pointer-event" onclick="location.href = 'Tickets/Details?TicketID=2'" style="cursor:pointer">
+                    <tr class="pointer-event" onclick="location.href = 'Ticket/Details?TicketID=2'" style="cursor:pointer">
                         <th scope="row">2</th>
                         <td>De titel van het ticket is hier zichtbaar...</td>
                         <td class="text-success">Aangemaakt</td>
@@ -36,8 +41,13 @@
                 </tfoot>
             </table>
         </div>
-        <div class="col-md">
-            <h2>Afgesloten tickets</h2>
+        <div class="col-lg">
+            <a href="Ticket/" class="title-subtitle-link">
+                <h2>
+                    Afgesloten tickets
+                    <span>Alle tickets</span>
+                </h2>
+            </a>
             <table class="table table-hover">
                 <tbody>
                     <tr>
@@ -48,8 +58,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md">
-            <h2>Contracten</h2>
+        <div class="col-lg">
+            <a href="Contract/" class="title-subtitle-link">
+                <h2>
+                    Contracten
+                    <span>Alle contracten</span>
+                </h2>
+            </a>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -66,19 +81,19 @@
                         <td>???</td>
                         <td>2020-01-01</td>
                         <td>2021-12-31</td>
-                        <td>Lopend</td>
+                        <td class="text-success">Lopend</td>
                     </tr>
                     <tr class="pointer-event" onclick="location.href = 'Contracts/Details?contractID=2'" style="cursor:pointer">
                         <th scope="row">2</th>
                         <td>???</td>
                         <td>2022-01-01</td>
                         <td>2023-12-31</td>
-                        <td>In Behandeling</td>
+                        <td class="text-warning">In Behandeling</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="col-md">
+        <div class="col-lg">
             <h2>Statistieken</h2>
             <p>Nog eens nagaan welke statistieken we willen tonen. Bijvoorbeeld:</p>
             <ul>

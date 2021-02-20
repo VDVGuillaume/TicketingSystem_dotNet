@@ -69,3 +69,17 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/* CUSTOM CSS */
+.title-subtitle-link {
+    color: #212529;
+}
+
+.title-subtitle-link:hover {
+    text-decoration: none;
+}
+
+    .title-subtitle-link span {
+        color: #0366d6;
+        font-size: 1rem;
+    }
