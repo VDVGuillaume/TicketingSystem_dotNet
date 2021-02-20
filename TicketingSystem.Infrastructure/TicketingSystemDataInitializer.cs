@@ -34,8 +34,8 @@ namespace TicketingSystem.Infrastructure
                 await _userManager.AddToRoleAsync(customerUser, "Customer");
 
                 var supportManagerUser = new IdentityUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
-                await _userManager.CreateAsync(customerUser, "P@ssword1");
-                await _userManager.AddToRoleAsync(customerUser, "SupportManager");
+                await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
+                await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
             }
 
             _dbContext.SaveChanges();
