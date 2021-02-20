@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace TicketingSystem.Domain.Models
 {
@@ -24,7 +23,7 @@ namespace TicketingSystem.Domain.Models
         public Client Client { get; set; }
         public string AssignedEngineer { get; set; }
         public string Type { get; set; }
-        public List<string> Comments { get; set; }
+        public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 
 

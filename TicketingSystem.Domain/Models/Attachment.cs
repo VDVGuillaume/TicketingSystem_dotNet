@@ -6,5 +6,7 @@ namespace TicketingSystem.Domain.Models
 {
     public class Attachment
     {
+        public int AttachmentId;
+      
     }
 }

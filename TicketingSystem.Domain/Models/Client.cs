@@ -6,5 +6,6 @@ namespace TicketingSystem.Domain.Models
 {
     public class Client
     {
+        public int ClientId;
     }
 }

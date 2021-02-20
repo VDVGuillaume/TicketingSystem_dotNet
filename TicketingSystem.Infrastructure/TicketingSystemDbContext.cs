@@ -20,6 +20,9 @@ namespace TicketingSystem.Infrastructure
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserLoginAttemptEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new TicketEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new AttachmentEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CommentEntityTypeConfiguration());
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TicketingSystem.Domain.Application.Commands
         public Client Client;
         public string AssignedEngineer;
         public string Type;
-        public List<string> Comments;
+        public List<Comment> Comments;
         public List<Attachment> Attachments;
     }
 }
