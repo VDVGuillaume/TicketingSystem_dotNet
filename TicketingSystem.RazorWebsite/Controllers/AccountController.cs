@@ -42,7 +42,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             model.ReturnUrl = returnUrl ?? Url.Content("~/");
             
             return View(model);
@@ -59,7 +58,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(model.ReturnUrl);
+                    return LocalRedirect(model.ReturnUrl ?? Url.Content("~/"));
                 }
                 if (result.RequiresTwoFactor)
                 {

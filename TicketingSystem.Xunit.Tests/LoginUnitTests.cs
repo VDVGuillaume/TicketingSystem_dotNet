@@ -10,7 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.Domain.Models;
-using TicketingSystem.RazorWebsite.Areas.Identity.Pages.Account;
+using TicketingSystem.RazorWebsite.Controllers;
+using TicketingSystem.RazorWebsite.Models;
 using Xunit;
 
 namespace TicketingSystem.Xunit.Tests
@@ -84,7 +85,11 @@ namespace TicketingSystem.Xunit.Tests
                 x.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), true))
                 .Returns(Task.FromResult(signInResult));
 
-            var loginModel = new LoginModel(signInManagerMock.Object, loggerMock.Object, userManager, mediatorMock.Object);
+
+            var accountController = new AccountController(signInManagerMock.Object, loggerMock.Object, userManager, mediatorMock.Object);
+
+            var loginModel = new LoginModel();
+            loginModel.ReturnUrl = "~/";
             loginModel.Input = new LoginModel.InputModel
             {
                 Username = expectedUsername,
@@ -92,13 +97,50 @@ namespace TicketingSystem.Xunit.Tests
             };
 
             //act
-            var actionResult = await loginModel.OnPostAsync("index");
+            var actionResult = await accountController.Login(loginModel);
 
             //assert
             mediatorMock.Verify(x => x.Send(It.IsAny<CreateUserLoginAttemptCommand>(), It.IsAny<CancellationToken>()), Times.Once);
             signInManagerMock.Verify(x => x.PasswordSignInAsync(expectedUsername, expectedPassword, It.IsAny<bool>(), true), Times.Once);
             Assert.Equal(expectedUsername, cmdSaved.Username);
             Assert.True(cmdSaved.Success);
+        }
+
+        [Theory]
+        [InlineData("driesco","ww")]
+        public async void Login_Should_Fail(string expectedUsername, string expectedPassword) 
+        {
+            //arrange
+            var mediatorMock = new Mock<IMediator>();
+            var loggerMock = new Mock<ILogger<LoginModel>>();
+            var signInManagerMock = new Mock<FakeSignInManager>();
+            var signInResult = SignInResult.Success;
+            var userManager = new FakeUserManager();
+            CreateUserLoginAttemptCommand cmdSaved = null;
+            mediatorMock.Setup(x =>
+            x.Send(It.IsAny<CreateUserLoginAttemptCommand>(),
+            It.IsAny<CancellationToken>()));
+
+            signInManagerMock.Setup(x =>
+                x.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), true))
+                .Returns(Task.FromResult(signInResult));
+
+
+            var accountController = new AccountController(signInManagerMock.Object, loggerMock.Object, userManager, mediatorMock.Object);
+
+            var loginModel = new LoginModel();
+            loginModel.ReturnUrl = "~/";
+            loginModel.Input = new LoginModel.InputModel
+            {
+                Username = expectedUsername,
+                Password = expectedPassword
+            };
+
+            //act
+            var actionResult = await accountController.Login(loginModel);
+
+            //assert
+            Assert.Equal(signInResult, SignInResult.Failed);
         }
     }
 }
