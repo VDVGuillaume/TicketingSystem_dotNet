@@ -38,7 +38,9 @@ namespace TicketingSystem.RazorWebsite
 
                 options.Lockout.DefaultLockoutTimeSpan = DateTime.Now.AddYears(10) - DateTime.Now;
                 options.Lockout.MaxFailedAccessAttempts = 5;
-            }).AddEntityFrameworkStores<TicketingSystemDbContext>();
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<TicketingSystemDbContext>();
             services.AddRazorPages();
             services.AddControllers();
             services.AddSignalR();
@@ -100,7 +102,7 @@ namespace TicketingSystem.RazorWebsite
                 endpoints.MapRazorPages();
             });
 
-            dataInitializer.InitializeData();
+            dataInitializer.InitializeData().Wait();
         }
     }
 }

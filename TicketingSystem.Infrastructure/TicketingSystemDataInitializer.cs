@@ -2,29 +2,36 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TicketingSystem.Infrastructure
 {
     public class TicketingSystemDataInitializer
     {
         private readonly TicketingSystemDbContext _dbContext;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public TicketingSystemDataInitializer(TicketingSystemDbContext dbContext)
+        public TicketingSystemDataInitializer(TicketingSystemDbContext dbContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public void InitializeData() 
+        public async Task InitializeData() 
         {
             _dbContext.Database.EnsureDeleted();
             if (_dbContext.Database.EnsureCreated()) 
             {
-                _dbContext.Roles.Add(new IdentityRole("Customer"));
-                _dbContext.Roles.Add(new IdentityRole("SupportManager"));
+                var customerRole = new IdentityRole("Customer");
+                var supportManagerRole = new IdentityRole("SupportManager");
+                await _roleManager.CreateAsync(customerRole);
+                await _roleManager.CreateAsync(supportManagerRole);
 
-                var user = new IdentityUser();
-
-                //_dbContext.Users.Add(new IdentityUser(""))
+                var customerUser = new IdentityUser { UserName = "customer", Email="customer@gmail.be"};
+                await _userManager.CreateAsync(customerUser, "P@ssword1");
+                await _userManager.AddToRoleAsync(customerUser, "Customer");
             }
 
             _dbContext.SaveChanges();
