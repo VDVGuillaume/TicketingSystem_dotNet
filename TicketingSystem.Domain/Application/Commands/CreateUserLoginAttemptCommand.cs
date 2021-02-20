@@ -1,7 +1,4 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Domain.Application.Commands
