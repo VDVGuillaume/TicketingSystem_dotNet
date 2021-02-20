@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -30,6 +31,12 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View();
         }
 
+        //[Authorize(Roles = "Customer,SupportManager")]
+        [HttpGet]
+        public IActionResult CreateTicket()
+        {
+            return View();
+        }
 
 
         [HttpPost]

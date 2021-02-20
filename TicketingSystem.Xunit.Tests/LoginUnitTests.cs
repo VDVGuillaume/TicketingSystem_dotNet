@@ -75,8 +75,6 @@ namespace TicketingSystem.Xunit.Tests
             var loggerMock = new Mock<ILogger<LoginModel>>();
             var signInManagerMock = new Mock<FakeSignInManager>();
             
-            var userManager = new FakeUserManager();
-
             SignInResult signInResult = SignInResult.Success;
             string expectedModelStateErrorMessage = string.Empty;
             switch (signInResultInput) 
@@ -108,7 +106,7 @@ namespace TicketingSystem.Xunit.Tests
                 x.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), true))
                 .Returns(Task.FromResult(signInResult));
 
-            var accountController = new AccountController(signInManagerMock.Object, loggerMock.Object, userManager, mediatorMock.Object);
+            var accountController = new AccountController(signInManagerMock.Object, loggerMock.Object, mediatorMock.Object);
 
             var loginModel = new LoginModel();
             loginModel.ReturnUrl = "~/";
