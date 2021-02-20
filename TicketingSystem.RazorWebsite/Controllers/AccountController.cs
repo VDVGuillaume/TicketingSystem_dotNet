@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.RazorWebsite.Models;
@@ -14,17 +13,14 @@ namespace TicketingSystem.RazorWebsite.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IMediator _mediator;
 
         public AccountController(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager,
             IMediator mediator)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _mediator = mediator;
