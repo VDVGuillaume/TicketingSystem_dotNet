@@ -16,25 +16,25 @@ namespace TicketingSystem.Domain.Models
 
     public class Ticket
     {
-        public int Ticketnr;
-        public string Title;
-        public Status Status;
-        public DateTime DateAdded;
-        public string Description;
-        public Client Client;
-        public string AssignedEngineer;
-        public string Type;
-        public List<string> Comments;
-        public List<Attachment> Attachments;
+        public int Ticketnr { get; }
+        public string Title { get; set; }
+        public Status Status { get; set; }
+        public DateTime DateAdded { get; set; }
+        public string Description { get; set; }
+        public Client Client { get; set; }
+        public string AssignedEngineer { get; set; }
+        public string Type { get; set; }
+        public List<string> Comments { get; set; }
+        public List<Attachment> Attachments { get; set; }
 
 
-        public Ticket(string title, string description, string  type, Attachment attachment = null)
+        public Ticket(string title, string description, string  type, List<Attachment> attachments = null)
         {
             this.Title = title;
             this.Description = description;
             this.Type = type;
             this.DateAdded = DateTime.Now;
-            Attachments.Add(attachment);
+            this.Attachments = attachments;
 
         }
 
