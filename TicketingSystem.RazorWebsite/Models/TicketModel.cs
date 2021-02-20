@@ -24,7 +24,6 @@ namespace TicketingSystem.RazorWebsite.Models
             public TicketStatus Status { get; set; }
             [Required]
             public string Description { get; set; }
-            [Required]
             public int ClientId { get; set; }
             [Required]
             public string Type { get; set; }
