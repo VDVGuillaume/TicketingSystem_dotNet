@@ -83,3 +83,9 @@ body {
         color: #0366d6;
         font-size: 1rem;
     }
+
+.pagingCurrent {
+    color: #6c757d;
+    background-color: #e9ecef;
+    pointer-events: none;
+}
