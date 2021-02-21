@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using TicketingSystem.Domain.Application.Commands;
+using TicketingSystem.Domain.Models;
 using TicketingSystem.RazorWebsite.Models;
 
 namespace TicketingSystem.RazorWebsite.Controllers
@@ -35,6 +37,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpGet]
         public IActionResult CreateTicket()
         {
+
             return View();
         }
 
@@ -45,6 +48,17 @@ namespace TicketingSystem.RazorWebsite.Controllers
             // get current user
             var user = await _userManager.GetUserAsync(User);
 
+            if (ModelState.IsValid)
+            {
+                try
+                {                 
+                    await _mediator.Send(new CreateTicketCommand { Title = model.Input.Title, Description = model.Input.Description,Type = model.Input.Type});
+                }
+                catch
+                {
+                    TempData["error"] = "Sorry, something went wrong, the ticket was not created";
+                }
+            }
             return View(model);
         }
 

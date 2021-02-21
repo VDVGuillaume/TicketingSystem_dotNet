@@ -11,6 +11,7 @@ namespace TicketingSystem.Domain.Application.Commands
         public DateTime DateAdded;
         public string Description;
         public Client Client;
+        public string Username;
         public string AssignedEngineer;
         public string Type;
         public List<Comment> Comments;

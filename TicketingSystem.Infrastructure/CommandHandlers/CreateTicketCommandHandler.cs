@@ -16,7 +16,7 @@ namespace TicketingSystem.Infrastructure.CommandHandlers
         public async override Task<Ticket> ExecuteCommandAsync(CreateTicketCommand request, CancellationToken cancellationToken)
         {
             var ticket = new Ticket(request.Title, request.Description, request.Type, request.Attachments);
-            
+            //ticket.Client.UserName = request.Client.UserName;
             await _dbContext.Tickets.AddAsync(ticket);
             _dbContext.SaveChanges();
 
