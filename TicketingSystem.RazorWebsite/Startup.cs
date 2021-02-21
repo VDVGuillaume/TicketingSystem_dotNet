@@ -105,7 +105,7 @@ namespace TicketingSystem.RazorWebsite
             {
                 endpoints.MapControllerRoute(
                    name: "default",
-                   pattern: "{controller=Account}/{action=Login}");
+                   pattern: "{controller=Dashboard}/{action=Index}");
 
                 endpoints.MapRazorPages();
             });
