@@ -6,7 +6,7 @@ using TicketingSystem.Common.Enums;
 
 namespace TicketingSystem.RazorWebsite.Models
 {
-    public class TicketModel
+    public class TicketViewModel
     {
         [BindProperty]
         public InputModel Input { get; set; }
@@ -20,8 +20,6 @@ namespace TicketingSystem.RazorWebsite.Models
         {
             [Required]
             public string Title { get; set; }
-            [Required]
-            public TicketStatus Status { get; set; }
             [Required]
             public string Description { get; set; }
             public int ClientId { get; set; }

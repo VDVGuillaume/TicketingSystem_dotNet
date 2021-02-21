@@ -1,7 +1,9 @@
 using Autofac;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,12 +40,18 @@ namespace TicketingSystem.RazorWebsite
 
                 options.Lockout.DefaultLockoutTimeSpan = DateTime.Now.AddYears(10) - DateTime.Now;
                 options.Lockout.MaxFailedAccessAttempts = 5;
-            })
+            }) 
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<TicketingSystemDbContext>();
             services.AddRazorPages();
             services.AddControllers();
             services.AddSignalR();
+
+            services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme, opt =>
+            {
+                //configure your other properties
+                opt.LoginPath = "/Account/Login";
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -97,7 +105,7 @@ namespace TicketingSystem.RazorWebsite
             {
                 endpoints.MapControllerRoute(
                    name: "default",
-                   pattern: "{controller=Ticket}/{action=Index}/{id?}");
+                   pattern: "{controller=Account}/{action=Login}");
 
                 endpoints.MapRazorPages();
             });
