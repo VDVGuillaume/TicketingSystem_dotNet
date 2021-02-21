@@ -2,14 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TicketingSystem.Domain.ViewModels;
+using TicketingSystem.RazorWebsite.Models;
 
 namespace TicketingSystem.RazorWebsite.Controllers
 {
+    [Authorize(Roles = "Customer,SupportManager")]
     public class TicketController : Controller
     {
 
@@ -24,26 +21,23 @@ namespace TicketingSystem.RazorWebsite.Controllers
             _mediator = mediator;
         }
 
-
-
+        [Authorize(Roles = "Customer,SupportManager")]
         public IActionResult Index()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
         public IActionResult CreateTicket()
         {
             return View();
         }
 
-
+        [Authorize(Roles = "Customer,SupportManager")]
         [HttpPost]
         public IActionResult CreateTicket(TicketViewModel model)
         {
-            
-            
             return View(model);
         }
 
