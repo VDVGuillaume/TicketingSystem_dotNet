@@ -38,7 +38,7 @@ namespace TicketingSystem.Infrastructure
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
 
-                var ticket = new Ticket("TestTitle", "TestDescription", "TestType");
+                var ticket = new Ticket("TestTitle", "TestDescription", "TestType", customerUser);
                 _dbContext.Tickets.Add(ticket);
 
                 _dbContext.SaveChanges();

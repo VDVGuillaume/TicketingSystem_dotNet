@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
-using TicketingSystem.Domain.Models;
+using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.RazorWebsite.Models;
 
 namespace TicketingSystem.RazorWebsite.Controllers
@@ -45,14 +45,38 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
-            // get current user
-            var user = await _userManager.GetUserAsync(User);
+            IdentityUser client = null;
+            if (User.IsInRole("Customer"))
+            {
+                client = await _userManager.GetUserAsync(User);
 
+            } else if (User.IsInRole("SupportManager")) 
+            {
+                client = await _mediator.Send(new GetUserByUsernameQuery { Username = model.Input.ClientUsername});
+                
+                if (client == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Client not found.");
+                    return View(model);
+                }
+            }
+            // get current user
+            
             if (ModelState.IsValid)
             {
+                if (client == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Client is required.");
+                    return View(model);
+                }
+
                 try
                 {                 
-                    await _mediator.Send(new CreateTicketCommand { Title = model.Input.Title, Description = model.Input.Description,Type = model.Input.Type});
+                    await _mediator.Send(new CreateTicketCommand { 
+                        Title = model.Input.Title, 
+                        Description = model.Input.Description,
+                        Type = model.Input.Type,
+                        Client = client});
                 }
                 catch
                 {

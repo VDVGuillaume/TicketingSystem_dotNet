@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace TicketingSystem.Domain.Models
@@ -20,21 +21,21 @@ namespace TicketingSystem.Domain.Models
         public Status Status { get; set; }
         public DateTime DateAdded { get; set; }
         public string Description { get; set; }
-        public Client Client { get; set; }
+        public IdentityUser Client { get; set; }
         public string AssignedEngineer { get; set; }
         public string Type { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 
 
-        public Ticket(string title, string description, string  type, List<Attachment> attachments = null)
+        public Ticket(string title, string description, string  type, IdentityUser client, List<Attachment> attachments = null)
         {
             this.Title = title;
             this.Description = description;
             this.Type = type;
             this.DateAdded = DateTime.Now;
             this.Attachments = attachments;
-
+            this.Client = client;
         }
 
         private Ticket()

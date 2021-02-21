@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using TicketingSystem.Domain.Models;
 
@@ -10,7 +11,7 @@ namespace TicketingSystem.Domain.Application.Commands
         public Status Status;
         public DateTime DateAdded;
         public string Description;
-        public Client Client;
+        public IdentityUser Client;
         public string Username;
         public string AssignedEngineer;
         public string Type;
