@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Infrastructure
 {
@@ -19,26 +20,29 @@ namespace TicketingSystem.Infrastructure
             _roleManager = roleManager;
         }
 
-        public async Task InitializeData() 
+        public async Task InitializeData()
         {
             _dbContext.Database.EnsureDeleted();
-            if (_dbContext.Database.EnsureCreated()) 
+            if (_dbContext.Database.EnsureCreated())
             {
                 var customerRole = new IdentityRole("Customer");
                 var supportManagerRole = new IdentityRole("SupportManager");
                 await _roleManager.CreateAsync(customerRole);
                 await _roleManager.CreateAsync(supportManagerRole);
 
-                var customerUser = new IdentityUser { UserName = "customer", Email="customer@gmail.be"};
+                var customerUser = new IdentityUser { UserName = "customer", Email = "customer@gmail.be" };
                 await _userManager.CreateAsync(customerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(customerUser, "Customer");
 
                 var supportManagerUser = new IdentityUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
-            }
 
-            _dbContext.SaveChanges();
+                var ticket = new Ticket("TestTitle", "TestDescription", "TestType");
+                _dbContext.Tickets.Add(ticket);
+
+                _dbContext.SaveChanges();
+            }
         }
     }
 }
