@@ -46,7 +46,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
             IdentityUser client = null;
-            if (User.IsInRole("SupportManager"))
+            if (User.IsInRole("SupportManager") && !string.IsNullOrEmpty(model.Input.ClientUsername))
             {
                 client = await _mediator.Send(new GetUserByUsernameQuery { Username = model.Input.ClientUsername });
 
@@ -55,7 +55,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     ModelState.AddModelError(string.Empty, "Client not found.");
                     return View(model);
                 }
-            } else if (User.IsInRole("Customer")) 
+            } else 
             {
                 client = await _userManager.GetUserAsync(User);
             }
