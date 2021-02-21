@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Type"></label>
-                <input asp-for="Input.Type" class="form-control" />
+                <select asp-for="Input.Type" asp-items="Model.TicketTypes" class="form-control"></select>
                 <span asp-validation-for="Input.Type" class="text-danger"></span>
             </div>
             <div class="form-group row">
@@ -46,7 +46,7 @@
                     <span asp-validation-for="Input.ClientUsername" class="text-danger"></span>
                 </div>
             }
-            <div class="form-group">
+            <div class="form-group top-margin">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

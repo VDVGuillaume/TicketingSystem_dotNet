@@ -9,6 +9,8 @@ namespace TicketingSystem.Infrastructure
     {
         public DbSet<UserLoginAttempt> UserLoginAttempts { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketType> TicketTypes { get; set; }
+        public DbSet<ContractType> ContractTypes { get; set; }
 
         public TicketingSystemDbContext(DbContextOptions<TicketingSystemDbContext> options) : base(options)
         {

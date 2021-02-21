@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,10 +48,18 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
-        public IActionResult CreateTicket()
+        public async Task<IActionResult> CreateTicket()
         {
+            var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
+            var model = new TicketViewModel();
 
-            return View();
+            model.TicketTypes = new List<SelectListItem>();
+            foreach (var ticketType in ticketTypes) 
+            {
+                model.TicketTypes.Add(new SelectListItem { Value=ticketType.Id.ToString(), Text=ticketType.Name});
+            }
+
+            return View(model);
         }
 
         [Authorize(Roles = "Customer,SupportManager")]

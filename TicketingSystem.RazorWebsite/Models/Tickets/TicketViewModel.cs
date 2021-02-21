@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,6 +15,8 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 
         [TempData]
         public string ErrorMessage { get; set; }
+
+        public List<SelectListItem> TicketTypes { get; set; }
 
         public class InputModel
         {
