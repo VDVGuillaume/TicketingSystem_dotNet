@@ -1,9 +1,9 @@
 using Autofac;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,9 +12,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 using TicketingSystem.Domain.Application;
-using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Infrastructure;
-using TicketingSystem.Infrastructure.QueryHandlers;
+using TicketingSystem.RazorWebsite.Mapping;
 
 namespace TicketingSystem.RazorWebsite
 {
@@ -52,6 +51,14 @@ namespace TicketingSystem.RazorWebsite
                 //configure your other properties
                 opt.LoginPath = "/Account/Login";
             });
+
+            //configure automapper
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
