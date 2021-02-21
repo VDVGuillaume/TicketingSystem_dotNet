@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TicketingSystem.Common.Enums;
 
 namespace TicketingSystem.RazorWebsite.Models
 {
@@ -25,6 +24,7 @@ namespace TicketingSystem.RazorWebsite.Models
             public int ClientId { get; set; }
             [Required]
             public string Type { get; set; }
+            public List<IFormFile> Attachments { get; set; }
         }
     }
 }

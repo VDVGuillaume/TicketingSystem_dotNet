@@ -27,6 +27,16 @@
                 <input asp-for="Input.Type" class="form-control" />
                 <span asp-validation-for="Input.Type" class="text-danger"></span>
             </div>
+            <div class="form-group row">
+                <label asp-for="Input.Attachments"></label>
+                <div class="col-sm-10">
+                    <div class="custom-file">
+                        <input multiple asp-for="Input.Attachments" class="form-control custom-file-input" />
+                        <label class="custom-file-label">Choose a file...</label>
+                    </div>
+                </div>
+                <span asp-validation-for="Input.Attachments" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -40,4 +50,19 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $(document).ready(function () {
+        $('.custom-file-input').on("change", function () {
+            var fileLabel = $(this).next('.custom-file-label');
+            var files = $(this)[0].files;
+            if (files.length > 1) {
+                fileLabel.html(files.length + ' files selected');
+            } else if (files.length == 1) {
+                fileLabel.html(files[0].name);
+            }
+        });
+    });
+</script>
+
 }
