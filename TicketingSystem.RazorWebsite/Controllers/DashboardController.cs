@@ -2,15 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TicketingSystem.Domain.ViewModels;
 
 namespace TicketingSystem.RazorWebsite.Controllers
 {
-
+    [Authorize(Roles = "Customer,SupportManager")]
     public class DashboardController : Controller
     {
         private readonly ILogger<TicketViewModel> _logger;
