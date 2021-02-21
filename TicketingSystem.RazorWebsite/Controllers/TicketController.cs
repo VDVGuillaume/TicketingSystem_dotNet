@@ -46,19 +46,18 @@ namespace TicketingSystem.RazorWebsite.Controllers
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
             IdentityUser client = null;
-            if (User.IsInRole("Customer"))
+            if (User.IsInRole("SupportManager"))
             {
-                client = await _userManager.GetUserAsync(User);
+                client = await _mediator.Send(new GetUserByUsernameQuery { Username = model.Input.ClientUsername });
 
-            } else if (User.IsInRole("SupportManager")) 
-            {
-                client = await _mediator.Send(new GetUserByUsernameQuery { Username = model.Input.ClientUsername});
-                
                 if (client == null)
                 {
                     ModelState.AddModelError(string.Empty, "Client not found.");
                     return View(model);
                 }
+            } else if (User.IsInRole("Customer")) 
+            {
+                client = await _userManager.GetUserAsync(User);
             }
             // get current user
             
