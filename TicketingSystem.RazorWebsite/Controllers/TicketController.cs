@@ -1,11 +1,15 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.Domain.Application.Queries;
+using TicketingSystem.Domain.Models;
 using TicketingSystem.RazorWebsite.Models.Tickets;
 
 namespace TicketingSystem.RazorWebsite.Controllers
@@ -15,22 +19,30 @@ namespace TicketingSystem.RazorWebsite.Controllers
     {
         private readonly ILogger<TicketViewModel> _logger;
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
 
         public TicketController(
             ILogger<TicketViewModel> logger,            
             IMediator mediator,
+            IMapper mapper,
             UserManager<IdentityUser> userManager)
         {           
             _logger = logger;
             _mediator = mediator;
+            _mapper = mapper;
             _userManager = userManager;
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            //TODO add get tickets for supportManager view
+            var tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = _userManager.GetUserId(User)});
+            var ticketsIndexDto = _mapper.Map<List<Ticket>, List<TicketIndexDTO>>(tickets.ToList());
+            var model = new TicketsIndexViewModel { Tickets = ticketsIndexDto };
+
+            return View(model);
         }
 
         [Authorize(Roles = "Customer,SupportManager")]

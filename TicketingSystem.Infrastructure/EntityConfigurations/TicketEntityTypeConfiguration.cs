@@ -12,8 +12,9 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
             builder.ToTable("Tickets");
 
             builder.HasKey(t => t.Ticketnr);
+
+            builder.HasOne(t => t.Client)
+                .WithMany();
         }
-
-
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IndexModel
+﻿@model TicketingSystem.RazorWebsite.Models.Tickets.TicketsIndexViewModel
 @{
     ViewData["Title"] = "Tickets";
 }
@@ -18,16 +18,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="pointer-event" onclick="location.href = 'Ticket/Details?TicketID=1'" style="cursor:pointer">
-            <th scope="row">1</th>
-            <td>De titel van het ticket is hier zichtbaar... Beperken in aantal tekens?</td>
-            <td class="text-warning">In behandeling</td>
+        @foreach (var ticket in Model.Tickets)
+        {
+        <tr class="pointer-event" onclick="location.href = @($"'Ticket/Details?TicketID='{ticket.Id}")" style="cursor:pointer">
+            <th scope="row">@ticket.Id</th>
+            <td>@ticket.Title</td>
+            <td class="text-warning">@ticket.Status</td>
         </tr>
-        <tr class="pointer-event" onclick="location.href = 'Ticket/Details?TicketID=2'" style="cursor:pointer">
-            <th scope="row">2</th>
-            <td>De titel van het ticket is hier zichtbaar...</td>
-            <td class="text-success">Aangemaakt</td>
-        </tr>
+        }
     </tbody>
     <tfoot>
         <tr>
