@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TicketingSystem.Domain.ViewModels;
-using TicketingSystem.RazorWebsite.Models;
+using TicketingSystem.RazorWebsite.Models.Tickets;
 
 namespace TicketingSystem.RazorWebsite.Controllers
 {

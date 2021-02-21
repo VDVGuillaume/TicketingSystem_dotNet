@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.Domain.Application.Queries;
-using TicketingSystem.RazorWebsite.Models;
+using TicketingSystem.RazorWebsite.Models.Tickets;
 
 namespace TicketingSystem.RazorWebsite.Controllers
 {
@@ -82,7 +82,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     TempData["error"] = "Sorry, something went wrong, the ticket was not created";
                 }
             }
-            return View(model);
+
+            return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Ticket/Index"));
         }
 
     }

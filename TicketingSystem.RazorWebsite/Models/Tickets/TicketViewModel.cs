@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace TicketingSystem.RazorWebsite.Models
+namespace TicketingSystem.RazorWebsite.Models.Tickets
 {
     public class TicketViewModel
     {
