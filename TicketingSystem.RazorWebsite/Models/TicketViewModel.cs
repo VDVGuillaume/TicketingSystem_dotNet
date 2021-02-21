@@ -21,7 +21,7 @@ namespace TicketingSystem.RazorWebsite.Models
             public string Title { get; set; }
             [Required]
             public string Description { get; set; }
-            public int ClientId { get; set; }
+            public string ClientUsername { get; set; }
             [Required]
             public string Type { get; set; }
             public List<IFormFile> Attachments { get; set; }
