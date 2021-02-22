@@ -13,19 +13,28 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var ticket in Model.Tickets)
+        @if (Model.Tickets.Count > 0)
         {
-        <tr class="pointer-event" onclick="location.href = @($"'Ticket/Details?TicketID='{ticket.Id}")" style="cursor:pointer">
-            <th scope="row">@ticket.Id</th>
-            <td>@ticket.Title</td>
-            <td class="text-warning">@ticket.Status</td>
-        </tr>
+            @foreach (var ticket in Model.Tickets)
+            {
+                <tr class="pointer-event" onclick="location.href = @($"'Ticket/Details?TicketID='{ticket.Id}")" style="cursor:pointer">
+                    <th scope="row">@ticket.Id</th>
+                    <td>@ticket.Title</td>
+                    <td class="text-warning">@ticket.Status</td>
+                </tr>
+            }
         }
+        else
+        {
+            <tr><td colspan="3">Er zijn geen tickets.</td></tr>
+        }
+
     </tbody>
     <tfoot>
         <tr>
             <td colspan="3">
                 <a asp-controller="Ticket" asp-action="CreateTicket">Nieuw ticket</a>
+                <!-- Pagination, if needed later:
                 <nav class="float-right">
                     <ul class="pagination">
                         <li class="page-item">
@@ -45,6 +54,7 @@
                         </li>
                     </ul>
                 </nav>
+                -->
             </td>
         </tr>
     </tfoot>
