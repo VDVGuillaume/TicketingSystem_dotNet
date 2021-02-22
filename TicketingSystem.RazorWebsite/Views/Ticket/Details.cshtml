@@ -29,7 +29,12 @@
     <div class="col-lg-9"><p>@Model.Ticket.Description</p></div>
 </div>
 <div class="row">
-    <div class="col-12"><p><a asp-area="" asp-controller="/Ticket" asp-action="Cancel" asp-route-id="@Model.Ticket.Id">Ticket annuleren</a></p></div>
+    <div class="col-12">
+        <p><a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">Ticket aanpassen</a> - 
+        <a asp-area="" asp-controller="/Ticket" asp-action="Cancel" asp-route-id="@Model.Ticket.Id">Ticket annuleren</a></p>
+    </div>
+    <div class="col-6 text-right">
+    </div>
 </div>
 <div class="row">
     <div class="col-12"><h2>Commentaar</h2></div>
@@ -47,18 +52,5 @@
         {
             <p>Er is geen commentaar op dit ticket.</p>
         }
-
     </div>
 </div>
-
-
-
-<!--
-public int Id { get; set; }
-public string Title { get; set; }
-public string Status { get; set; }
-public DateTime DateAdded { get; set; }
-public string Description { get; set; }
-public IdentityUser Client { get; set; }
-public List<Comment> Comments { get; set; }
--->
