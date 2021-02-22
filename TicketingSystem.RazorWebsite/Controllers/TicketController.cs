@@ -49,11 +49,42 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Details(string id)
         {
-            //TODO add get tickets for supportManager view
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
             var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
             var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
 
+            return View(model);
+        }
+
+        [Authorize(Roles = "Customer,SupportManager")]
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
+        {
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
+            var model = new TicketUpdateViewModel { Ticket = ticketsDetailsDto };
+            var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
+            model.TicketTypes = new List<SelectListItem>();
+            foreach (var ticketType in ticketTypes)
+            {
+                model.TicketTypes.Add(new SelectListItem { Value = ticketType.Id.ToString(), Text = ticketType.Name });
+            }
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Customer,SupportManager")]
+        [HttpPost]
+        public async Task<IActionResult> Update(TicketUpdateViewModel model)
+        {
+            if (User.IsInRole("SupportManager"))
+            {
+                //TODO: update stuff for Title, Description and Type
+            }
+            else
+            {
+                //TODO: update stuff for Description
+            }
             return View(model);
         }
 

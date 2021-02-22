@@ -46,7 +46,7 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.TicketTypes.Add(new TicketType {Name = "Support", RequiredSLA = 3});
 
                 //Seed tickets
-                var ticket = new Ticket("TestTitle", "TestDescription", "TestType", customerUser);
+                var ticket = new Ticket("TestTitle", "TestDescription", "Support", customerUser);
                 _dbContext.Tickets.Add(ticket);
 
                 _dbContext.SaveChanges();

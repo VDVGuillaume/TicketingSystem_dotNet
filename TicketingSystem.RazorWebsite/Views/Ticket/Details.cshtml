@@ -10,6 +10,10 @@
     <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
 </div>
 <div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Type</p></div>
+    <div class="col-lg-9"><p>@Model.Ticket.Type</p></div>
+</div>
+<div class="row">
     <div class="col-lg-3 font-weight-bold"><p>Status</p></div>
     <div class="col-lg-9"><p>@Model.Ticket.Status</p></div>
 </div>
@@ -30,8 +34,13 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <p><a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">Ticket aanpassen</a> - 
-        <a asp-area="" asp-controller="/Ticket" asp-action="Cancel" asp-route-id="@Model.Ticket.Id">Ticket annuleren</a></p>
+        <p>
+            <a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">
+                <button class="btn btn-primary">Ticket aanpassen</button></a>
+            <a asp-area="" asp-controller="/Ticket" asp-action="Cancel" asp-route-id="@Model.Ticket.Id">
+                <button class="btn btn-danger">Ticket annuleren</button>
+            </a>
+        </p>
     </div>
     <div class="col-6 text-right">
     </div>

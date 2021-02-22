@@ -1,0 +1,84 @@
+﻿@model TicketingSystem.RazorWebsite.Models.Tickets.TicketUpdateViewModel
+@{
+    ViewData["Title"] = "Ticket aanpassen";
+}
+
+<form asp-action="Update">
+    @if (User.IsInRole("SupportManager"))
+    {
+        <h1><input asp-for="Input.Title" class="form-control" value="@Model.Ticket.Title" /></h1>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p><label asp-for="Input.Type">Type</label></p></div>
+            <div class="col-lg-9">
+                <p>
+                    <!--//TODO set correct type as selected-->
+                    <select asp-for="Input.Type" asp-items="Model.TicketTypes" class="form-control">@Model.Ticket.Type</select>
+                    <span asp-validation-for="Input.Type" class="text-danger"></span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>Status</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.Status</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>Klant</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.Client.UserName</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>Creatiedatum</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.DateAdded</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p><label asp-for="Input.Description">Omschrijving</label></p></div>
+            <div class="col-lg-9"><p><input asp-for="Input.Description" class="form-control" value="@Model.Ticket.Description" /></p></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    <a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">Ticket aanpassen</a>
+                </p>
+            </div>
+            <div class="col-6 text-right">
+            </div>
+        </div>
+    }
+    else
+    {
+        <h1>@Model.Ticket.Title</h1>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>Type</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.Type</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>Status</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.Status</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p>Creatiedatum</p></div>
+            <div class="col-lg-9"><p>@Model.Ticket.DateAdded</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p><label asp-for="Input.Description">Omschrijving</label></p></div>
+            <div class="col-lg-9"><p><input asp-for="Input.Description" class="form-control" value="@Model.Ticket.Description" /></p></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                    <button asp-area="" asp-controller="/Ticket" asp-action="Details" asp-route-id="@Model.Ticket.Id" class="btn btn-danger">Annuleren</button>
+                </p>
+            </div>
+            <div class="col-6 text-right">
+            </div>
+        </div>
+    }
+</form>
