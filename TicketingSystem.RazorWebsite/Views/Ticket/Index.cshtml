@@ -17,11 +17,11 @@
         {
             @foreach (var ticket in Model.Tickets)
             {
-                <tr class="pointer-event" onclick="location.href = @($"'Ticket/Details?TicketID='{ticket.Id}")" style="cursor:pointer">
-                    <th scope="row">@ticket.Id</th>
-                    <td>@ticket.Title</td>
-                    <td class="text-warning">@ticket.Status</td>
-                </tr>
+            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                <th scope="row">@ticket.Id</th>
+                <td>@ticket.Title</td>
+                <td class="text-warning">@ticket.Status</td>
+            </tr>
             }
         }
         else

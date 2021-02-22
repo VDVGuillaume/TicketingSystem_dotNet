@@ -1,0 +1,64 @@
+﻿@model TicketingSystem.RazorWebsite.Models.Tickets.TicketDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.Ticket.Title</h1>
+
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
+    <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
+</div>
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Status</p></div>
+    <div class="col-lg-9"><p>@Model.Ticket.Status</p></div>
+</div>
+@if (User.IsInRole("SupportManager"))
+{
+    <div class="row">
+        <div class="col-lg-3 font-weight-bold"><p>Klant</p></div>
+        <div class="col-lg-9"><p>@Model.Ticket.Client.UserName</p></div>
+    </div>
+}
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Creatiedatum</p></div>
+    <div class="col-lg-9"><p>@Model.Ticket.DateAdded</p></div>
+</div>
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Omschrijving</p></div>
+    <div class="col-lg-9"><p>@Model.Ticket.Description</p></div>
+</div>
+<div class="row">
+    <div class="col-12"><p><a asp-area="" asp-controller="/Ticket" asp-action="Cancel" asp-route-id="@Model.Ticket.Id">Ticket annuleren</a></p></div>
+</div>
+<div class="row">
+    <div class="col-12"><h2>Commentaar</h2></div>
+</div>
+<div class="row">
+    <div class="col-12">
+        @if (Model.Ticket.Comments.Count > 0)
+        {
+            @foreach (Comment comment in Model.Ticket.Comments)
+            {
+                <p>@comment.text</p>
+            }
+        }
+        else
+        {
+            <p>Er is geen commentaar op dit ticket.</p>
+        }
+
+    </div>
+</div>
+
+
+
+<!--
+public int Id { get; set; }
+public string Title { get; set; }
+public string Status { get; set; }
+public DateTime DateAdded { get; set; }
+public string Description { get; set; }
+public IdentityUser Client { get; set; }
+public List<Comment> Comments { get; set; }
+-->

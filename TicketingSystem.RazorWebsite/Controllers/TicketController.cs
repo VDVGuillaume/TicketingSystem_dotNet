@@ -47,6 +47,17 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
+        public async Task<IActionResult> Details(string id)
+        {
+            //TODO add get tickets for supportManager view
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
+            var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
         public async Task<IActionResult> CreateTicket()
         {
