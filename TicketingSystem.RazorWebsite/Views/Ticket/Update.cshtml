@@ -3,7 +3,7 @@
     ViewData["Title"] = "Ticket aanpassen";
 }
 
-<form asp-action="Update">
+<form asp-action="Update" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
     @if (User.IsInRole("SupportManager"))
     {
         <h1><input asp-for="Input.Title" class="form-control" value="@Model.Ticket.Title" /></h1>
