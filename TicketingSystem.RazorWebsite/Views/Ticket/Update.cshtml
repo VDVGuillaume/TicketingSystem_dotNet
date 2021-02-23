@@ -17,7 +17,6 @@
                 <p>
                     <!--//TODO set correct type as selected-->
                     <select asp-for="Input.Type" asp-items="Model.TicketTypes" class="form-control">@Model.Ticket.Type</select>
-                    <span asp-validation-for="Input.Type" class="text-danger"></span>
                 </p>
             </div>
         </div>
@@ -53,6 +52,7 @@
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
             <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
+            <input type="hidden" asp-for="Input.TicketNr" class="form-control" value="@Model.Ticket.Id" />
         </div>
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>Type</p></div>
@@ -68,7 +68,10 @@
         </div>
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p><label asp-for="Input.Description">Omschrijving</label></p></div>
-            <div class="col-lg-9"><p><input asp-for="Input.Description" class="form-control" value="@Model.Ticket.Description" /></p></div>
+            <div class="col-lg-9">
+                <p><input asp-for="Input.Description" class="form-control" value="@Model.Ticket.Description" /></p>
+                <p><span asp-validation-for="Input.Description" class="text-danger"></span></p>
+            </div>
         </div>
         <div class="row">
             <div class="col-12">
@@ -82,3 +85,7 @@
         </div>
     }
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

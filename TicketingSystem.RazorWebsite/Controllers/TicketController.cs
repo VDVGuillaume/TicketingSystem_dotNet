@@ -157,15 +157,36 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(TicketUpdateViewModel model)
         {
-            if (User.IsInRole("SupportManager"))
-            {
-                //TODO: update stuff for Title, Description and Type
-            }
-            else
-            {
-                //TODO: update stuff for Description
-            }
-            return View(model);
+            //if (ModelState.IsValid)
+            //{
+                try
+                {
+                    if (User.IsInRole("SupportManager"))
+                    {
+                        await _mediator.Send(new UpdateTicketCommand
+                        {
+                            Title = model.Input.Title,
+                            Description = model.Input.Description,
+                            Type = model.Input.Type
+                        });
+                    }
+                    else
+                    {
+                        await _mediator.Send(new UpdateTicketCommand
+                        {
+                            Ticketnr = model.Input.TicketNr,
+                            Description = model.Input.Description
+                        });
+                    }
+                }
+                catch (ValidationException ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
+                }
+            //}
+
+            return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Ticket/Index"));
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
