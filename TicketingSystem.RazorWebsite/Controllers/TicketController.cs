@@ -77,7 +77,17 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var filteredTickets = tickets.Where(x => ticketStatusFilter.Contains(x.Status));
 
             var ticketsIndexDto = _mapper.Map<List<Ticket>, List<TicketIndexDTO>>(filteredTickets.ToList());
-            var model = new TicketIndexViewModel { Tickets = ticketsIndexDto };
+            var model = new TicketIndexViewModel 
+            { 
+                Tickets = ticketsIndexDto, 
+                FilterInput = new FilterInputModel 
+                { 
+                    FilterStatusCreated = ticketStatusFilter.Contains(TicketStatus.Aangemaakt),
+                    FilterStatusInProgress = ticketStatusFilter.Contains(TicketStatus.InBehandeling),
+                    FilterStatusClosed = ticketStatusFilter.Contains(TicketStatus.Afgehandeld),
+                    FilterStatusCancelled = ticketStatusFilter.Contains(TicketStatus.Geannuleerd)
+                }
+            };
 
             return View(model);
         }
