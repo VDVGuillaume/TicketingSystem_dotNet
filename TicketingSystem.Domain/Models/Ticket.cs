@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace TicketingSystem.Domain.Models
 {
 
-    public enum Status
+    public enum TicketStatus
     {
         Aangemaakt,
         InBehandeling,
@@ -18,7 +18,7 @@ namespace TicketingSystem.Domain.Models
     {
         public int Ticketnr { get; }
         public string Title { get; set; }
-        public Status Status { get; set; }
+        public TicketStatus Status { get; set; }
         public DateTime DateAdded { get; set; }
         public string Description { get; set; }
         public IdentityUser Client { get; set; }

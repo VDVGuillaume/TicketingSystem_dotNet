@@ -8,7 +8,7 @@ namespace TicketingSystem.Domain.Application.Commands
     public class CreateTicketCommand : BaseCommand<Ticket>
     {
         public string Title;
-        public Status Status;
+        public TicketStatus Status;
         public DateTime DateAdded;
         public string Description;
         public IdentityUser Client;

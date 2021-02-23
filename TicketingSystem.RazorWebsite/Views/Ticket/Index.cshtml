@@ -1,61 +1,73 @@
-﻿@model TicketingSystem.RazorWebsite.Models.Tickets.TicketsIndexViewModel
+﻿@model TicketingSystem.RazorWebsite.Models.Tickets.TicketIndexViewModel
 @{
     ViewData["Title"] = "Tickets";
 }
 
 <h2>Tickets</h2>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Titel</th>
-            <th scope="col">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Tickets.Count > 0)
-        {
-            @foreach (var ticket in Model.Tickets)
-            {
-            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
-                <th scope="row">@ticket.Id</th>
-                <td>@ticket.Title</td>
-                <td class="text-warning">@ticket.Status</td>
+<h6>Status</h6>
+<form asp-action="Index">
+    <label asp-for="FilterInput.FilterStatusCreated"></label>
+    <input asp-for="FilterInput.FilterStatusCreated"></input>
+    <label asp-for="FilterInput.FilterStatusInProgress"></label>
+    <input asp-for="FilterInput.FilterStatusInProgress"></input>
+    <label asp-for="FilterInput.FilterStatusClosed"></label>
+    <input asp-for="FilterInput.FilterStatusClosed"></input>
+    <label asp-for="FilterInput.FilterStatusCancelled"></label>
+    <input asp-for="FilterInput.FilterStatusCancelled"></input>
+    <input type="submit" value="Filter toepassen" class="btn btn-primary" />
+</form>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titel</th>
+                <th scope="col">Status</th>
             </tr>
+        </thead>
+        <tbody>
+            @if (Model.Tickets.Count > 0)
+            {
+                @foreach (var ticket in Model.Tickets)
+                {
+                    <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                        <th scope="row">@ticket.Id</th>
+                        <td>@ticket.Title</td>
+                        <td class="text-warning">@ticket.Status</td>
+                    </tr>
+                }
             }
-        }
-        else
-        {
-            <tr><td colspan="3">Er zijn geen tickets.</td></tr>
-        }
+            else
+            {
+                <tr><td colspan="3">Er zijn geen tickets.</td></tr>
+            }
 
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3">
-                <a asp-controller="Ticket" asp-action="CreateTicket">Nieuw ticket</a>
-                <!-- Pagination, if needed later:
-                <nav class="float-right">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link pagingCurrent" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                -->
-            </td>
-        </tr>
-    </tfoot>
-</table>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <a asp-controller="Ticket" asp-action="CreateTicket">Nieuw ticket</a>
+                    <!-- Pagination, if needed later:
+                    <nav class="float-right">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link pagingCurrent" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    -->
+                </td>
+            </tr>
+        </tfoot>
+    </table>
