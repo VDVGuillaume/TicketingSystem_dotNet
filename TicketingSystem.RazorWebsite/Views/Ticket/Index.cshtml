@@ -6,15 +6,17 @@
 <h2>Tickets</h2>
 <h6>Status</h6>
 <form asp-action="Index">
-    <label asp-for="FilterInput.FilterStatusCreated"></label>
-    <input asp-for="FilterInput.FilterStatusCreated"></input>
-    <label asp-for="FilterInput.FilterStatusInProgress"></label>
-    <input asp-for="FilterInput.FilterStatusInProgress"></input>
-    <label asp-for="FilterInput.FilterStatusClosed"></label>
-    <input asp-for="FilterInput.FilterStatusClosed"></input>
-    <label asp-for="FilterInput.FilterStatusCancelled"></label>
-    <input asp-for="FilterInput.FilterStatusCancelled"></input>
-    <input type="submit" value="Filter toepassen" class="btn btn-primary" />
+    <p>
+        <input asp-for="FilterInput.FilterStatusCreated"></input>
+        <label asp-for="FilterInput.FilterStatusCreated"></label>
+        <input asp-for="FilterInput.FilterStatusInProgress"></input>
+        <label asp-for="FilterInput.FilterStatusInProgress"></label>
+        <input asp-for="FilterInput.FilterStatusClosed"></input>
+        <label asp-for="FilterInput.FilterStatusClosed"></label>
+        <input asp-for="FilterInput.FilterStatusCancelled"></input>
+        <label asp-for="FilterInput.FilterStatusCancelled"></label>
+        <input type="submit" value="Filter toepassen" class="btn btn-primary" />
+    </p>
 </form>
     <table class="table table-hover">
         <thead>
