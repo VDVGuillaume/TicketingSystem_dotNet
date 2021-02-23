@@ -41,13 +41,28 @@ namespace TicketingSystem.Infrastructure
                 await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
 
                 //Seed ticketTypes
-                _dbContext.TicketTypes.Add(new TicketType {Name = "Bug", RequiredSLA = 1});
-                _dbContext.TicketTypes.Add(new TicketType {Name = "Change Request", RequiredSLA = 2});
-                _dbContext.TicketTypes.Add(new TicketType {Name = "Support", RequiredSLA = 3});
+                var ticketTypeBug = new TicketType { Name = "Bug", RequiredSLA = 1 };
+                var ticketTypeChangeRequest = new TicketType { Name = "Change Request", RequiredSLA = 2 };
+                var ticketTypeSupport = new TicketType { Name = "Support", RequiredSLA = 3 };
+                _dbContext.TicketTypes.Add(ticketTypeBug);
+                _dbContext.TicketTypes.Add(ticketTypeChangeRequest);
+                _dbContext.TicketTypes.Add(ticketTypeSupport);
 
                 //Seed tickets
-                var ticket = new Ticket("TestTitle", "TestDescription", "Support", customerUser);
-                _dbContext.Tickets.Add(ticket);
+                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, customerUser);
+                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, customerUser);
+                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, customerUser);
+
+                var ticketBugInProgress = new Ticket("TitleBug2", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.InBehandeling};
+                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.Afgehandeld };
+                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.Geannuleerd };
+                
+                _dbContext.Tickets.Add(ticketSupportCreated);
+                _dbContext.Tickets.Add(ticketChangeRequestCreated);
+                _dbContext.Tickets.Add(ticketBugCreated);
+                _dbContext.Tickets.Add(ticketBugInProgress);
+                _dbContext.Tickets.Add(ticketBugClosed);
+                _dbContext.Tickets.Add(ticketBugCancelled);
 
                 _dbContext.SaveChanges();
             }
