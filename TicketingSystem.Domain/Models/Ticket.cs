@@ -23,7 +23,7 @@ namespace TicketingSystem.Domain.Models
         public string Description { get; set; }
         public IdentityUser Client { get; set; }
         public string AssignedEngineer { get; set; }
-        public string Type { get; set; }
+        public TicketType Type { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 
