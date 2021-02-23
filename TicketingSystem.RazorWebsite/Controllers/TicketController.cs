@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
+using TicketingSystem.Domain.Application.Exceptions;
 using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Domain.Models;
 using TicketingSystem.RazorWebsite.Models.Tickets;
@@ -219,9 +220,10 @@ namespace TicketingSystem.RazorWebsite.Controllers
                         Type = model.Input.Type,
                         Client = client});
                 }
-                catch
+                catch(ValidationException ex)
                 {
-                    TempData["error"] = "Sorry, something went wrong, the ticket was not created";
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
                 }
             }
 

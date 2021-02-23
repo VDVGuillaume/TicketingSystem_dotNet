@@ -13,7 +13,6 @@ namespace TicketingSystem.Domain.Models
         Geannuleerd
     }
 
-
     public class Ticket
     {
         public int Ticketnr { get; }
@@ -27,8 +26,7 @@ namespace TicketingSystem.Domain.Models
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 
-
-        public Ticket(string title, string description, string  type, IdentityUser client, List<Attachment> attachments = null)
+        public Ticket(string title, string description, TicketType type, IdentityUser client, List<Attachment> attachments = null)
         {
             this.Title = title;
             this.Description = description;
@@ -42,12 +40,5 @@ namespace TicketingSystem.Domain.Models
         {
 
         }
-
-
-
     }
-
-
-
-
 }
