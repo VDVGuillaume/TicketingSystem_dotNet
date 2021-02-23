@@ -12,7 +12,7 @@ namespace TicketingSystem.RazorWebsite.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Ticket, TicketIndexDTO>()
+            CreateMap<Ticket, TicketBaseInfoViewModel>()
                 .ForMember(target => target.Id, y => y.MapFrom(source => source.Ticketnr))
                 .ForMember(target => target.Status, y => y.MapFrom(source => source.Status.ToString()));
 

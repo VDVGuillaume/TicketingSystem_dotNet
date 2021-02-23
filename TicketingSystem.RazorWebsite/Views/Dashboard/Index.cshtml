@@ -1,4 +1,4 @@
-﻿@model IndexModel
+﻿@model TicketingSystem.RazorWebsite.Models.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg">
-            <a href="Ticket/" class="title-subtitle-link">
+            <a asp-controller="Ticket" asp-action="Index" asp-route-filter="Aangemaakt,InBehandeling" class="title-subtitle-link">
                 <h2>
                     Openstaande tickets
                     <span>Alle tickets</span>
@@ -23,26 +23,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="pointer-event" onclick="location.href = 'Ticket/Details?TicketID=1'" style="cursor:pointer">
-                        <th scope="row">1</th>
-                        <td>De titel van het ticket is hier zichtbaar... Beperken in aantal tekens?</td>
-                        <td class="text-warning">In behandeling</td>
-                    </tr>
-                    <tr class="pointer-event" onclick="location.href = 'Ticket/Details?TicketID=2'" style="cursor:pointer">
-                        <th scope="row">2</th>
-                        <td>De titel van het ticket is hier zichtbaar...</td>
-                        <td class="text-success">Aangemaakt</td>
-                    </tr>
+                    @if (Model.OpenTickets.Count > 0)
+                    {
+                        @foreach (var ticket in Model.OpenTickets)
+                        {
+                            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                                <th scope="row">@ticket.Id</th>
+                                <td>@ticket.Title</td>
+                                <td class="text-warning">@ticket.Status</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="3">Er zijn geen open tickets...</td></tr>
+                    }
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3"><a href="Ticket/CreateTicket">Nieuw ticket</a></td>
+                        <td colspan="3"><a asp-controller="Ticket" asp-action="CreateTicket">Nieuw ticket</a></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
         <div class="col-lg">
-            <a href="Ticket/" class="title-subtitle-link">
+            <a asp-controller="Ticket" asp-action="Index" asp-route-filter="Afgehandeld,Geannuleerd" class="title-subtitle-link">
                 <h2>
                     Afgesloten tickets
                     <span>Alle tickets</span>
@@ -50,14 +55,36 @@
             </a>
             <table class="table table-hover">
                 <tbody>
+                <thead>
                     <tr>
-                        <td>Er zijn geen afgesloten tickets...</td>
+                        <th scope="col">#</th>
+                        <th scope="col">Titel</th>
+                        <th scope="col">Status</th>
                     </tr>
+                </thead>
+                @if (Model.ClosedTickets.Count > 0)
+                {
+                    @foreach (var ticket in Model.ClosedTickets)
+                    {
+                        <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                            <th scope="row">@ticket.Id</th>
+                            <td>@ticket.Title</td>
+                            <td class="text-warning">@ticket.Status</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="3">Er zijn geen afgesloten tickets...</td></tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="row">
+
+µ    <div class="row">
+    @if (User.IsInRole("Customer"))
+    {
         <div class="col-lg">
             <a href="Contract/" class="title-subtitle-link">
                 <h2>
@@ -93,17 +120,18 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-lg">
-            <h2>Statistieken</h2>
-            <p>Nog eens nagaan welke statistieken we willen tonen. Bijvoorbeeld:</p>
-            <ul>
-                <li>Totaal aantal tickets: 2</li>
-                <li>Aantal openstaande tickets: 2</li>
-                <li>Aantal gesloten tickets: 0</li>
-                <li>Aantal tickets tijdig gesloten (SLA's): 0%</li>
-            </ul>
-        </div>
+    }
+    <div class="col-lg">
+        <h2>Statistieken</h2>
+        <p>Nog eens nagaan welke statistieken we willen tonen. Bijvoorbeeld:</p>
+        <ul>
+            <li>Totaal aantal tickets: 2</li>
+            <li>Aantal openstaande tickets: 2</li>
+            <li>Aantal gesloten tickets: 0</li>
+            <li>Aantal tickets tijdig gesloten (SLA's): 0%</li>
+        </ul>
     </div>
+</div>
     <div class="row">
         <div class="col-12">
             <h2>&nbsp;</h2>

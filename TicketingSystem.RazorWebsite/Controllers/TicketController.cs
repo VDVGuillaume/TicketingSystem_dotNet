@@ -76,7 +76,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             //TODO add get tickets for supportManager view
             var filteredTickets = tickets.Where(x => ticketStatusFilter.Contains(x.Status));
 
-            var ticketsIndexDto = _mapper.Map<List<Ticket>, List<TicketIndexDTO>>(filteredTickets.ToList());
+            var ticketsIndexDto = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(filteredTickets.ToList());
             var model = new TicketIndexViewModel 
             { 
                 Tickets = ticketsIndexDto, 
