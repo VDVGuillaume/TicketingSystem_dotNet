@@ -127,11 +127,18 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View(model);
         }
 
+        [HttpGet]
         [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Details(string id)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
-            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
+
+            if (ticket == null) 
+            {
+                return RedirectToAction("Index");
+            }
+
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>(ticket);
             var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
 
             return View(model);
@@ -142,6 +149,12 @@ namespace TicketingSystem.RazorWebsite.Controllers
         public async Task<IActionResult> Update(string id)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+
+            if (ticket == null) 
+            {
+                return RedirectToAction("Index");
+            }
+
             var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
             var model = new TicketUpdateViewModel { Ticket = ticketsDetailsDto };
             var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
@@ -158,35 +171,35 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(TicketUpdateViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            try
+            if (ModelState.IsValid)
             {
-                if (User.IsInRole("SupportManager"))
+                try
                 {
-                    await _mediator.Send(new UpdateTicketCommand
+                    if (User.IsInRole("SupportManager"))
                     {
-                        Ticketnr = model.Input.TicketNr,
-                        Title = model.Input.Title,
-                        Description = model.Input.Description,
-                        Type = model.Input.Type
-                    });
+                        await _mediator.Send(new UpdateTicketCommand
+                        {
+                            Ticketnr = model.Input.TicketNr,
+                            Title = model.Input.Title,
+                            Description = model.Input.Description,
+                            Type = model.Input.Type
+                        });
+                    }
+                    else
+                    {
+                        await _mediator.Send(new UpdateTicketCommand
+                        {
+                            Ticketnr = model.Input.TicketNr,
+                            Description = model.Input.Description
+                        });
+                    }
                 }
-                else
+                catch (ValidationException ex)
                 {
-                    await _mediator.Send(new UpdateTicketCommand
-                    {
-                        Ticketnr = model.Input.TicketNr,
-                        Description = model.Input.Description
-                    });
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
                 }
             }
-            catch (ValidationException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return View(model);
-            }
-            //}
 
             return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Ticket/Index"));
         }
@@ -211,7 +224,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
-            IdentityUser client = null;
+            IdentityUser client;
             if (User.IsInRole("SupportManager") && !string.IsNullOrEmpty(model.Input.ClientUsername))
             {
                 client = await _mediator.Send(new GetUserByUsernameQuery { Username = model.Input.ClientUsername });
@@ -226,7 +239,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
             {
                 client = await _userManager.GetUserAsync(User);
             }
-            // get current user
 
             if (ModelState.IsValid)
             {
@@ -262,6 +274,11 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
+            if (ticket == null) 
+            {
+                return RedirectToAction("Index");
+            }
+
             ticket = await _mediator.Send(new CancelTicketCommand
             {
                 Ticketnr = ticket.Ticketnr,
@@ -272,7 +289,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
 
 
-            return View("Details",model);
+            return View("Details", model);
         }
     }
 }
