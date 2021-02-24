@@ -25,11 +25,9 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 
         public class InputModel
         {
-            [Required]
             public string Title { get; set; }
             [Required]
             public string Description { get; set; }
-            [Required]
             public string Type { get; set; }
         }
     }
