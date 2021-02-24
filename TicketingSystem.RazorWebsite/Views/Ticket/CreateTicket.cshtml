@@ -41,7 +41,7 @@
             @if (User.IsInRole("SupportManager"))
             {
                 <div class="form-group">
-                    <label asp-for="Input.ClientUsername">Client username</label>
+                    <label asp-for="Input.ClientUsername"></label>
                     <input asp-for="Input.ClientUsername" class="form-control" />
                     <span asp-validation-for="Input.ClientUsername" class="text-danger"></span>
                 </div>
