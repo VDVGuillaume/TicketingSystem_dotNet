@@ -23,7 +23,7 @@ namespace TicketingSystem.Infrastructure.CommandHandlers
 
             if (ticket == null) 
                 throw new ValidationException(Constants.ERROR_TICKET_NOT_FOUND);
-            if(ticketType == null)
+            if(ticketType == null && !string.IsNullOrEmpty(request.Type))
                 throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
 
             if(!string.IsNullOrEmpty(request.Title))

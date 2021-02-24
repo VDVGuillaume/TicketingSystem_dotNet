@@ -88,7 +88,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = _userManager.GetUserId(User) });
             }
 
-            //TODO add get tickets for supportManager view
             var filteredTickets = tickets.Where(x => ticketStatusFilter.Contains(x.Status));
 
             var ticketsIndexDto = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(filteredTickets.ToList());
@@ -182,7 +181,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.TicketTypes = await GetTicketTypes(model.Input.Type);
                 try
                 {
                     if (User.IsInRole("SupportManager"))
@@ -207,7 +205,13 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 catch (ValidationException ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
-                    return View(model);
+                    model.TicketTypes = await GetTicketTypes(model.Input.Type);
+                    var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+                    if (ticket != null) 
+                    {
+                        model.Ticket = _mapper.Map<TicketDetailInfoViewModel>(ticket);
+                       return View(model);
+                    }
                 }
             }
 
