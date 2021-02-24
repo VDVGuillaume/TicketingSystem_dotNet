@@ -21,12 +21,18 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
         public class InputModel
         {
             [Required]
+            [Display(Name ="Titel")]
             public string Title { get; set; }
             [Required]
+            [Display(Name = "Omschrijving")]
             public string Description { get; set; }
+            [Display(Name = "Klant")]
             public string ClientUsername { get; set; }
             [Required]
+            [Display(Name = "Type")]
             public string Type { get; set; }
+
+            [Display(Name = "Bijlage")]
             public List<IFormFile> Attachments { get; set; }
         }
     }
