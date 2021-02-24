@@ -27,11 +27,11 @@ namespace TicketingSystem.RazorWebsite.Controllers
         private readonly UserManager<IdentityUser> _userManager;
 
         public TicketController(
-            ILogger<TicketViewModel> logger,            
+            ILogger<TicketViewModel> logger,
             IMediator mediator,
             IMapper mapper,
             UserManager<IdentityUser> userManager)
-        {           
+        {
             _logger = logger;
             _mediator = mediator;
             _mapper = mapper;
@@ -62,7 +62,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
-        public async Task<IActionResult> Index([FromQuery]string statusFilter)
+        public async Task<IActionResult> Index([FromQuery] string statusFilter)
         {
             List<TicketStatus> ticketStatusFilter = ConvertFilterToTicketStatuses(statusFilter);
             IQueryable<Ticket> tickets;
@@ -70,7 +70,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
             {
                 tickets = await _mediator.Send(new GetTicketsQuery());
             }
-            else {
+            else
+            {
                 tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = _userManager.GetUserId(User) });
             }
 
@@ -78,11 +79,11 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var filteredTickets = tickets.Where(x => ticketStatusFilter.Contains(x.Status));
 
             var ticketsIndexDto = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(filteredTickets.ToList());
-            var model = new TicketIndexViewModel 
-            { 
-                Tickets = ticketsIndexDto, 
-                FilterInput = new FilterInputModel 
-                { 
+            var model = new TicketIndexViewModel
+            {
+                Tickets = ticketsIndexDto,
+                FilterInput = new FilterInputModel
+                {
                     FilterStatusCreated = ticketStatusFilter.Contains(TicketStatus.Aangemaakt),
                     FilterStatusInProgress = ticketStatusFilter.Contains(TicketStatus.InBehandeling),
                     FilterStatusClosed = ticketStatusFilter.Contains(TicketStatus.Afgehandeld),
@@ -94,9 +95,9 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(TicketIndexViewModel model) 
+        public async Task<IActionResult> Index(TicketIndexViewModel model)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 var sb = new StringBuilder();
                 string delimiter = ",";
@@ -159,31 +160,31 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             //if (ModelState.IsValid)
             //{
-                try
+            try
+            {
+                if (User.IsInRole("SupportManager"))
                 {
-                    if (User.IsInRole("SupportManager"))
+                    await _mediator.Send(new UpdateTicketCommand
                     {
-                        await _mediator.Send(new UpdateTicketCommand
-                        {
-                            Title = model.Input.Title,
-                            Description = model.Input.Description,
-                            Type = model.Input.Type
-                        });
-                    }
-                    else
-                    {
-                        await _mediator.Send(new UpdateTicketCommand
-                        {
-                            Ticketnr = model.Input.TicketNr,
-                            Description = model.Input.Description
-                        });
-                    }
+                        Title = model.Input.Title,
+                        Description = model.Input.Description,
+                        Type = model.Input.Type
+                    });
                 }
-                catch (ValidationException ex)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    return View(model);
+                    await _mediator.Send(new UpdateTicketCommand
+                    {
+                        Ticketnr = model.Input.TicketNr,
+                        Description = model.Input.Description
+                    });
                 }
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(model);
+            }
             //}
 
             return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Ticket/Index"));
@@ -197,9 +198,9 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var model = new TicketViewModel();
 
             model.TicketTypes = new List<SelectListItem>();
-            foreach (var ticketType in ticketTypes) 
+            foreach (var ticketType in ticketTypes)
             {
-                model.TicketTypes.Add(new SelectListItem { Value=ticketType.Id.ToString(), Text=ticketType.Name});
+                model.TicketTypes.Add(new SelectListItem { Value = ticketType.Id.ToString(), Text = ticketType.Name });
             }
 
             return View(model);
@@ -219,12 +220,13 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     ModelState.AddModelError(string.Empty, "Client not found.");
                     return View(model);
                 }
-            } else 
+            }
+            else
             {
                 client = await _userManager.GetUserAsync(User);
             }
             // get current user
-            
+
             if (ModelState.IsValid)
             {
                 if (client == null)
@@ -234,14 +236,16 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 }
 
                 try
-                {                 
-                    await _mediator.Send(new CreateTicketCommand { 
-                        Title = model.Input.Title, 
+                {
+                    await _mediator.Send(new CreateTicketCommand
+                    {
+                        Title = model.Input.Title,
                         Description = model.Input.Description,
                         Type = model.Input.Type,
-                        Client = client});
+                        Client = client
+                    });
                 }
-                catch(ValidationException ex)
+                catch (ValidationException ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                     return View(model);
@@ -251,5 +255,23 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Ticket/Index"));
         }
 
+        [Authorize(Roles = "Customer,SupportManager")]
+        [HttpGet]
+        public async Task<IActionResult> Cancel(string id)
+        {
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+
+            ticket = await _mediator.Send(new CancelTicketCommand
+            {
+                Ticketnr = ticket.Ticketnr,
+                Status = TicketStatus.Geannuleerd
+            });
+
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
+            var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
+
+
+            return View("Details",model);
+        }
     }
 }
