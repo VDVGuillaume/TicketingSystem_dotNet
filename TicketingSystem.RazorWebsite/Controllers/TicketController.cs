@@ -61,6 +61,19 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return ticketStatuses;
         }
 
+        private async Task<List<SelectListItem>> GetTicketTypes(string selectedValue = null)
+        {
+            var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
+            var result = new List<SelectListItem>();
+            foreach (var ticketType in ticketTypes)
+            {
+                result.Add(new SelectListItem { Value = ticketType.Name, Text = ticketType.Name, Selected = ticketType.Name == selectedValue });
+            }
+
+            return result;
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Index([FromQuery] string statusFilter)
         {
@@ -95,6 +108,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Index(TicketIndexViewModel model)
         {
             if (ModelState.IsValid)
@@ -144,8 +158,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
+        [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Update(int id)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
@@ -157,22 +171,18 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
             var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
             var model = new TicketUpdateViewModel { Ticket = ticketsDetailsDto };
-            var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
-            model.TicketTypes = new List<SelectListItem>();
-            foreach (var ticketType in ticketTypes)
-            {
-                model.TicketTypes.Add(new SelectListItem { Value = ticketType.Name, Text = ticketType.Name, Selected = ticketType == ticket.Type});
-            }
+            model.TicketTypes = await GetTicketTypes(ticket.Type.Name);
 
             return View(model);
         }
 
-        [Authorize(Roles = "Customer,SupportManager")]
         [HttpPost]
+        [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Update([FromQuery]int id, TicketUpdateViewModel model)
         {
             if (ModelState.IsValid)
             {
+                model.TicketTypes = await GetTicketTypes(model.Input.Type);
                 try
                 {
                     if (User.IsInRole("SupportManager"))
@@ -208,14 +218,9 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateTicket()
         {
-            var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
             var model = new TicketViewModel();
 
-            model.TicketTypes = new List<SelectListItem>();
-            foreach (var ticketType in ticketTypes)
-            {
-                model.TicketTypes.Add(new SelectListItem { Value = ticketType.Name, Text = ticketType.Name });
-            }
+            model.TicketTypes = await GetTicketTypes();
 
             return View(model);
         }
@@ -224,6 +229,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
+            model.TicketTypes = await GetTicketTypes(model.Input?.Type);
+
             IdentityUser client;
             if (User.IsInRole("SupportManager") && !string.IsNullOrEmpty(model.Input.ClientUsername))
             {

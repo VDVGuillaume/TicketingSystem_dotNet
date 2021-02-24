@@ -18,7 +18,7 @@ namespace TicketingSystem.RazorWebsite.Mapping
 
             CreateMap<Ticket, TicketDetailInfoViewModel>()
                 .ForMember(target => target.Id, y => y.MapFrom(source => source.Ticketnr))
-                .ForMember(target => target.Type, y => y.MapFrom(source => source.Type))
+                .ForMember(target => target.Type, y => y.MapFrom(source => source.Type.Name))
                 .ForMember(target => target.Title, y => y.MapFrom(source => source.Title))
                 .ForMember(target => target.Status, y => y.MapFrom(source => source.Status.ToString()))
                 .ForMember(target => target.DateAdded, y => y.MapFrom(source => source.DateAdded))
