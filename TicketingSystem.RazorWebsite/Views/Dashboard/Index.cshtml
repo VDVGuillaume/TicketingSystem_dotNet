@@ -27,11 +27,11 @@
                     {
                         @foreach (var ticket in Model.OpenTickets)
                         {
-                            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
-                                <th scope="row">@ticket.Id</th>
-                                <td>@ticket.Title</td>
-                                <td class="text-warning">@ticket.Status</td>
-                            </tr>
+                    <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                        <th scope="row">@ticket.Id</th>
+                        <td>@ticket.Title</td>
+                        <td style="color:@ticket.StatusColor">@ticket.Status</td>
+                    </tr>
                         }
                     }
                     else
@@ -66,11 +66,11 @@
                 {
                     @foreach (var ticket in Model.ClosedTickets)
                     {
-                        <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
-                            <th scope="row">@ticket.Id</th>
-                            <td>@ticket.Title</td>
-                            <td class="text-warning">@ticket.Status</td>
-                        </tr>
+            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                <th scope="row">@ticket.Id</th>
+                <td>@ticket.Title</td>
+                <td style="color:@ticket.StatusColor">@ticket.Status</td>
+            </tr>
                     }
                 }
                 else

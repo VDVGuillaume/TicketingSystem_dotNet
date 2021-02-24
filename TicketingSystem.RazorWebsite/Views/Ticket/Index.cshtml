@@ -34,7 +34,7 @@
                     <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
                         <th scope="row">@ticket.Id</th>
                         <td>@ticket.Title</td>
-                        <td class="text-warning">@ticket.Status</td>
+                        <td style="color:@ticket.StatusColor">@ticket.Status</td>
                     </tr>
                 }
             }
@@ -42,7 +42,6 @@
             {
                 <tr><td colspan="3">Er zijn geen tickets.</td></tr>
             }
-
         </tbody>
         <tfoot>
             <tr>
