@@ -26,9 +26,13 @@ namespace TicketingSystem.Infrastructure.CommandHandlers
             if(ticketType == null)
                 throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
 
-            ticket.Title = request.Title;
-            ticket.Type = ticketType;
-            ticket.Description = request.Description;
+            if(!string.IsNullOrEmpty(request.Title))
+                ticket.Title = request.Title;
+            if(!string.IsNullOrEmpty(request.Type))
+                ticket.Type = ticketType;
+            if (!string.IsNullOrEmpty(request.Description))
+                ticket.Description = request.Description;
+
             _dbContext.Tickets.Update(ticket);
             await _dbContext.SaveChangesAsync();
 

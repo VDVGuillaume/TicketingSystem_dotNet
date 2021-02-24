@@ -169,7 +169,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [Authorize(Roles = "Customer,SupportManager")]
         [HttpPost]
-        public async Task<IActionResult> Update(TicketUpdateViewModel model)
+        public async Task<IActionResult> Update([FromQuery]int id, TicketUpdateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -179,7 +179,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     {
                         await _mediator.Send(new UpdateTicketCommand
                         {
-                            Ticketnr = model.Input.TicketNr,
+                            Ticketnr = id,
                             Title = model.Input.Title,
                             Description = model.Input.Description,
                             Type = model.Input.Type
@@ -189,7 +189,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     {
                         await _mediator.Send(new UpdateTicketCommand
                         {
-                            Ticketnr = model.Input.TicketNr,
+                            Ticketnr = id,
                             Description = model.Input.Description
                         });
                     }
@@ -201,7 +201,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 }
             }
 
-            return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Ticket/Index"));
+            return RedirectToAction("Details", new { id = id});
         }
 
         [Authorize(Roles = "Customer,SupportManager")]

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Ticket aanpassen";
 }
 
-<form asp-action="Update" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
+<form asp-action="Update" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
     @if (User.IsInRole("SupportManager"))
     {
         <h1><input asp-for="Input.Title" class="form-control" value="@Model.Ticket.Title" /></h1>
@@ -52,7 +52,6 @@
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
             <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
-            <input type="hidden" asp-for="Input.TicketNr" class="form-control" value="@Model.Ticket.Id" />
         </div>
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>Type</p></div>
