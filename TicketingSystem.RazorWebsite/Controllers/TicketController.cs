@@ -166,6 +166,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 {
                     await _mediator.Send(new UpdateTicketCommand
                     {
+                        Ticketnr = model.Input.TicketNr,
                         Title = model.Input.Title,
                         Description = model.Input.Description,
                         Type = model.Input.Type
