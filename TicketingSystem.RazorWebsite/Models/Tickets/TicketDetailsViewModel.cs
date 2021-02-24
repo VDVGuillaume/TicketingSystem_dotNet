@@ -7,10 +7,10 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 {
     public class TicketDetailsViewModel
     {
-        public TicketDetailsDTO Ticket { get; set; }
+        public TicketDetailInfoViewModel Ticket { get; set; }
     }
 
-    public class TicketDetailsDTO
+    public class TicketDetailInfoViewModel
     {
         public int Id { get; set; }
         public string Type { get; set; }
@@ -18,7 +18,7 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
         public string Status { get; set; }
         public DateTime DateAdded { get; set; }
         public string Description { get; set; }
-        public IdentityUser Client { get; set; }
+        public string Client { get; set; }
         public List<Comment> Comments { get; set; }
     }
 }

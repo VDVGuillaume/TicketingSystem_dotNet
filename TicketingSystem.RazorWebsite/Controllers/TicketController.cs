@@ -129,7 +129,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Customer,SupportManager")]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
@@ -138,7 +138,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 return RedirectToAction("Index");
             }
 
-            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>(ticket);
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>(ticket);
             var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
 
             return View(model);
@@ -146,7 +146,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
-        public async Task<IActionResult> Update(string id)
+        public async Task<IActionResult> Update(int id)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
@@ -155,7 +155,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 return RedirectToAction("Index");
             }
 
-            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
             var model = new TicketUpdateViewModel { Ticket = ticketsDetailsDto };
             var ticketTypes = await _mediator.Send(new GetTicketTypesQuery());
             model.TicketTypes = new List<SelectListItem>();
@@ -270,7 +270,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
-        public async Task<IActionResult> Cancel(string id)
+        public async Task<IActionResult> Cancel(int id)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
@@ -285,7 +285,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 Status = TicketStatus.Geannuleerd
             });
 
-            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailsDTO>((Ticket)ticket);
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
             var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
 
 

@@ -11,7 +11,7 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 {
     public class TicketUpdateViewModel
     {
-        public TicketDetailsDTO Ticket { get; set; }
+        public TicketDetailInfoViewModel Ticket { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
