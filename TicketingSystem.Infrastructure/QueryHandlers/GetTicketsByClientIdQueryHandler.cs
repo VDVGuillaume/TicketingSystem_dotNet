@@ -16,7 +16,10 @@ namespace TicketingSystem.Infrastructure.QueryHandlers
 
         public async override Task<IQueryable<Ticket>> ExecuteCommandAsync(GetTicketsByClientIdQuery request, CancellationToken cancellationToken)
         {
-            return _dbContext.Tickets.Include(x => x.Client).Where(x => x.Client.Id == request.ClientId);
+            return _dbContext.Tickets
+                .Include(x => x.Type)
+                .Include(x => x.Client)
+                .Where(x => x.Client.Id == request.ClientId);
         }
     }
 }
