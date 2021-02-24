@@ -201,7 +201,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             model.TicketTypes = new List<SelectListItem>();
             foreach (var ticketType in ticketTypes)
             {
-                model.TicketTypes.Add(new SelectListItem { Value = ticketType.Id.ToString(), Text = ticketType.Name });
+                model.TicketTypes.Add(new SelectListItem { Value = ticketType.Name, Text = ticketType.Name });
             }
 
             return View(model);
