@@ -15,6 +15,10 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
 
             builder.HasOne(t => t.Client)
                 .WithMany();
+
+            builder.HasMany(t => t.Comments)
+                .WithOne();
+
         }
     }
 }
