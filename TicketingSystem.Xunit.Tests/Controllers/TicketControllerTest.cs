@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,39 +26,63 @@ namespace TicketingSystem.Xunit.Tests.Controllers
     public class TicketControllerTest
     {
         private readonly TicketController _controller;
-        private readonly Mock<IMediator> _mediatr;        
-        private readonly DummyApplicationDbContext _dummyContext;
+        private readonly Mock<IMediator> _mediatorMock;
+        private readonly Mock<ILogger<TicketViewModel>> _loggerMock;
+        private readonly Mock<FakeUserManager> _userManagerMock;
+        private readonly IMapper _mapper;
+        private readonly Mock<ClaimsPrincipal> _userMock;
+        private readonly IdentityUser Customer;
+
+
+        public TicketControllerTest()
+        {
+            _mediatorMock = new Mock<IMediator>();
+            _loggerMock = new Mock<ILogger<TicketViewModel>>();
+            _userManagerMock = new Mock<FakeUserManager>();
+            _mapper = MapperTestFactory.GenerateMapper();
+            _userMock = new Mock<ClaimsPrincipal>();
+            _controller = new TicketController(_loggerMock.Object, _mediatorMock.Object, _mapper, _userManagerMock.Object);
+
+
+        }
+
+        #region -- Create Get --
+        [Fact]
+        public void Create_PassesNewTicketDetailsViewModel()
+        {
+
+        }
+
+
+        #endregion 
+
+        #region -- Create Post --
 
         [Theory]
         [InlineData("customer", "title", "Aangemaakt", "description", "customer")]
-        public async void Create_Ticket_Customer_Should_Be_Successful(string username, string title, string type, string description, string clientUsername)
+        public async void Create_ValidTicket_CreatesTicketAndPersistsTicketAndRedirectsToActionIndex(string username, string title, string type, string description, string clientUsername)
         {
-            //arrange
-            var mediatorMock = new Mock<IMediator>();
-            var loggerMock = new Mock<ILogger<TicketViewModel>>();
-            var usermanagerMock = new Mock<FakeUserManager>();
-            var mapper = MapperTestFactory.GenerateMapper();
-            var userMock = new Mock<ClaimsPrincipal>();
-
-            userMock
-                .Setup(x => x.IsInRole("Customer"))
-                .Returns(true);
+            _userMock
+                  .Setup(x => x.IsInRole("Customer"))
+                  .Returns(true);
             var context = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
                 {
-                    User = userMock.Object
+                    User = _userMock.Object
                 }
             };
-            usermanagerMock
-                .Setup(x => x.GetUserAsync(userMock.Object))
+            _userManagerMock
+                .Setup(x => x.GetUserAsync(_userMock.Object))
                 .Returns(Task.FromResult(new IdentityUser(username)));
 
+
+
             CreateTicketCommand cmdSaved = null;
-            mediatorMock.Setup(x =>
-            x.Send(It.IsAny<CreateTicketCommand>(),
-            It.IsAny<CancellationToken>()))
-                .Callback<IRequest<Ticket>, CancellationToken>((ticket, token) => cmdSaved = ticket as CreateTicketCommand);
+            _mediatorMock.Setup(x =>
+             x.Send(It.IsAny<CreateTicketCommand>(),
+             It.IsAny<CancellationToken>()))
+                 .Callback<IRequest<Ticket>, CancellationToken>((ticket, token) => cmdSaved = ticket as CreateTicketCommand);
 
             var model = new TicketViewModel();
 
@@ -71,12 +96,35 @@ namespace TicketingSystem.Xunit.Tests.Controllers
             model.ReturnUrl = "~/Ticket/Index";
 
             //act
-            var ticketController = new TicketController(loggerMock.Object, mediatorMock.Object, mapper, usermanagerMock.Object);
-            ticketController.ControllerContext = context;
-            var actionResult = await ticketController.CreateTicket(model);
+
+            _controller.ControllerContext = context;
+            var actionResult = await _controller.CreateTicket(model);
+
 
             //assert
+            var result = Assert.IsType<RedirectToActionResult>(_controller.CreateTicket(model));
+            Assert.Equal("Index", result?.ActionName);
+
             // validate stuff
         }
+
+
+        [Fact]
+        public void Create_DomainErrors_DoesNotCreateNorPersistTicketAndRedirectsToActionIndex()
+        {
+            //waiting for implementation of contracts and changes to be made with the client class
+        }
+
+        [Fact]
+        public void Create_ModelStateErrors_DoesNotCreateNorPersistTicketAndRedirectsToActionIndex()
+        {
+            //waiting for implementation of contracts and changes to be made with the client class
+        }
+
+
+
+        #endregion
+
     }
 }
+
