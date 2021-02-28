@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicketingSystem.Domain.Application;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.Domain.Application.Exceptions;
 using TicketingSystem.Domain.Application.Queries;
@@ -280,27 +281,44 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
-        [HttpGet]
-        public async Task<IActionResult> Cancel(int id)
+        [HttpPost]
+        public async Task<IActionResult> Cancel([FromQuery]int id, TicketDetailsViewModel model)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
-            if (ticket == null) 
+            if (ticket == null)
             {
                 return RedirectToAction("Index");
             }
 
-            ticket = await _mediator.Send(new CancelTicketCommand
+            try
             {
-                Ticketnr = ticket.Ticketnr,
-                Status = TicketStatus.Geannuleerd
-            });
+                if (ticket.Status == TicketStatus.Geannuleerd)
+                {
+                    throw new ValidationException(Constants.ERROR_TICKET_STATUS_CANCELLED);
+                }
 
-            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
-            var model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
+                if (ticket.Status == TicketStatus.Afgehandeld)
+                {
+                    throw new ValidationException(Constants.ERROR_TICKET_STATUS_CLOSED);
+                }
 
+                ticket = await _mediator.Send(new CancelTicketCommand
+                {
+                    Ticketnr = ticket.Ticketnr,
+                    Status = TicketStatus.Geannuleerd
+                });
 
-            return View("Details", model);
+                model.Ticket = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
+
+                return View("Details", model);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError("ValidationError", ex.Message);
+                model.Ticket = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
+                return View("Details", model);
+            }
         }
     }
 }
