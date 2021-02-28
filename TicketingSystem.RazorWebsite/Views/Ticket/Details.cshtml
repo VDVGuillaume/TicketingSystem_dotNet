@@ -48,23 +48,32 @@
 <div class="row">
     <div class="col-12"><h2>Commentaar</h2></div>
 </div>
+
 <div class="row">
+    <div class="col-12">
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Nieuwe opmerking</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <a asp-area="" asp-controller="/Ticket" asp-action="AddComment" asp-route-id="@Model.Ticket.Id">
+                <button type="submit" class="btn btn-primary float-right mb-3">Verzend</button>
+            </a>
+        </form>
+    </div>
     <div class="col-12">
         @if (Model.Ticket.Comments.Count > 0)
         {
-            @foreach (Comment comment in Model.Ticket.Comments)
-            {
-        <div class="card mb-3">
-            <div class="card-body">
-                <p class="card-text">@comment.Text</p>                
-                <p class="card-text text-sm-right"><small class="text-muted"> @comment.CreatedBy - @comment.DateAdded</small></p>                
-            </div>
-        </div> 
-            }
-        }
-        else
+         @foreach (Comment comment in Model.Ticket.Comments)
         {
-            <p>Er is geen commentaar op dit ticket.</p>
-        }
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text">@comment.Text</p>
+                    <p class="card-text text-sm-right"><small class="text-muted"> @comment.CreatedBy - @comment.DateAdded</small></p>
+               </div>
+            </div>} }
+            else
+            {
+            <p>Er is geen commentaar op dit ticket.</p>}
     </div>
 </div>
