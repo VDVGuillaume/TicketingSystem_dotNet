@@ -59,7 +59,9 @@ namespace TicketingSystem.Infrastructure
 
                 //Seed Comments 
                 var commentTicket1 = new Comment {Text = "Dit is een korte comment",CreatedBy=customerUser,DateAdded= DateTime.Today};
+                var commentTicket2 = new Comment { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum ", CreatedBy = customerUser, DateAdded = DateTime.Today };
                 ticketBugInProgress.Comments.Add(commentTicket1);
+                ticketBugInProgress.Comments.Add(commentTicket2);
 
                 
                 _dbContext.Tickets.Add(ticketSupportCreated);

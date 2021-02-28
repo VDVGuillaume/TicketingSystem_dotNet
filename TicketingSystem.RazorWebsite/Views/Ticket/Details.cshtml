@@ -54,7 +54,12 @@
         {
             @foreach (Comment comment in Model.Ticket.Comments)
             {
-                <p>@comment.Text</p>
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text">@comment.Text</p>                
+                <p class="card-text text-sm-right"><small class="text-muted"> @comment.CreatedBy - @comment.DateAdded</small></p>                
+            </div>
+        </div> 
             }
         }
         else
