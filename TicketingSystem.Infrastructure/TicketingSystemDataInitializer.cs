@@ -53,9 +53,14 @@ namespace TicketingSystem.Infrastructure
                 var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, customerUser);
                 var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, customerUser);
 
-                var ticketBugInProgress = new Ticket("TitleBug2", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.InBehandeling};
+                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.InBehandeling};
                 var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.Afgehandeld };
                 var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.Geannuleerd };
+
+                //Seed Comments 
+                var commentTicket1 = new Comment {Text = "Dit is een korte comment",CreatedBy=customerUser,DateAdded= DateTime.Today};
+                ticketBugInProgress.Comments.Add(commentTicket1);
+
                 
                 _dbContext.Tickets.Add(ticketSupportCreated);
                 _dbContext.Tickets.Add(ticketChangeRequestCreated);
@@ -63,6 +68,7 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.Tickets.Add(ticketBugInProgress);
                 _dbContext.Tickets.Add(ticketBugClosed);
                 _dbContext.Tickets.Add(ticketBugCancelled);
+                _dbContext.Comments.Add(commentTicket1);
 
                 _dbContext.SaveChanges();
             }
