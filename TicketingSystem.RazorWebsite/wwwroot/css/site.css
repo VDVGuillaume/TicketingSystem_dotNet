@@ -89,3 +89,60 @@ body {
     background-color: #e9ecef;
     pointer-events: none;
 }
+
+
+/* ACTEMIUM STYLE */
+body {
+    font-family: 'Source Sans Pro',sans-serif;
+}
+
+h1 {
+    color: #12498d;
+}
+
+h2 {
+    color: #004289;
+}
+
+.navbar {
+    /*padding: .5rem 1rem;*/
+    padding: 0;
+}
+
+.navbar-nav a, .navbar-nav button, .navbar-nav span {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    line-height: 50px;
+}
+
+.navbar-nav a, .navbar-nav button {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #004289 !important;
+}
+
+.navbar-nav button {
+    padding-bottom: 0;
+    border: 0;
+}
+
+    .navbar-nav a:hover, .navbar-nav button:hover {
+        padding-bottom: 0;
+        border-bottom: 5px solid #004289;
+    }
+
+footer {
+    background-color: #004289;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #12498d;
+    border-color: #004289;
+}
+
+.btn-secondary {
+    background-color: #c6d200;
+    border-color: #a8b200;
+}
