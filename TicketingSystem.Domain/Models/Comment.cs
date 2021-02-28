@@ -6,8 +6,7 @@ namespace TicketingSystem.Domain.Models
 {
     public class Comment
     {
-        public int CommentId { get; set; }
-        public int TicketId { get; }
+        public int CommentId { get; set; }        
         public string Text { get; set; }
         public DateTime DateAdded { get; set; }
         public IdentityUser CreatedBy { get; set; }

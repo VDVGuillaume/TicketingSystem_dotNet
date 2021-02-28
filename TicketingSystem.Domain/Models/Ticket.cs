@@ -34,6 +34,7 @@ namespace TicketingSystem.Domain.Models
             this.DateAdded = DateTime.Now;
             this.Attachments = attachments;
             this.Client = client;
+            Comments = new List<Comment>();
         }
 
         private Ticket()

@@ -8,7 +8,7 @@ namespace TicketingSystem.Domain.Application.Commands
 {
     public class CreateCommentCommand : BaseCommand<Comment>
     {
-        public int TicketNr;
+        public int TicketId;
         public string Text;
         public DateTime DateAdded;
         public IdentityUser Client;

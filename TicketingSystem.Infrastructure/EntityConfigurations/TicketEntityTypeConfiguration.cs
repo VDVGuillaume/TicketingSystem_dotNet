@@ -17,7 +17,8 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
                 .WithMany();
 
             builder.HasMany(t => t.Comments)
-                .WithOne();
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

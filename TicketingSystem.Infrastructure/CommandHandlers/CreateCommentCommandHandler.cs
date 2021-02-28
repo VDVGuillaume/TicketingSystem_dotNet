@@ -21,7 +21,7 @@ namespace TicketingSystem.Infrastructure.CommandHandlers
         public async override Task<Comment> ExecuteCommandAsync(CreateCommentCommand request, CancellationToken cancellationToken)
         {
 
-            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.TicketNr });            
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.TicketId});            
 
             if (ticket == null)
                 throw new ValidationException(Constants.ERROR_TICKET_NOT_FOUND);
@@ -31,7 +31,7 @@ namespace TicketingSystem.Infrastructure.CommandHandlers
 
             var comment = new Comment() {Text = request.Text, CreatedBy = request.Client , DateAdded = request.DateAdded};
 
-            _dbContext.Comments.AddAsync(comment);
+            await _dbContext.Comments.AddAsync(comment);
             await _dbContext.SaveChangesAsync();
 
             return comment;

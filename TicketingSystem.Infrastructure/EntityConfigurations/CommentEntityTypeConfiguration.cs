@@ -10,7 +10,8 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
         {
             builder.ToTable("Comments");
 
-            builder.HasKey(t => t.CommentId);
+           // builder.HasKey(t => t.CommentId);
+            
         }
 
     }
