@@ -14,6 +14,7 @@ namespace TicketingSystem.Infrastructure
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<ContractType> ContractTypes { get; set; }
+        public DbSet<TicketCreationType> TicketCreationTypes { get; set; }
 
         public TicketingSystemDbContext(DbContextOptions<TicketingSystemDbContext> options) : base(options)
         {
@@ -29,6 +30,7 @@ namespace TicketingSystem.Infrastructure
             modelBuilder.ApplyConfiguration(new ClientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CommentEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ContractEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ContractTypeEntityTypeConfiguration());
         }
     }
 }
