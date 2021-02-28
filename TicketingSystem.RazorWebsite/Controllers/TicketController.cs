@@ -182,36 +182,46 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+                if (ticket != null)
                 {
-                    if (User.IsInRole("SupportManager"))
+                    try
                     {
-                        await _mediator.Send(new UpdateTicketCommand
+                        if (ticket.Status == TicketStatus.Geannuleerd)
                         {
-                            Ticketnr = id,
-                            Title = model.Input.Title,
-                            Description = model.Input.Description,
-                            Type = model.Input.Type
-                        });
-                    }
-                    else
-                    {
-                        await _mediator.Send(new UpdateTicketCommand
+                            throw new ValidationException(Constants.ERROR_TICKET_STATUS_CANCELLED);
+                        }
+
+                        if (ticket.Status == TicketStatus.Afgehandeld)
                         {
-                            Ticketnr = id,
-                            Description = model.Input.Description
-                        });
+                            throw new ValidationException(Constants.ERROR_TICKET_STATUS_CLOSED);
+                        }
+
+                        if (User.IsInRole("SupportManager"))
+                        {
+                            await _mediator.Send(new UpdateTicketCommand
+                            {
+                                Ticketnr = id,
+                                Title = model.Input.Title,
+                                Description = model.Input.Description,
+                                Type = model.Input.Type
+                            });
+                        }
+                        else
+                        {
+                            await _mediator.Send(new UpdateTicketCommand
+                            {
+                                Ticketnr = id,
+                                Description = model.Input.Description
+                            });
+                        }
                     }
-                }
-                catch (ValidationException ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    model.TicketTypes = await GetTicketTypes(model.Input.Type);
-                    var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
-                    if (ticket != null) 
+                    catch (ValidationException ex)
                     {
+                        ModelState.AddModelError("ValidationError", ex.Message);
+                        model.TicketTypes = await GetTicketTypes(model.Input.Type);
                         model.Ticket = _mapper.Map<TicketDetailInfoViewModel>(ticket);
-                       return View(model);
+                        return View("Update", model);
                     }
                 }
             }
