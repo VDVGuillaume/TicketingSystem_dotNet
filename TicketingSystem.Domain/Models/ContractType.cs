@@ -6,6 +6,6 @@ namespace TicketingSystem.Domain.Models
 {
     public class ContractType
     {
-        public int Id { get; set; }
+        public int ContractTypeId { get; set; }
     }
 }
