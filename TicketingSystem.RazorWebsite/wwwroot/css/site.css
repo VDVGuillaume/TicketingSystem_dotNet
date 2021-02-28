@@ -104,8 +104,11 @@ h2 {
     color: #004289;
 }
 
+a h2:hover {
+    color: #0366d6;
+}
+
 .navbar {
-    /*padding: .5rem 1rem;*/
     padding: 0;
 }
 
