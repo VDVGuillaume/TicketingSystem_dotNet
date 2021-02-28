@@ -4,9 +4,18 @@
 }
 
 <form asp-action="Update" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
+
     @if (User.IsInRole("SupportManager"))
     {
         <h1><input asp-for="Input.Title" class="form-control" value="@Model.Ticket.Title" /></h1>
+
+        @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationMessage("ValidationError")
+            </div>
+        }
+
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
             <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
@@ -38,17 +47,25 @@
         </div>
         <!--<div class="row">-->
         @*<div class="col-12">
-            <p>
-                <a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">Ticket aanpassen</a>
-            </p>
-        </div>*@
+                <p>
+                    <a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">Ticket aanpassen</a>
+                </p>
+            </div>*@
         <!--<div class="col-6 text-right">
-        </div>
-    </div>-->
-        }
-        else
-        {
+            </div>
+        </div>-->
+    }
+    else
+    {
         <h1>@Model.Ticket.Title</h1>
+
+        @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationMessage("ValidationError")
+            </div>
+        }
+
         <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
             <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
@@ -73,20 +90,20 @@
             </div>
         </div>
         @*<div class="row">
-            <div class="col-12">
-                <p>
-                    <input type="submit" value="Aanpassen" class="btn btn-primary" />
-                    <button asp-area="" asp-controller="/Ticket" asp-action="Details" asp-route-id="@Model.Ticket.Id" class="btn btn-danger">Annuleren</button>
-                </p>
-            </div>
-            <div class="col-6 text-right">
-            </div>
-        </div>*@
-        }
-        <div class="form-group">
-            <input type="submit" value="Aanpassen" class="btn btn-primary" />
-        </div>
-    </form>
+                <div class="col-12">
+                    <p>
+                        <input type="submit" value="Aanpassen" class="btn btn-primary" />
+                        <button asp-area="" asp-controller="/Ticket" asp-action="Details" asp-route-id="@Model.Ticket.Id" class="btn btn-danger">Annuleren</button>
+                    </p>
+                </div>
+                <div class="col-6 text-right">
+                </div>
+            </div>*@
+    }
+    <div class="form-group">
+        <input type="submit" value="Aanpassen" class="btn btn-primary" />
+    </div>
+</form>
         @section Scripts {
             @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         }
