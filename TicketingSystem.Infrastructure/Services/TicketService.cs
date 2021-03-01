@@ -21,6 +21,11 @@ namespace TicketingSystem.Infrastructure.Services
             _dbContext = dbContext ?? throw new ArgumentNullException();
         }
 
+        private string DetermineAttachmentLocation(int ticketNr, string fileName) 
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\attachments\{ticketNr}", fileName);
+        }
+
         public async Task<Ticket> CreateTicket(CreateTicketCommand request) 
         {
             // validate if ticketType is valid input
@@ -34,6 +39,10 @@ namespace TicketingSystem.Infrastructure.Services
             var ticket = new Ticket(request.Title, request.Description, ticketType, request.Client);
             await _dbContext.Tickets.AddAsync(ticket);
 
+            // save ticket
+            // this step comes before adding the attachments because we want to link the attachment location to the ticket ID
+            _dbContext.SaveChanges();
+
             //create attachments
             if (request.Attachments != null) 
             {
@@ -42,7 +51,7 @@ namespace TicketingSystem.Infrastructure.Services
                     if (file != null) 
                     {
                         var attachment = new Attachment(file.FileName);
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\attachments\{ticket.Ticketnr}", file.FileName);
+                        var filePath = DetermineAttachmentLocation(ticket.Ticketnr, file.FileName);
                         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -54,7 +63,7 @@ namespace TicketingSystem.Infrastructure.Services
                 }
             }
 
-            // save changes
+            // save attachments
             _dbContext.SaveChanges();
 
             return ticket;
