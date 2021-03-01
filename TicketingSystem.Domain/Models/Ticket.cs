@@ -26,15 +26,15 @@ namespace TicketingSystem.Domain.Models
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 
-        public Ticket(string title, string description, TicketType type, IdentityUser client, List<Attachment> attachments = null)
+        public Ticket(string title, string description, TicketType type, IdentityUser client)
         {
             this.Title = title;
             this.Description = description;
             this.Type = type;
             this.DateAdded = DateTime.Now;
-            this.Attachments = attachments;
             this.Client = client;
             Comments = new List<Comment>();
+            Attachments = new List<Attachment>();
         }
 
         private Ticket()

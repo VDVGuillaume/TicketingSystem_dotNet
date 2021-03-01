@@ -15,6 +15,7 @@ namespace TicketingSystem.Infrastructure
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<ContractType> ContractTypes { get; set; }
         public DbSet<TicketCreationType> TicketCreationTypes { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
 
         public TicketingSystemDbContext(DbContextOptions<TicketingSystemDbContext> options) : base(options)
         {

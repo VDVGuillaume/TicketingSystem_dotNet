@@ -277,7 +277,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
                         Title = model.Input.Title,
                         Description = model.Input.Description,
                         Type = model.Input.Type,
-                        Client = client
+                        Client = client,
+                        Attachments = model.Input.Attachments
                     });
                 }
                 catch (ValidationException ex)
