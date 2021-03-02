@@ -48,11 +48,18 @@
                 </button>
             </a>
             <form asp-action="Cancel" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
-                <input type="submit" class="btn btn-danger" value="Ticket annuleren" 
-                @if (Model.Ticket.Status == "Geannuleerd"  || Model.Ticket.Status == "Afgesloten") { 
-                    @: disabled="disabled"
-                }       
-                />
+                @Html.HiddenFor(x => x.Ticket.Id)
+                @Html.HiddenFor(x => x.Ticket.Title)
+                @Html.HiddenFor(x => x.Ticket.Type)
+                @Html.HiddenFor(x => x.Ticket.Status)
+                @Html.HiddenFor(x => x.Ticket.Client)
+                @Html.HiddenFor(x => x.Ticket.DateAdded)
+                @Html.HiddenFor(x => x.Ticket.Description)
+                @Html.HiddenFor(x => x.Ticket.Comments)
+
+                <input type="submit" class="btn btn-danger" value="Ticket annuleren"
+                       @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
+                       } />
             </form>
         </p>
     </div>

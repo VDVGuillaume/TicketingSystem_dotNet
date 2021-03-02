@@ -4,6 +4,18 @@
 }
 
 <form asp-action="Update" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
+    @Html.HiddenFor(x => x.Ticket.Id)
+    @Html.HiddenFor(x => x.Ticket.Title)
+    @Html.HiddenFor(x => x.Ticket.Type)
+    @Html.HiddenFor(x => x.Ticket.Status)
+    @Html.HiddenFor(x => x.Ticket.Client)
+    @Html.HiddenFor(x => x.Ticket.DateAdded)
+    @Html.HiddenFor(x => x.Ticket.Description)
+
+    @for (int i = 0; i < Model.TicketTypes.Count; i++)
+    {
+        @Html.HiddenFor(model => Model.TicketTypes[i])
+    }
 
     @if (User.IsInRole("SupportManager"))
     {

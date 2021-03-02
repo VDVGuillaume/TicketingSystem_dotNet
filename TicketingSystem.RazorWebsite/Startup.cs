@@ -13,6 +13,8 @@ using System;
 using System.Reflection;
 using TicketingSystem.Domain.Application;
 using TicketingSystem.Infrastructure;
+using TicketingSystem.Infrastructure.Services;
+using TicketingSystem.Infrastructure.Services.Interfaces;
 using TicketingSystem.RazorWebsite.Mapping;
 
 namespace TicketingSystem.RazorWebsite
@@ -31,6 +33,7 @@ namespace TicketingSystem.RazorWebsite
         {
             services.AddDbContext<TicketingSystemDbContext>(options => options.UseSqlServer(Configuration.GetValue<string>("SqlConnectionString")));
             services.AddScoped<TicketingSystemDataInitializer>();
+            services.AddScoped<ITicketService, TicketService>();
             services.AddMediatR(typeof(Startup));
 
             services.AddDefaultIdentity<IdentityUser>(options =>

@@ -182,47 +182,32 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
-                if (ticket != null)
+                try
                 {
-                    try
+                    if (User.IsInRole("SupportManager"))
                     {
-                        if (ticket.Status == TicketStatus.Geannuleerd)
+                        await _mediator.Send(new UpdateTicketCommand
                         {
-                            throw new ValidationException(Constants.ERROR_TICKET_STATUS_CANCELLED);
-                        }
-
-                        if (ticket.Status == TicketStatus.Afgehandeld)
-                        {
-                            throw new ValidationException(Constants.ERROR_TICKET_STATUS_CLOSED);
-                        }
-
-                        if (User.IsInRole("SupportManager"))
-                        {
-                            await _mediator.Send(new UpdateTicketCommand
-                            {
-                                Ticketnr = id,
-                                Title = model.Input.Title,
-                                Description = model.Input.Description,
-                                Type = model.Input.Type
-                            });
-                        }
-                        else
-                        {
-                            await _mediator.Send(new UpdateTicketCommand
-                            {
-                                Ticketnr = id,
-                                Description = model.Input.Description
-                            });
-                        }
+                            Ticketnr = id,
+                            Title = model.Input.Title,
+                            Description = model.Input.Description,
+                            Type = model.Input.Type
+                        });
                     }
-                    catch (ValidationException ex)
+                    else
                     {
-                        ModelState.AddModelError("ValidationError", ex.Message);
-                        model.TicketTypes = await GetTicketTypes(model.Input.Type);
-                        model.Ticket = _mapper.Map<TicketDetailInfoViewModel>(ticket);
-                        return View("Update", model);
+                        await _mediator.Send(new UpdateTicketCommand
+                        {
+                            Ticketnr = id,
+                            Description = model.Input.Description
+                        });
                     }
+                }
+                catch (ValidationException ex)
+                {
+                    ModelState.AddModelError("ValidationError", ex.Message);
+                    model.TicketTypes = await GetTicketTypes(model.Input.Type);
+                    return View("Update", model);
                 }
             }
 
@@ -295,39 +280,18 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> Cancel([FromQuery]int id, TicketDetailsViewModel model)
         {
-            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
-
-            if (ticket == null)
-            {
-                return RedirectToAction("Index");
-            }
-
             try
             {
-                if (ticket.Status == TicketStatus.Geannuleerd)
+                var ticket = await _mediator.Send(new CancelTicketCommand
                 {
-                    throw new ValidationException(Constants.ERROR_TICKET_STATUS_CANCELLED);
-                }
-
-                if (ticket.Status == TicketStatus.Afgehandeld)
-                {
-                    throw new ValidationException(Constants.ERROR_TICKET_STATUS_CLOSED);
-                }
-
-                ticket = await _mediator.Send(new CancelTicketCommand
-                {
-                    Ticketnr = ticket.Ticketnr,
-                    Status = TicketStatus.Geannuleerd
+                    Ticketnr = id
                 });
-
-                model.Ticket = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
 
                 return View("Details", model);
             }
             catch (ValidationException ex)
             {
                 ModelState.AddModelError("ValidationError", ex.Message);
-                model.Ticket = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
                 return View("Details", model);
             }
         }

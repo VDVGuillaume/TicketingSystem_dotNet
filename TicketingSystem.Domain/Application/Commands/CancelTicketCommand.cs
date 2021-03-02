@@ -8,7 +8,5 @@ namespace TicketingSystem.Domain.Application.Commands
     public class CancelTicketCommand : BaseCommand<Ticket>
     {
         public int Ticketnr;
-        public TicketStatus Status;
-
     }
 }

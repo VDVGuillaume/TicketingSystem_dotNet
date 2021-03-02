@@ -1,26 +1,26 @@
 ﻿using MediatR;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.Domain.Models;
+using TicketingSystem.Infrastructure.Services;
+using TicketingSystem.Infrastructure.Services.Interfaces;
 
 namespace TicketingSystem.Infrastructure.CommandHandlers
 {
     class CancelTicketCommandHandler : BaseCommandHandler<CancelTicketCommand, Ticket>
     {
-        public CancelTicketCommandHandler(IMediator mediator, TicketingSystemDbContext dbContext) : base(mediator, dbContext)
+        private ITicketService _ticketService;
+        public CancelTicketCommandHandler(IMediator mediator, TicketingSystemDbContext dbContext, ITicketService ticketService) : base(mediator, dbContext)
         {
+            _ticketService = ticketService ?? throw new ArgumentNullException();
         }
 
         public async override Task<Ticket> ExecuteCommandAsync(CancelTicketCommand request, CancellationToken cancellationToken)
         {
-            var ticket = _dbContext.Tickets.First(x => x.Ticketnr == request.Ticketnr);
-            ticket.Status = request.Status;
-            _dbContext.Tickets.Update(ticket);
-            await _dbContext.SaveChangesAsync();
-
-            return ticket;
+            return await _ticketService.CancelTicket(request);
         }
     }
 }

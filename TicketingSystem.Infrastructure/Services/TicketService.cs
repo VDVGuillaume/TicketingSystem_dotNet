@@ -7,10 +7,11 @@ using TicketingSystem.Domain.Application;
 using TicketingSystem.Domain.Application.Commands;
 using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Domain.Models;
+using TicketingSystem.Infrastructure.Services.Interfaces;
 
 namespace TicketingSystem.Infrastructure.Services
 {
-    public class TicketService
+    public class TicketService : ITicketService
     {
         private readonly IMediator _mediator;
         private readonly TicketingSystemDbContext _dbContext;
@@ -21,12 +22,25 @@ namespace TicketingSystem.Infrastructure.Services
             _dbContext = dbContext ?? throw new ArgumentNullException();
         }
 
-        private string DetermineAttachmentLocation(int ticketNr, string fileName) 
+        private string DetermineAttachmentLocation(int ticketNr, string fileName)
         {
             return Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\attachments\{ticketNr}", fileName);
         }
 
-        public async Task<Ticket> CreateTicket(CreateTicketCommand request) 
+        private void ValidateTicketStatus(Ticket ticket)
+        {
+            if (ticket.Status == TicketStatus.Geannuleerd)
+            {
+                throw new ValidationException(Constants.ERROR_TICKET_STATUS_CANCELLED);
+            }
+
+            if (ticket.Status == TicketStatus.Afgehandeld)
+            {
+                throw new ValidationException(Constants.ERROR_TICKET_STATUS_CLOSED);
+            }
+        }
+
+        public async Task<Ticket> CreateTicket(CreateTicketCommand request)
         {
             // validate if ticketType is valid input
             var ticketType = await _mediator.Send(new GetTicketTypeByNameQuery { Name = request.Type });
@@ -44,11 +58,11 @@ namespace TicketingSystem.Infrastructure.Services
             _dbContext.SaveChanges();
 
             //create attachments
-            if (request.Attachments != null) 
+            if (request.Attachments != null)
             {
-                foreach (var file in request.Attachments) 
+                foreach (var file in request.Attachments)
                 {
-                    if (file != null) 
+                    if (file != null)
                     {
                         var attachment = new Attachment(file.FileName);
                         var filePath = DetermineAttachmentLocation(ticket.Ticketnr, file.FileName);
@@ -69,5 +83,44 @@ namespace TicketingSystem.Infrastructure.Services
             return ticket;
         }
 
+        public async Task<Ticket> UpdateTicket(UpdateTicketCommand request)
+        {
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.Ticketnr });
+            var ticketType = await _mediator.Send(new GetTicketTypeByNameQuery { Name = request.Type });
+
+            //validate
+            if (ticket == null)
+                throw new ValidationException(Constants.ERROR_TICKET_NOT_FOUND);
+            if (ticketType == null && !string.IsNullOrEmpty(request.Type))
+                throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
+            ValidateTicketStatus(ticket);
+
+            if (!string.IsNullOrEmpty(request.Title))
+                ticket.Title = request.Title;
+            if (!string.IsNullOrEmpty(request.Type))
+                ticket.Type = ticketType;
+            if (!string.IsNullOrEmpty(request.Description))
+                ticket.Description = request.Description;
+
+            await _dbContext.SaveChangesAsync();
+
+            return ticket;
+        }
+
+        public async Task<Ticket> CancelTicket(CancelTicketCommand request)
+        {
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.Ticketnr });
+
+            //validate
+            if (ticket == null)
+                throw new ValidationException(Constants.ERROR_TICKET_NOT_FOUND);
+            ValidateTicketStatus(ticket);
+
+            ticket.Status = TicketStatus.Geannuleerd;
+
+            await _dbContext.SaveChangesAsync();
+
+            return ticket;
+        }
     }
 }
