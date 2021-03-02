@@ -11,6 +11,14 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateTicket" enctype="multipart/form-data" method="post">
+            @for (int i = 0; i < Model.TicketTypes.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.TicketTypes[i].Selected)
+                @Html.HiddenFor(model => Model.TicketTypes[i].Value)
+                @Html.HiddenFor(model => Model.TicketTypes[i].Text)
+            }
+
+
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Title"></label>

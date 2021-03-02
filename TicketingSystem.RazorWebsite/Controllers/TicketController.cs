@@ -206,7 +206,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 catch (ValidationException ex)
                 {
                     ModelState.AddModelError("ValidationError", ex.Message);
-                    model.TicketTypes = await GetTicketTypes(model.Input.Type);
                     return View("Update", model);
                 }
             }
@@ -229,8 +228,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
-            model.TicketTypes = await GetTicketTypes(model.Input?.Type);
-
             IdentityUser client;
             if (User.IsInRole("SupportManager") && !string.IsNullOrEmpty(model.Input.ClientUsername))
             {
@@ -287,6 +284,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     Ticketnr = id
                 });
 
+                model.Ticket = _mapper.Map<Ticket, TicketDetailInfoViewModel>(ticket);
                 return View("Details", model);
             }
             catch (ValidationException ex)
