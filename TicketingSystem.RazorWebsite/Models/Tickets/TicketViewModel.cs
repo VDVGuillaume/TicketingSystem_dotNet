@@ -27,7 +27,7 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
             [Display(Name = "Omschrijving")]
             public string Description { get; set; }
             [Display(Name = "Klant")]
-            public string ClientUsername { get; set; }
+            public string ClientName { get; set; }
             [Required]
             [Display(Name = "Type")]
             public string Type { get; set; }

@@ -13,7 +13,7 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
         {
             builder.ToTable("Clients");
 
-            builder.HasKey(t => t.ClientId);
+            builder.HasKey(t => t.Id);
         }
 
     }

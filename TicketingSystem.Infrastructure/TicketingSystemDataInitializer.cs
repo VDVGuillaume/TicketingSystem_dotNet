@@ -10,10 +10,10 @@ namespace TicketingSystem.Infrastructure
     public class TicketingSystemDataInitializer
     {
         private readonly TicketingSystemDbContext _dbContext;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public TicketingSystemDataInitializer(TicketingSystemDbContext dbContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public TicketingSystemDataInitializer(TicketingSystemDbContext dbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -38,11 +38,11 @@ namespace TicketingSystem.Infrastructure
                 await _roleManager.CreateAsync(supportManagerRole);
 
                 //Seed users
-                var customerUser = new IdentityUser { UserName = "customer", Email = "customer@gmail.be" };
+                var customerUser = new ApplicationUser { UserName = "customer", Email = "customer@gmail.be", Client = client1 };
                 await _userManager.CreateAsync(customerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(customerUser, "Customer");
                 
-                var supportManagerUser = new IdentityUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
+                var supportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
 
@@ -55,13 +55,13 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.TicketTypes.Add(ticketTypeSupport);
 
                 //Seed tickets
-                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, customerUser);
-                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, customerUser);
-                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, customerUser);
+                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1);
+                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1);
+                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1);
 
-                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.InBehandeling};
-                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.Afgehandeld };
-                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, customerUser) { Status = TicketStatus.Geannuleerd };
+                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1) { Status = TicketStatus.InBehandeling};
+                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1) { Status = TicketStatus.Afgehandeld };
+                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1) { Status = TicketStatus.Geannuleerd };
 
                 //Seed Comments 
                 var commentTicket1 = new Comment {Text = "Dit is een korte comment",CreatedBy=customerUser,DateAdded= DateTime.Today};

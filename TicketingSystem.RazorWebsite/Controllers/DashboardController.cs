@@ -21,13 +21,13 @@ namespace TicketingSystem.RazorWebsite.Controllers
         private readonly ILogger<TicketViewModel> _logger;
         private readonly IMediator _mediator; 
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public DashboardController(
             ILogger<TicketViewModel> logger,
             IMediator mediator, 
             IMapper mapper,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _mediator = mediator; 
@@ -46,7 +46,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
             }
             else
             {
-                tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = _userManager.GetUserId(User) });
+                var client = await _mediator.Send(new GetClientByUserQuery {Username = User.Identity.Name});
+                tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = client.Id});
             }
 
             var openTickets = tickets.Where(x => x.Status == TicketStatus.Aangemaakt || x.Status == TicketStatus.InBehandeling).Take(10);

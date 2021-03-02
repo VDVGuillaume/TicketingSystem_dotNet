@@ -51,7 +51,7 @@
       <FileName>Models\UserLoginAttempt.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Microsoft.AspNetCore.Identity.IdentityUser">
+  <Class Name="Microsoft.AspNetCore.Identity.ApplicationUser">
     <Position X="7.25" Y="4" Width="2.5" />
     <TypeIdentifier />
   </Class>

@@ -17,8 +17,6 @@
                 @Html.HiddenFor(model => Model.TicketTypes[i].Value)
                 @Html.HiddenFor(model => Model.TicketTypes[i].Text)
             }
-
-
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Title"></label>
@@ -49,9 +47,9 @@
             @if (User.IsInRole("SupportManager"))
             {
                 <div class="form-group">
-                    <label asp-for="Input.ClientUsername"></label>
-                    <input asp-for="Input.ClientUsername" class="form-control" />
-                    <span asp-validation-for="Input.ClientUsername" class="text-danger"></span>
+                    <label asp-for="Input.ClientName"></label>
+                    <input asp-for="Input.ClientName" class="form-control" />
+                    <span asp-validation-for="Input.ClientName" class="text-danger"></span>
                 </div>
             }
             <div class="form-group">

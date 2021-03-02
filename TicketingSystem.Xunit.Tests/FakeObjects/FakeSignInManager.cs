@@ -4,19 +4,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Xunit.Tests.FakeObjects
 {
-    public class FakeSignInManager : SignInManager<IdentityUser>
+    public class FakeSignInManager : SignInManager<ApplicationUser>
     {
         public FakeSignInManager()
                 : base(new FakeUserManager(),
                      new Mock<IHttpContextAccessor>().Object,
-                     new Mock<IUserClaimsPrincipalFactory<IdentityUser>>().Object,
+                     new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
                      new Mock<IOptions<IdentityOptions>>().Object,
-                     new Mock<ILogger<SignInManager<IdentityUser>>>().Object,
+                     new Mock<ILogger<SignInManager<ApplicationUser>>>().Object,
                      new Mock<IAuthenticationSchemeProvider>().Object,
-                     new Mock<IUserConfirmation<IdentityUser>>().Object)
+                     new Mock<IUserConfirmation<ApplicationUser>>().Object)
         { }
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 using TicketingSystem.Domain.Application;
+using TicketingSystem.Domain.Models;
 using TicketingSystem.Infrastructure;
 using TicketingSystem.Infrastructure.Services;
 using TicketingSystem.Infrastructure.Services.Interfaces;
@@ -36,7 +37,7 @@ namespace TicketingSystem.RazorWebsite
             services.AddScoped<ITicketService, TicketService>();
             services.AddMediatR(typeof(Startup));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
 

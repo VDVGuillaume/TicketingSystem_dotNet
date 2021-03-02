@@ -5,7 +5,7 @@ using TicketingSystem.Infrastructure.EntityConfigurations;
 
 namespace TicketingSystem.Infrastructure
 {
-    public class TicketingSystemDbContext : IdentityDbContext
+    public class TicketingSystemDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<UserLoginAttempt> UserLoginAttempts { get; set; }
         public DbSet<Client> Client { get; set; }

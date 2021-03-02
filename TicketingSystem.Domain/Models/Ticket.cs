@@ -20,13 +20,13 @@ namespace TicketingSystem.Domain.Models
         public TicketStatus Status { get; set; }
         public DateTime DateAdded { get; set; }
         public string Description { get; set; }
-        public IdentityUser Client { get; set; }
+        public Client Client { get; set; }
         public string AssignedEngineer { get; set; }
         public TicketType Type { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 
-        public Ticket(string title, string description, TicketType type, IdentityUser client)
+        public Ticket(string title, string description, TicketType type, Client client)
         {
             this.Title = title;
             this.Description = description;

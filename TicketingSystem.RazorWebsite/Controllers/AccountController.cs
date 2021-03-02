@@ -8,17 +8,18 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application.Commands;
+using TicketingSystem.Domain.Models;
 using TicketingSystem.RazorWebsite.Models;
 
 namespace TicketingSystem.RazorWebsite.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IMediator _mediator;
 
-        public AccountController(SignInManager<IdentityUser> signInManager,
+        public AccountController(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
             IMediator mediator)
         {

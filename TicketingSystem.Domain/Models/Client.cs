@@ -6,7 +6,7 @@ namespace TicketingSystem.Domain.Models
 {
     public class Client
     {
-        public int ClientId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public Client(string name)

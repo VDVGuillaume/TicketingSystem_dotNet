@@ -24,8 +24,8 @@ namespace TicketingSystem.Xunit.Tests.Data
             public TicketType TicketTypeChangeRequest { get; }
             public TicketType TicketTypeSupport { get; }
 
-            public IdentityUser CustomerUser { get; } 
-            public IdentityUser SupportManagerUser { get; }
+            public ApplicationUser CustomerUser { get; } 
+            public ApplicationUser SupportManagerUser { get; }
 
             public IdentityRole CustomerRole { get; }
             public IdentityRole SupportManagerRole { get; }
@@ -37,8 +37,8 @@ namespace TicketingSystem.Xunit.Tests.Data
             
 
             //Seed users
-            CustomerUser = new IdentityUser { UserName = "customer", Email = "customer@gmail.be" };          
-            SupportManagerUser = new IdentityUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
+            CustomerUser = new ApplicationUser { UserName = "customer", Email = "customer@gmail.be" };          
+            SupportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
             
 
             //Seed ticketTypes
@@ -47,14 +47,14 @@ namespace TicketingSystem.Xunit.Tests.Data
             TicketTypeSupport = new TicketType { Name = "Support", RequiredSLA = 3 };
           
 
-            //Seed tickets
-            TicketSupportCreated = new Ticket("TitleSupport", "TestDescription", TicketTypeSupport, CustomerUser);
-            TicketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", TicketTypeChangeRequest, CustomerUser);
-            TicketBugCreated = new Ticket("TitleBug", "TestDescription", TicketTypeBug, CustomerUser);
+            ////Seed tickets
+            //TicketSupportCreated = new Ticket("TitleSupport", "TestDescription", TicketTypeSupport, client1);
+            //TicketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", TicketTypeChangeRequest, client1);
+            //TicketBugCreated = new Ticket("TitleBug", "TestDescription", TicketTypeBug, client1);
 
-            TicketBugInProgress = new Ticket("TitleBug2", "TestDescription", TicketTypeBug, CustomerUser) { Status = TicketStatus.InBehandeling };
-            TicketBugClosed = new Ticket("TitleBug3", "TestDescription", TicketTypeBug, CustomerUser) { Status = TicketStatus.Afgehandeld };
-            TicketBugCancelled = new Ticket("TitleBug4", "TestDescription", TicketTypeBug, CustomerUser) { Status = TicketStatus.Geannuleerd };
+            //TicketBugInProgress = new Ticket("TitleBug2", "TestDescription", TicketTypeBug, client1) { Status = TicketStatus.InBehandeling };
+            //TicketBugClosed = new Ticket("TitleBug3", "TestDescription", TicketTypeBug, CustomerUser) { Status = TicketStatus.Afgehandeld };
+            //TicketBugCancelled = new Ticket("TitleBug4", "TestDescription", TicketTypeBug, CustomerUser) { Status = TicketStatus.Geannuleerd };
 
             Tickets = new[] { TicketBugCancelled, TicketBugClosed, TicketBugInProgress, TicketBugCreated, TicketChangeRequestCreated, TicketSupportCreated };
         }

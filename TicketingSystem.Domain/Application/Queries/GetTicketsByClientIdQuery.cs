@@ -5,6 +5,6 @@ namespace TicketingSystem.Domain.Application.Queries
 {
     public class GetTicketsByClientIdQuery : BaseQuery<IQueryable<Ticket>>
     {
-        public string ClientId { get; set; }
+        public int ClientId { get; set; }
     }
 }

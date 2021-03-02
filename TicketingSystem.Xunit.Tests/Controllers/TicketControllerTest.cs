@@ -26,7 +26,7 @@ namespace TicketingSystem.Xunit.Tests.Controllers
         private readonly Mock<FakeUserManager> _userManagerMock;
         private readonly IMapper _mapper;
         private readonly Mock<ClaimsPrincipal> _userMock;
-        private readonly IdentityUser Customer;
+        private readonly ApplicationUser Customer;
 
 
         public TicketControllerTest()
@@ -69,7 +69,7 @@ namespace TicketingSystem.Xunit.Tests.Controllers
             };
             _userManagerMock
                 .Setup(x => x.GetUserAsync(_userMock.Object))
-                .Returns(Task.FromResult(new IdentityUser(username)));
+                .Returns(Task.FromResult(new ApplicationUser { Client = new Client(username) }));
 
 
 
@@ -86,7 +86,7 @@ namespace TicketingSystem.Xunit.Tests.Controllers
                 Title = title,
                 Type = type,
                 Description = description,
-                ClientUsername = clientUsername
+                ClientName = clientUsername
             };
             model.ReturnUrl = "~/Ticket/Index";
 

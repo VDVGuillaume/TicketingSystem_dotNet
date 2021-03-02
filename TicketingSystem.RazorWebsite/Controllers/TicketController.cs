@@ -25,13 +25,13 @@ namespace TicketingSystem.RazorWebsite.Controllers
         private readonly ILogger<TicketViewModel> _logger;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public TicketController(
             ILogger<TicketViewModel> logger,
             IMediator mediator,
             IMapper mapper,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _mediator = mediator;
@@ -86,7 +86,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
             }
             else
             {
-                tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = _userManager.GetUserId(User) });
+                var client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
+                tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = client.Id});
             }
 
             var filteredTickets = tickets.Where(x => ticketStatusFilter.Contains(x.Status));
@@ -228,10 +229,10 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketViewModel model)
         {
-            IdentityUser client;
-            if (User.IsInRole("SupportManager") && !string.IsNullOrEmpty(model.Input.ClientUsername))
+            Client client;
+            if (User.IsInRole("SupportManager") && !string.IsNullOrEmpty(model.Input.ClientName))
             {
-                client = await _mediator.Send(new GetUserByUsernameQuery { Username = model.Input.ClientUsername });
+                client = await _mediator.Send(new GetClientByNameQuery { Name = model.Input.ClientName });
 
                 if (client == null)
                 {
@@ -241,7 +242,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             }
             else
             {
-                client = await _userManager.GetUserAsync(User);
+                client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
             }
 
             if (ModelState.IsValid)

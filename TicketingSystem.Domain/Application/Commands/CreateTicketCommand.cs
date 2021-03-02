@@ -12,7 +12,7 @@ namespace TicketingSystem.Domain.Application.Commands
         public TicketStatus Status { get; set; }
         public DateTime DateAdded { get; set; }
         public string Description { get; set; }
-        public IdentityUser Client { get; set; }
+        public Client Client { get; set; }
         public string Username { get; set; }
         public string AssignedEngineer { get; set; }
         public string Type { get; set; }

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace TicketingSystem.Domain.Models
 {
@@ -9,6 +7,6 @@ namespace TicketingSystem.Domain.Models
         public int CommentId { get; set; }        
         public string Text { get; set; }
         public DateTime DateAdded { get; set; }
-        public IdentityUser CreatedBy { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
     }
 }
