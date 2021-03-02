@@ -42,7 +42,7 @@
         <p>
             <a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">
                 <button class="btn btn-primary" 
-                        @if (Model.Ticket.Status == "Geannuleerd") { @: disabled="disabled"
+                        @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten" ) { @: disabled="disabled"
                         }>
                     Ticket aanpassen
                 </button>
