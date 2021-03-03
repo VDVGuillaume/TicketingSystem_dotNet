@@ -1,0 +1,49 @@
+﻿@model TicketingSystem.RazorWebsite.Models.Contracts.ContractIndexViewModel
+@{
+    ViewData["Title"] = "Contracten";
+}
+
+<h2>Contracten</h2>
+<h6>Status</h6>
+<form asp-action="Index">
+    <p>
+        <input asp-for="FilterInput.FilterStatusPending"/>
+        <label asp-for="FilterInput.FilterStatusPending"></label>
+        <input asp-for="FilterInput.FilterStatusActive"/>
+        <label asp-for="FilterInput.FilterStatusActive"></label>
+        <input asp-for="FilterInput.FilterStatusClosed"/>
+        <label asp-for="FilterInput.FilterStatusClosed"></label>
+        <input type="submit" value="Filter toepassen" class="btn btn-primary" />
+    </p>
+</form>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Type</th>
+            <th scope="col">Startdatum</th>
+            <th scope="col">Einddatum</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Contract", new { id = 1 }))'" style="cursor:pointer">
+            <th scope="row">1</th>
+            <td style="color:green">Lopend</td>
+            <td>2021-01-01</td>
+            <td>2021-12-31</td>
+        </tr>
+        <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Contract", new { id = 2 }))'" style="cursor:pointer">
+            <th scope="row">2</th>
+            <td style="color:sandybrown">In aanvraag</td>
+            <td>2022-01-01</td>
+            <td>2022-12-31</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <a asp-controller="Contract" asp-action="CreateContract">Nieuw contract aanvragen</a>
+            </td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,54 @@
+﻿@model TicketingSystem.RazorWebsite.Models.Contracts.ContractDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Contract</h1>
+@if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        @Html.ValidationMessage("ValidationError")
+    </div>
+}
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>ContractNummer</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.Id</p></div>
+</div>
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Type</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.Type.ToString()</p></div>
+</div>
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Status</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.Status.ToString()</p></div>
+</div>
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Startdatum</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.ValidFrom</p></div>
+</div>
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>Einddatum</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.ValidTo</p></div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <p>
+            <form asp-action="Cancel" asp-controller="Contract" asp-route-id="@Model.Contract.Id" asp-route-returnUrl="@(Url.Action("Details", "Contract", new { id = @Model.Contract.Id }))">
+                @Html.HiddenFor(x => x.Contract.Id)
+                @Html.HiddenFor(x => x.Contract.Type)
+                @Html.HiddenFor(x => x.Contract.Status)
+                @Html.HiddenFor(x => x.Contract.ValidFrom)
+                @Html.HiddenFor(x => x.Contract.ValidTo)
+
+                <input type="submit" class="btn btn-danger" value="Contract annuleren"
+                       @if (Model.Contract.Status == ContractStatus.Beëindigd) { @: disabled="disabled"
+                       } />
+            </form>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12"><p><a asp-action="Index">Terug naar lijst</a></p></div>
+</div>

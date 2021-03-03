@@ -6,8 +6,8 @@ namespace TicketingSystem.Domain.Models
 {
     public enum TicketCreationTime
     {
-        Always,
-        Weekdays
+        Altijd,
+        Weekdagen
     }
 
     public class ContractType
