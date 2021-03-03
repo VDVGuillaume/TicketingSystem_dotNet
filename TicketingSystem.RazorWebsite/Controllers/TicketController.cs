@@ -311,19 +311,22 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     DateAdded = DateTime.Now
 
                 }); ;
+
+                var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+                var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
+                model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
+
+                return View("Details", model);
+
+
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 ModelState.AddModelError("ValidationError", ex.Message);
                 return View("Details", model);
             }
 
-            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
-            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
-            model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
-
-            return View("Details",model);
-
+        
         }
     }
 

@@ -11,6 +11,10 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
        
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [TempData]
+        public string ErrorMessage { get; set; }
+
     }
 
     public class InputModel

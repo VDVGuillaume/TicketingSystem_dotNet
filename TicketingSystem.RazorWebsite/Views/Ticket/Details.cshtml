@@ -79,14 +79,10 @@
                 <label asp-for="Input.Comment">Nieuwe opmerking</label>
                 <textarea asp-for="Input.Comment" class="form-control" rows="3">
                           @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
-                          }></textarea>
-                <span asp-validation-for="Input.Comment" class="text-danger"></span>
-            </div>
-            @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
-            {
-        <div class="alert alert-danger" role="alert">
-            @Html.ValidationMessage("ValidationError")
-        </div>}
+                          }>
+                </textarea>
+                <p><span asp-validation-for="Input.Comment" class="text-danger"></span></p>
+            </div>        
             <input type="submit" value="verzend" class="btn btn-primary float-right mb-3"
                    @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
                    }>
