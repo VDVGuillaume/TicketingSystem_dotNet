@@ -18,12 +18,12 @@ namespace TicketingSystem.Domain.Models
         public List<TicketCreationType> TicketCreationTypes { get; set; }
         public TicketCreationTime TicketCreationTime { get; set; }
 
-        public ContractType(string name, bool active, TicketCreationTime ticketCreationTime, List<TicketCreationType> ticketCreationTypes = null)
+        public ContractType(string name, bool active, TicketCreationTime ticketCreationTime)
         {
             this.Name = name;
             this.Active = active;
             this.TicketCreationTime = ticketCreationTime;
-            this.TicketCreationTypes = ticketCreationTypes;
+            this.TicketCreationTypes = new List<TicketCreationType>();
         }
 
         private ContractType()

@@ -78,24 +78,24 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.Comments.Add(commentTicket1);
 
                 //Seed TicketCreationTypes
-                var ticketCreationTypeEmail = new TicketCreationType { Name = "Email" };
-                var ticketCreationTypePhone = new TicketCreationType { Name = "Telefonisch" };
-                var ticketCreationTypeApplication = new TicketCreationType { Name = "Applicatie" };
+                var ticketCreationTypeEmail = new TicketCreationType("Email");
+                var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
+                var ticketCreationTypeApplication = new TicketCreationType("Applicatie");
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);
 
                 //Seed ContractTypes
                 var contractType1 = new ContractType("All TicketCreationType Options, 24/7", true, TicketCreationTime.Always);
-                //contractType1.TicketCreationTypes.Add(ticketCreationTypeEmail);
-                //contractType1.TicketCreationTypes.Add(ticketCreationTypePhone);
-                //contractType1.TicketCreationTypes.Add(ticketCreationTypeApplication);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypePhone);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypeApplication);
                 var contractType2 = new ContractType("Email/Application, Weekdays", true, TicketCreationTime.Weekdays);
-                //contractType2.TicketCreationTypes.Add(ticketCreationTypeEmail);
-                //contractType2.TicketCreationTypes.Add(ticketCreationTypeApplication);
+                contractType2.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                contractType2.TicketCreationTypes.Add(ticketCreationTypeApplication);
                 var contractType3 = new ContractType("Email/Phone, 24/7", true, TicketCreationTime.Always);
-                //contractType2.TicketCreationTypes.Add(ticketCreationTypeEmail);
-                //contractType2.TicketCreationTypes.Add(ticketCreationTypePhone);
+                contractType3.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                contractType3.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.ContractTypes.Add(contractType1);
                 _dbContext.ContractTypes.Add(contractType2);
                 _dbContext.ContractTypes.Add(contractType3);

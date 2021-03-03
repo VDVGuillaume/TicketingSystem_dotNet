@@ -146,6 +146,13 @@ footer {
 }
 
 .btn-secondary {
+    color: #12498d;
     background-color: #c6d200;
     border-color: #a8b200;
+    font-weight: 700;
+    text-transform: uppercase;
 }
+    .btn-secondary:hover {
+        color: #c6d200;
+        background-color: #12498d;
+    }
