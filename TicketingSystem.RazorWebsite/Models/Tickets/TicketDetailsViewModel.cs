@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using TicketingSystem.Domain.Models;
@@ -8,6 +8,15 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
     public class TicketDetailsViewModel
     {
         public TicketDetailInfoViewModel Ticket { get; set; }
+       
+        [BindProperty]
+        public InputModel Input { get; set; }
+    }
+
+    public class InputModel
+    {
+        public string Comment { get; set; }
+     
     }
 
     public class TicketDetailInfoViewModel

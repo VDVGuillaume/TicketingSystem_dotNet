@@ -76,8 +76,8 @@
     <div class="col-12">
         <form>
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Nieuwe opmerking</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                <label asp-for="Input.Comment">Nieuwe opmerking</label>
+                <textarea class="form-control" rows="3"
                             @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
                             }></textarea>
             </div>
