@@ -107,6 +107,28 @@ namespace TicketingSystem.Infrastructure.Services
             return ticket;
         }
 
+        public async Task<Comment> PostComment (PostCommentCommand request)
+        {
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.Ticketnr });
+            
+            //validate
+            if (ticket == null)
+                throw new ValidationException(Constants.ERROR_TICKET_NOT_FOUND);
+            if (string.IsNullOrEmpty(request.Text))
+                throw new ValidationException(Constants.ERROR_EMPTY_COMMENT);
+
+            ValidateTicketStatus(ticket);
+
+            var comment = new Comment() { Text = request.Text, CreatedBy = request.CreatedBy, DateAdded = request.DateAdded };
+            ticket.Comments.Add(comment);
+
+            await _dbContext.SaveChangesAsync();
+
+            return comment;
+        }
+
+
+
         public async Task<Ticket> CancelTicket(CancelTicketCommand request)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.Ticketnr });
@@ -122,5 +144,10 @@ namespace TicketingSystem.Infrastructure.Services
 
             return ticket;
         }
+
+
+
+
+
     }
 }

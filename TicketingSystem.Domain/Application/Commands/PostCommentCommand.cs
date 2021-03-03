@@ -6,11 +6,11 @@ using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Domain.Application.Commands
 {
-    public class CreateCommentCommand : BaseCommand<Comment>
+    public class PostCommentCommand : BaseCommand<Comment>
     {
-        public int TicketId;
+        public int Ticketnr;
         public string Text;
         public DateTime DateAdded;
-        public ApplicationUser Client;
+        public ApplicationUser CreatedBy;
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -148,7 +149,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
-            if (ticket == null) 
+            if (ticket == null)
             {
                 return RedirectToAction("Index");
             }
@@ -165,7 +166,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
 
-            if (ticket == null) 
+            if (ticket == null)
             {
                 return RedirectToAction("Index");
             }
@@ -179,7 +180,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Customer,SupportManager")]
-        public async Task<IActionResult> Update([FromQuery]int id, TicketUpdateViewModel model)
+        public async Task<IActionResult> Update([FromQuery] int id, TicketUpdateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -211,7 +212,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 }
             }
 
-            return RedirectToAction("Details", new { id = id});
+            return RedirectToAction("Details", new { id = id });
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
@@ -276,7 +277,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
         [Authorize(Roles = "Customer,SupportManager")]
         [HttpPost]
-        public async Task<IActionResult> Cancel([FromQuery]int id, TicketDetailsViewModel model)
+        public async Task<IActionResult> Cancel([FromQuery] int id, TicketDetailsViewModel model)
         {
             try
             {
@@ -294,5 +295,36 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 return View("Details", model);
             }
         }
+
+
+        [Authorize(Roles = "Customer,SupportManager")]
+        [HttpPost]
+        public async Task<IActionResult> PostComment([FromQuery] int id, TicketDetailsViewModel model)
+        {
+
+            try
+            {
+                await _mediator.Send(new PostCommentCommand
+                {
+                    Ticketnr = id,
+                    Text = model.Input.Comment,
+                    DateAdded = DateTime.Now
+
+                }); ;
+            }
+            catch(ValidationException ex)
+            {
+                ModelState.AddModelError("ValidationError", ex.Message);
+                return View("Details", model);
+            }
+
+            var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+            var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
+            model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
+
+            return View("Details",model);
+
+        }
     }
+
 }
