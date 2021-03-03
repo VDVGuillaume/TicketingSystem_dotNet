@@ -74,20 +74,22 @@
 
 <div class="row">
     <div class="col-12">
-        <form>
+        <form asp-action="PostComment" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id">
             <div class="form-group">
                 <label asp-for="Input.Comment">Nieuwe opmerking</label>
-                <textarea class="form-control" rows="3"
-                            @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
-                            }></textarea>
+                <textarea asp-for="Input.Comment" class="form-control" rows="3">
+                          @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
+                          }></textarea>
+                <span asp-validation-for="Input.Comment" class="text-danger"></span>
             </div>
-            <a asp-area="" asp-controller="/Ticket" asp-action="AddComment" asp-route-id="@Model.Ticket.Id">
-                <button type="submit" class="btn btn-primary float-right mb-3"
-                        @if (Model.Ticket.Status == "Geannuleerd"  || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
-                        }>
-                    Verzend
-                </button>
-            </a>
+            @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
+            {
+        <div class="alert alert-danger" role="alert">
+            @Html.ValidationMessage("ValidationError")
+        </div>}
+            <input type="submit" value="verzend" class="btn btn-primary float-right mb-3"
+                   @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
+                   }>
         </form>
     </div>
     <div class="col-12">
