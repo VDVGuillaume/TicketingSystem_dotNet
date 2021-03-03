@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application;
 using TicketingSystem.Domain.Application.Commands;
+using TicketingSystem.Domain.Application.Exceptions;
 using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Domain.Models;
 using TicketingSystem.Infrastructure.Services.Interfaces;
