@@ -33,5 +33,11 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
         public string Description { get; set; }
         public string Client { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<AttachmentViewModel> Attachments { get; set; }
+    }
+
+    public class AttachmentViewModel 
+    {
+        public string Name { get; set; }
     }
 }

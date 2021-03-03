@@ -25,6 +25,9 @@ namespace TicketingSystem.RazorWebsite.Mapping
                 .ForMember(target => target.Description, y => y.MapFrom(source => source.Description))
                 .ForMember(target => target.Client, y => y.MapFrom(source => source.Client.Name))
                 .ForMember(target => target.Comments, y => y.MapFrom(source => source.Comments));
+
+            CreateMap<Attachment, AttachmentViewModel>()
+                .ForMember(target => target.Name, y => y.MapFrom(source => source.Name));
         }
     }
 }

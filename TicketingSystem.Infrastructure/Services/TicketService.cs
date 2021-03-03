@@ -24,7 +24,7 @@ namespace TicketingSystem.Infrastructure.Services
 
         private string DetermineAttachmentLocation(int ticketNr, string fileName)
         {
-            return Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\attachments\{ticketNr}", fileName);
+            return Path.Combine($@"wwwroot\attachments\{ticketNr}", fileName);
         }
 
         private void ValidateTicketStatus(Ticket ticket)
@@ -64,9 +64,9 @@ namespace TicketingSystem.Infrastructure.Services
                 {
                     if (file != null)
                     {
-                        var attachment = new Attachment(file.FileName);
                         var filePath = DetermineAttachmentLocation(ticket.Ticketnr, file.FileName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                        var attachment = new Attachment(file.FileName, filePath);
+                        Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), filePath)));
 
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {

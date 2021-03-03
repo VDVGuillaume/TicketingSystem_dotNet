@@ -6,10 +6,12 @@ namespace TicketingSystem.Domain.Models
     {
         public int AttachmentId { get; set; }
         public string Name { get; set; }
+        public string Path { get; set; }
 
-        public Attachment(string name)
+        public Attachment(string name, string path)
         {
             Name = name;
+            Path = path;
         }
     }
 }

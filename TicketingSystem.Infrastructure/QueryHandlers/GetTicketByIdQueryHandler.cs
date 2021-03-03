@@ -20,6 +20,7 @@ namespace TicketingSystem.Infrastructure.QueryHandlers
                 .Include(x => x.Type)
                 .Include(x => x.Client)
                 .Include(x => x.Comments)
+                .Include(x => x.Attachments)
                 .FirstOrDefault(x => x.Ticketnr == request.Id);
         }
     }

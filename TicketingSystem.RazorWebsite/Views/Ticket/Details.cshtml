@@ -6,9 +6,9 @@
 <h1>@Model.Ticket.Title</h1>
 @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
 {
-<div class="alert alert-danger" role="alert">
-    @Html.ValidationMessage("ValidationError")
-</div>
+    <div class="alert alert-danger" role="alert">
+        @Html.ValidationMessage("ValidationError")
+    </div>
 }
 <div class="row">
     <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
@@ -37,12 +37,27 @@
     <div class="col-lg-3 font-weight-bold"><p>Omschrijving</p></div>
     <div class="col-lg-9"><p>@Model.Ticket.Description</p></div>
 </div>
+
+
+    @for (int i = 0; i < Model.Ticket.Attachments.Count; i++)
+    {
+<div class="row">
+    <div class="col-lg-3 font-weight-bold"><p>attachment #@(i+1)</p></div>
+    <div class="col-lg-9">
+        <a  asp-controller="Ticket" asp-action="DownloadAttachment" asp-route-ticketId="@Model.Ticket.Id" asp-route-fileName="@Model.Ticket.Attachments[i].Name">
+            @Model.Ticket.Attachments[i].Name
+        </a>
+    </div>
+</div>
+    }
+
+
 <div class="row">
     <div class="col-12">
         <p>
             <a asp-area="" asp-controller="/Ticket" asp-action="Update" asp-route-id="@Model.Ticket.Id">
-                <button class="btn btn-primary" 
-                        @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten" ) { @: disabled="disabled"
+                <button class="btn btn-primary"
+                        @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
                         }>
                     Ticket aanpassen
                 </button>
