@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -301,7 +302,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> PostComment([FromQuery] int id, TicketDetailsViewModel model)
         {
-
             try
             {
                 await _mediator.Send(new PostCommentCommand
@@ -325,9 +325,19 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 ModelState.AddModelError("ValidationError", ex.Message);
                 return View("Details", model);
             }
+        }
 
-        
+        [Authorize(Roles = "Customer,SupportManager")]
+        public async Task<IActionResult> DownloadAttachment([FromQuery]int attachmentId) 
+        {
+            var attachment = await _mediator.Send(new GetAttachmentByIdQuery { AttachmentId = attachmentId });
+            if (attachment == null) 
+            {
+                ModelState.AddModelError("ValidationError", "bijlage bestaat niet.");
+                return View();
+            }
+
+            return File(attachment.VirtualPath, "APPLICATION/octet-stream", attachment.Name);
         }
     }
-
 }

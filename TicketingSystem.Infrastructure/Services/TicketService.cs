@@ -65,7 +65,7 @@ namespace TicketingSystem.Infrastructure.Services
                     if (file != null)
                     {
                         var filePath = DetermineAttachmentLocation(ticket.Ticketnr, file.FileName);
-                        var attachment = new Attachment(file.FileName, filePath);
+                        var attachment = new Attachment(file.FileName, $"attachments/{ticket.Ticketnr}/{file.FileName}");
                         Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), filePath)));
 
                         using (var fileStream = new FileStream(filePath, FileMode.Create))

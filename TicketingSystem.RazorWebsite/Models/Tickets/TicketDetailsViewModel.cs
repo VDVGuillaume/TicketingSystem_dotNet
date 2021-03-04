@@ -39,5 +39,6 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
     public class AttachmentViewModel 
     {
         public string Name { get; set; }
+        public string Id { get; set; }
     }
 }

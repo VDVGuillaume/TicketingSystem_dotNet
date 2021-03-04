@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TicketingSystem.Domain.Models;
 using TicketingSystem.RazorWebsite.Models.Tickets;
 
@@ -27,11 +23,8 @@ namespace TicketingSystem.RazorWebsite.Mapping
                 .ForMember(target => target.Comments, y => y.MapFrom(source => source.Comments));
 
             CreateMap<Attachment, AttachmentViewModel>()
-                .ForMember(target => target.Name, y => y.MapFrom(source => source.Name));
+                .ForMember(target => target.Name, y => y.MapFrom(source => source.Name))
+                .ForMember(target => target.Id, y => y.MapFrom(source => source.AttachmentId));
         }
     }
 }
-/*
-public string AssignedEngineer { get; set; }
-public string Type { get; set; }
-*/
