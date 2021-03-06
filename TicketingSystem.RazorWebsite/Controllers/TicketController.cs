@@ -311,8 +311,9 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 {
                     Ticketnr = id,
                     Text = model.Input.Comment,
-                    DateAdded = DateTime.Now
-
+                    DateAdded = DateTime.Now,
+                    CreatedBy = User.Identity.Name
+                    
                 }); ;            
 
             }

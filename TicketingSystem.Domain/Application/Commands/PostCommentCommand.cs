@@ -11,6 +11,6 @@ namespace TicketingSystem.Domain.Application.Commands
         public int Ticketnr;
         public string Text;
         public DateTime DateAdded;
-        public ApplicationUser CreatedBy;
+        public string CreatedBy;
     }
 }
