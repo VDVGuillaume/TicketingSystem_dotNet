@@ -143,29 +143,68 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View(model);
         }
 
+        private async Task<List<SelectListItem>> GetContractTypes(string selectedValue = null)
+        {
+            var contractTypes = await _mediator.Send(new GetContractTypesQuery());
+            var result = new List<SelectListItem>();
+            foreach (var contractType in contractTypes)
+            {
+                result.Add(new SelectListItem { Value = contractType.Name, Text = contractType.Name, Selected = contractType.Name == selectedValue });
+            }
+
+            return result;
+        }
+
+
+        [Authorize(Roles = "Customer,SupportManager")]
         [HttpGet]
-        public IActionResult Create() 
+        public async Task<IActionResult> Create()
         {
             var model = new ContractCreateViewModel();
 
-            //TODO get contract types and convert them to selectlistitems
-            model.ContractTypes = new List<SelectListItem>();
+            model.ContractTypes = await GetContractTypes();
 
             return View(model);
         }
 
+        [Authorize(Roles = "Customer,SupportManager")]
         [HttpPost]
-        public IActionResult Create(ContractCreateViewModel model)
+        public async Task<IActionResult> Create(ContractCreateViewModel model)
         {
-            //TODO remove this after httpget has implemented fetching of contract types
-            model.ContractTypes = new List<SelectListItem>();
 
-            if (ModelState.IsValid) 
+
+            Client client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
+           
+
+            if (ModelState.IsValid)
             {
-                // code goes here...
+                if (client == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Client is required.");
+                    return View(model);
+                }
+
+                try
+                {
+                    await _mediator.Send(new CreateContractCommand
+                    {
+                        Status = ContractStatus.InAanvraag,
+                        Type = model.Input.Type,
+                        Client = client,
+                        ValidFrom = model.Input.StartDate,
+                        ValidTo = model.Input.EndDate
+
+                    }); ;
+                }
+                catch (ValidationException ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
+                }
             }
 
-            return View(model);
+            return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Contract/Index"));
         }
+
     }
 }
