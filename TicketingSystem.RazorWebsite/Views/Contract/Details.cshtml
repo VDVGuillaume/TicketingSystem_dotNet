@@ -24,11 +24,11 @@
 </div>
 <div class="row">
     <div class="col-lg-3 font-weight-bold"><p>Startdatum</p></div>
-    <div class="col-lg-9"><p>@Model.Contract.ValidFrom</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.ValidFrom.ToString("dd/MM/yyyy")</p></div>
 </div>
 <div class="row">
     <div class="col-lg-3 font-weight-bold"><p>Einddatum</p></div>
-    <div class="col-lg-9"><p>@Model.Contract.ValidTo</p></div>
+    <div class="col-lg-9"><p>@Model.Contract.ValidTo.ToString("dd/MM/yyyy")</p></div>
 </div>
 
 <div class="row">
