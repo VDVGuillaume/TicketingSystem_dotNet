@@ -15,6 +15,9 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
             builder.HasOne(t => t.Type)
                 .WithMany()
                 .IsRequired(true);
+
+            builder.HasOne(t => t.Client)
+                .WithMany(t => t.Contracts);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace TicketingSystem.Domain.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public List<Contract> Contracts { get; set; }
 
         public Client(string name)
         {

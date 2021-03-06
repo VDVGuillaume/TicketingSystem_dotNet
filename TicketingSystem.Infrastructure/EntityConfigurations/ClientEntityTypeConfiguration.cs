@@ -14,7 +14,7 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
             builder.ToTable("Clients");
 
             builder.HasKey(t => t.Id);
+            builder.HasMany(t => t.Contracts).WithOne(t => t.Client);
         }
-
     }
 }
