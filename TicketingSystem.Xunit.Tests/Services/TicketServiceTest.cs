@@ -159,7 +159,7 @@ namespace TicketingSystem.Xunit.Tests.Services
                         It.IsAny<CancellationToken>()))
                         .Returns(Task.FromResult(contract));
 
-            //act && assert
+            //act
             var createdTicket = await _service.CreateTicket(command);
             var ticketInDB = await _dbContext.Tickets.FirstOrDefaultAsync(x => x.Ticketnr == createdTicket.Ticketnr);
 
