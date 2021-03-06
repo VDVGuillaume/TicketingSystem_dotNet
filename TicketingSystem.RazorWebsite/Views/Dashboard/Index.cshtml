@@ -103,20 +103,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="pointer-event" onclick="location.href = 'Contracts/Details?contractID=1'" style="cursor:pointer">
-                        <th scope="row">1</th>
-                        <td>???</td>
-                        <td>2020-01-01</td>
-                        <td>2021-12-31</td>
-                        <td class="text-success">Lopend</td>
-                    </tr>
-                    <tr class="pointer-event" onclick="location.href = 'Contracts/Details?contractID=2'" style="cursor:pointer">
-                        <th scope="row">2</th>
-                        <td>???</td>
-                        <td>2022-01-01</td>
-                        <td>2023-12-31</td>
-                        <td class="text-warning">In Behandeling</td>
-                    </tr>
+                    @if (Model.ActiveContracts.Count > 0)
+                    {
+                        @foreach (var contract in Model.ActiveContracts)
+                        {
+                            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Contract", new { id = @contract.Id }))'" style="cursor:pointer">
+                                <th scope="row">@contract.Id</th>
+                                <td>@contract.Type</td>
+                                <td>@contract.ValidFrom.ToString("dd/MM/yyyy")</td>
+                                <td>@contract.ValidTo.ToString("dd/MM/yyyy")</td>
+                                <td style="color:@contract.StatusColor">@contract.Status</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="5">Er zijn geen actieve contracten...</td></tr>
+                    }
                 </tbody>
             </table>
         </div>

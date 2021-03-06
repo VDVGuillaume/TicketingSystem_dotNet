@@ -11,6 +11,7 @@ using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Domain.Models;
 using TicketingSystem.Domain.ViewModels;
 using TicketingSystem.RazorWebsite.Models;
+using TicketingSystem.RazorWebsite.Models.Contracts;
 using TicketingSystem.RazorWebsite.Models.Tickets;
 
 namespace TicketingSystem.RazorWebsite.Controllers
@@ -40,23 +41,29 @@ namespace TicketingSystem.RazorWebsite.Controllers
         public async Task<IActionResult> Index()
         {
             IQueryable<Ticket> tickets;
+            IQueryable<Contract> contracts;
+
             if (User.IsInRole("SupportManager"))
             {
                 tickets = await _mediator.Send(new GetTicketsQuery());
+                contracts = await _mediator.Send(new GetContractsQuery());
             }
             else
             {
                 var client = await _mediator.Send(new GetClientByUserQuery {Username = User.Identity.Name});
                 tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = client.Id});
+                contracts = await _mediator.Send(new GetContractsByClientIdQuery { ClientId = client.Id });
             }
 
             var openTickets = tickets.Where(x => x.Status == TicketStatus.Aangemaakt || x.Status == TicketStatus.InBehandeling).Take(10);
             var closedTickets = tickets.Where(x => x.Status == TicketStatus.Afgehandeld || x.Status == TicketStatus.Geannuleerd).OrderByDescending(x => x.Ticketnr).Take(10);
+            var activeContracts = contracts.Where(x => x.Status == ContractStatus.InAanvraag || x.Status == ContractStatus.Lopend).OrderBy(x => x.ValidFrom).Take(10);
 
             var model = new DashboardViewModel 
             {
                 OpenTickets = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(openTickets.ToList()),
                 ClosedTickets = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(closedTickets.ToList()),
+                ActiveContracts = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(activeContracts.ToList())
             };
 
             return View(model);
