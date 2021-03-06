@@ -63,14 +63,14 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);
                 
                 //Seed ContractTypes
-                var contractType1 = new ContractType("All TicketCreationType Options, 24/7", true, TicketCreationTime.Altijd);
+                var contractType1 = new ContractType("Alle creatie types, 24/7", true, TicketCreationTime.Altijd);
                 contractType1.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 contractType1.TicketCreationTypes.Add(ticketCreationTypePhone);
                 contractType1.TicketCreationTypes.Add(ticketCreationTypeApplication);
-                var contractType2 = new ContractType("Email/Application, Weekdays", true, TicketCreationTime.Weekdagen);
+                var contractType2 = new ContractType("Email/Applicatie, Weekdagen", true, TicketCreationTime.Weekdagen);
                 contractType2.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 contractType2.TicketCreationTypes.Add(ticketCreationTypeApplication);
-                var contractType3 = new ContractType("Email/Phone, 24/7", true, TicketCreationTime.Altijd);
+                var contractType3 = new ContractType("Email/Telefonisch, 24/7", true, TicketCreationTime.Altijd);
                 contractType3.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 contractType3.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.ContractTypes.Add(contractType1);
