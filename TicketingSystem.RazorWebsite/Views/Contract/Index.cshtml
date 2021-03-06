@@ -23,25 +23,31 @@
             <th scope="col">Type</th>
             <th scope="col">Startdatum</th>
             <th scope="col">Einddatum</th>
+            <th scope="col">Status</th>
         </tr>
     </thead>
     <tbody>
-        <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Contract", new { id = 1 }))'" style="cursor:pointer">
-            <th scope="row">1</th>
-            <td style="color:green">Lopend</td>
-            <td>2021-01-01</td>
-            <td>2021-12-31</td>
-        </tr>
-        <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Contract", new { id = 2 }))'" style="cursor:pointer">
-            <th scope="row">2</th>
-            <td style="color:sandybrown">In aanvraag</td>
-            <td>2022-01-01</td>
-            <td>2022-12-31</td>
-        </tr>
+        @if (Model.Contracts.Count > 0)
+        {
+            @foreach (var contract in Model.Contracts)
+            {
+            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Contract", new { id = @contract.Id }))'" style="cursor:pointer">
+                <th scope="row">@contract.Id</th>
+                <td>@contract.Type</td>
+                <td>@contract.ValidFrom.ToString("dd/MM/yyyy")</td>
+                <td>@contract.ValidTo.ToString("dd/MM/yyyy")</td>
+                <td style="color:@contract.StatusColor">@contract.Status</td>
+            </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="5">Er zijn geen contracten.</td></tr>
+        }
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4">
+            <td colspan="5">
                 <a asp-controller="Contract" asp-action="Create">Nieuw contract aanvragen</a>
             </td>
         </tr>
