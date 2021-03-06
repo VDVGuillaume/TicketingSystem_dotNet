@@ -34,8 +34,10 @@ namespace TicketingSystem.Infrastructure
                 //Seed roles
                 var customerRole = new IdentityRole("Customer");
                 var supportManagerRole = new IdentityRole("SupportManager");
+                var technicianRole = new IdentityRole("Technician");
                 await _roleManager.CreateAsync(customerRole);
                 await _roleManager.CreateAsync(supportManagerRole);
+                await _roleManager.CreateAsync(technicianRole);
 
                 //Seed users
                 var customerUser = new ApplicationUser { UserName = "customer", Email = "customer@gmail.be", Client = client1 };
@@ -45,6 +47,14 @@ namespace TicketingSystem.Infrastructure
                 var supportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
+
+                var technicianUser1 = new ApplicationUser { UserName = "technician", Email = "technician@gmail.be" };
+                await _userManager.CreateAsync(technicianUser1, "P@ssword1");
+                await _userManager.AddToRoleAsync(technicianUser1, "Technician");
+
+                var technicianUser2 = new ApplicationUser { UserName = "technician2", Email = "technician2@gmail.be" };
+                await _userManager.CreateAsync(technicianUser2, "P@ssword1");
+                await _userManager.AddToRoleAsync(technicianUser2, "Technician");
 
                 //Seed ticketTypes
                 var ticketTypeBug = new TicketType { Name = "Bug", RequiredSLA = 1 };

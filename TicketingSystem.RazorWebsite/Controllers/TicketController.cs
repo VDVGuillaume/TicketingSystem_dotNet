@@ -87,6 +87,18 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return result;
         }
 
+        private async Task<List<SelectListItem>> GetEngineerUsers(string selectedValue = null)
+        {
+            var engineerUsers = await _mediator.Send(new GetEngineerUsersQuery());
+            var result = new List<SelectListItem>();
+            foreach (var engineerUser in engineerUsers)
+            {
+                result.Add(new SelectListItem { Value = engineerUser.UserName, Text = engineerUser.UserName, Selected = engineerUser.UserName == selectedValue });
+            }
+
+            return result;
+        }
+
         [HttpGet]
         [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Index([FromQuery] string statusFilter)
@@ -186,6 +198,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
             var model = new TicketUpdateViewModel { Ticket = ticketsDetailsDto };
             model.TicketTypes = await GetTicketTypes(ticket.Type.Name);
+            model.EngineerUsers = await GetEngineerUsers(ticket.AssignedEngineer?.UserName);
 
             return View(model);
         }
@@ -205,7 +218,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
                             Ticketnr = id,
                             Title = model.Input.Title,
                             Description = model.Input.Description,
-                            Type = model.Input.Type
+                            Type = model.Input.Type,
+                            AssignedEngineer = model.Input.AssignedEngineer
                         });
                     }
                     else

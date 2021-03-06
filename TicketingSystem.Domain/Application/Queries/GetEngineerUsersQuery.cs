@@ -3,7 +3,7 @@ using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Domain.Application.Queries
 {
-    public class GetTechnicianUsersQuery : BaseQuery<IQueryable<ApplicationUser>>
+    public class GetEngineerUsersQuery : BaseQuery<IQueryable<ApplicationUser>>
     {
     }
 }

@@ -16,6 +16,9 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
             builder.HasOne(t => t.Client)
                 .WithMany();
 
+            builder.HasOne(t => t.AssignedEngineer)
+                .WithMany();
+
             builder.HasMany(t => t.Comments)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);

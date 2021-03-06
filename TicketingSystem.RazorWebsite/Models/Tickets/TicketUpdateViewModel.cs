@@ -23,12 +23,15 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 
         public List<SelectListItem> TicketTypes { get; set; }
 
+        public List<SelectListItem> EngineerUsers { get; set; }
+
         public class InputModel
         {
             public string Title { get; set; }
             [Required]
             public string Description { get; set; }
             public string Type { get; set; }
+            public string AssignedEngineer { get; set; }
         }
     }
 }

@@ -52,6 +52,23 @@
             <div class="col-lg-9"><p>@Model.Ticket.Client</p></div>
         </div>
         <div class="row">
+            <div class="col-lg-3 font-weight-bold"><p><label asp-for="Input.AssignedEngineer">Verantwoordelijke</label></p></div>
+            <div class="col-lg-9">
+                <p>
+                    <select asp-for="Input.AssignedEngineer" asp-items="Model.EngineerUsers" class="form-control">
+                        @if (@Model.Ticket.AssignedEngineer == null)
+                        {
+                            <option selected value=""></option>
+                        }
+                        else
+                        {
+                            @Model.Ticket.AssignedEngineer
+                        }
+                    </select>
+                </p>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-3 font-weight-bold"><p>Creatiedatum</p></div>
             <div class="col-lg-9"><p>@Model.Ticket.DateAdded</p></div>
         </div>

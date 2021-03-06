@@ -25,7 +25,7 @@ namespace TicketingSystem.Domain.Models
         public string Description { get; set; }
         [Required]
         public Client Client { get; set; }
-        public string AssignedEngineer { get; set; }
+        public ApplicationUser AssignedEngineer { get; set; }
         [Required]
         public TicketType Type { get; set; }
         public List<Comment> Comments { get; set; }

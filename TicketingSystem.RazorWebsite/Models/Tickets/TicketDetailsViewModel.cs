@@ -32,6 +32,7 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
         public DateTime DateAdded { get; set; }
         public string Description { get; set; }
         public string Client { get; set; }
+        public string AssignedEngineer { get; set; }
         public List<Comment> Comments { get; set; }
         public List<AttachmentViewModel> Attachments { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -98,6 +99,7 @@ namespace TicketingSystem.Infrastructure.Services
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.Ticketnr });
             var ticketType = await _mediator.Send(new GetTicketTypeByNameQuery { Name = request.Type });
+            var assignedEngineer = await _mediator.Send(new GetUserByUsernameQuery { Username = request.AssignedEngineer });
 
             //validate
             if (ticket == null)
@@ -105,6 +107,7 @@ namespace TicketingSystem.Infrastructure.Services
             if (ticketType == null && !string.IsNullOrEmpty(request.Type))
                 throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
             ValidateTicketStatus(ticket);
+            //if (assignedEngineer.IsInRole("Technician"))
 
             if (!string.IsNullOrEmpty(request.Title))
                 ticket.Title = request.Title;
@@ -112,6 +115,8 @@ namespace TicketingSystem.Infrastructure.Services
                 ticket.Type = ticketType;
             if (!string.IsNullOrEmpty(request.Description))
                 ticket.Description = request.Description;
+            if (!string.IsNullOrEmpty(request.AssignedEngineer))
+                ticket.AssignedEngineer = assignedEngineer;
 
             await _dbContext.SaveChangesAsync();
 
@@ -138,8 +143,6 @@ namespace TicketingSystem.Infrastructure.Services
             return comment;
         }
 
-
-
         public async Task<Ticket> CancelTicket(CancelTicketCommand request)
         {
             var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = request.Ticketnr });
@@ -155,10 +158,5 @@ namespace TicketingSystem.Infrastructure.Services
 
             return ticket;
         }
-
-
-
-
-
     }
 }
