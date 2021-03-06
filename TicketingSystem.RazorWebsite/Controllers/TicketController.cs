@@ -302,6 +302,9 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> PostComment([FromQuery] int id, TicketDetailsViewModel model)
         {
+
+          
+
             try
             {
                 await _mediator.Send(new PostCommentCommand
@@ -310,21 +313,21 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     Text = model.Input.Comment,
                     DateAdded = DateTime.Now
 
-                }); ;
-
-                var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
-                var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
-                model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };
-
-                return View("Details", model);
-
+                }); ;            
 
             }
             catch (ValidationException ex)
             {
+               
                 ModelState.AddModelError("ValidationError", ex.Message);
-                return View("Details", model);
             }
+            finally
+            {
+                var ticket = await _mediator.Send(new GetTicketByIdQuery { Id = id });
+                var ticketsDetailsDto = _mapper.Map<Ticket, TicketDetailInfoViewModel>((Ticket)ticket);
+                model = new TicketDetailsViewModel { Ticket = ticketsDetailsDto };                
+            }
+            return View("Details", model);
         }
 
         [Authorize(Roles = "Customer,SupportManager")]

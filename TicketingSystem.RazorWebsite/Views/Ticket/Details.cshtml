@@ -4,12 +4,7 @@
 }
 
 <h1>@Model.Ticket.Title</h1>
-@if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
-{
-    <div class="alert alert-danger" role="alert">
-        @Html.ValidationMessage("ValidationError")
-    </div>
-}
+
 <div class="row">
     <div class="col-lg-3 font-weight-bold"><p>TicketNummer</p></div>
     <div class="col-lg-9"><p>@Model.Ticket.Id</p></div>
@@ -97,7 +92,13 @@
                           }>
                 </textarea>
                 <p><span asp-validation-for="Input.Comment" class="text-danger"></span></p>
-            </div>        
+            </div>
+            @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
+             {
+                <div class="alert alert-danger" role="alert">
+                    @Html.ValidationMessage("ValidationError")
+                </div>
+             }
             <input type="submit" value="verzend" class="btn btn-primary float-right mb-3"
                    @if (Model.Ticket.Status == "Geannuleerd" || Model.Ticket.Status == "Afgesloten") { @: disabled="disabled"
                    }>
