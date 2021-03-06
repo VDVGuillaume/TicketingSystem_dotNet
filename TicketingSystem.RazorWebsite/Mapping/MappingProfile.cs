@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TicketingSystem.Domain.Models;
 using TicketingSystem.RazorWebsite.Models.Tickets;
+using TicketingSystem.RazorWebsite.Models.Contracts;
 
 namespace TicketingSystem.RazorWebsite.Mapping
 {
@@ -25,6 +26,11 @@ namespace TicketingSystem.RazorWebsite.Mapping
             CreateMap<Attachment, AttachmentViewModel>()
                 .ForMember(target => target.Name, y => y.MapFrom(source => source.Name))
                 .ForMember(target => target.Id, y => y.MapFrom(source => source.AttachmentId));
+
+            CreateMap<Contract, ContractBaseInfoViewModel>()
+                .ForMember(target => target.Id, y => y.MapFrom(source => source.ContractId))
+                .ForMember(target => target.Status, y => y.MapFrom(source => source.Status.ToString()))
+                .ForMember(target => target.Type, y => y.MapFrom(source => source.Type.Name));
         }
     }
 }

@@ -78,7 +78,7 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.ContractTypes.Add(contractType3);
 
                 //Seed Contracts
-                var contract1 = new Contract(contractType1, ContractStatus.Beëindigd, new DateTime(2020, 01, 01), new DateTime(2020, 12, 31), client1);
+                var contract1 = new Contract(contractType2, ContractStatus.Beëindigd, new DateTime(2020, 01, 01), new DateTime(2020, 12, 31), client1);
                 var contract2 = new Contract(contractType1, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client1);
                 var contract3 = new Contract(contractType1, ContractStatus.InAanvraag, new DateTime(2022, 01, 01), new DateTime(2022, 12, 31), client1);
                 var contract4 = new Contract(contractType2, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client2);
