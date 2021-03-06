@@ -48,7 +48,7 @@
             {
                 <div class="form-group">
                     <label asp-for="Input.ClientName"></label>
-                    <input asp-for="Input.ClientName" class="form-control" />
+                    <select asp-for="Input.ClientName" asp-items="Model.Clients" class="form-control"></select>
                     <span asp-validation-for="Input.ClientName" class="text-danger"></span>
                 </div>
             }

@@ -76,6 +76,17 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return result;
         }
 
+        private async Task<List<SelectListItem>> GetClients(string selectedValue = null)
+        {
+            var clients = await _mediator.Send(new GetClientsQuery());
+            var result = new List<SelectListItem>();
+            foreach (var client in clients)
+            {
+                result.Add(new SelectListItem { Value = client.Name, Text = client.Name, Selected = client.Name == selectedValue });
+            }
+            return result;
+        }
+
         [HttpGet]
         [Authorize(Roles = "Customer,SupportManager")]
         public async Task<IActionResult> Index([FromQuery] string statusFilter)
@@ -223,6 +234,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var model = new TicketViewModel();
 
             model.TicketTypes = await GetTicketTypes();
+            model.Clients = await GetClients();
 
             return View(model);
         }

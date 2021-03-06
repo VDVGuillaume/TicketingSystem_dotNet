@@ -18,6 +18,8 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 
         public List<SelectListItem> TicketTypes { get; set; }
 
+        public List<SelectListItem> Clients { get; set; }
+
         public class InputModel
         {
             [Required]
