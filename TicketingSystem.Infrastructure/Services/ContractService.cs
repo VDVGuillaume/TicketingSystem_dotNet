@@ -24,10 +24,28 @@ namespace TicketingSystem.Infrastructure.Services
             _dbContext = dbContext ?? throw new ArgumentNullException();
         }
 
-
-        public Task<Contract> CancelContract(CancelContractCommand request)
+        private void ValidateContractStatus(Contract contract)
         {
-            throw new NotImplementedException();
+            if (contract.Status == ContractStatus.Beëindigd)
+            {
+                throw new ValidationException(Constants.ERROR_CONTRACT_STATUS_CLOSED);
+            }
+        }
+
+        public async Task<Contract> CancelContract(CancelContractCommand request)
+        {
+            var contract = await _mediator.Send(new GetContractByIdQuery { Id = request.ContractId });
+
+            //validate
+            if (contract == null)
+                throw new ValidationException(Constants.ERROR_CONTRACT_NOT_FOUND);
+            ValidateContractStatus(contract);
+
+            contract.Status = ContractStatus.Beëindigd;
+
+            await _dbContext.SaveChangesAsync();
+
+            return contract;
         }
 
         public async Task<Contract> CreateContract(CreateContractCommand request)
