@@ -49,8 +49,15 @@ namespace TicketingSystem.Infrastructure.Services
                 throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
             }
 
+            // get active contract
+            var contract = await _mediator.Send(new GetActiveContractByClientQuery { Client = request.Client});
+            if (contract == null) 
+            {
+                throw new ValidationException(Constants.ERROR_ACTIVE_CONTRACT_NOT_FOUND);
+            }
+
             // create new ticket
-            var ticket = new Ticket(request.Title, request.Description, ticketType, request.Client);
+            var ticket = new Ticket(request.Title, request.Description, ticketType, request.Client, contract);
             await _dbContext.Tickets.AddAsync(ticket);
 
             // save ticket

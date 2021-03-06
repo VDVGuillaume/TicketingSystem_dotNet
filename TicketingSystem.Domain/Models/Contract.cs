@@ -19,6 +19,7 @@ namespace TicketingSystem.Domain.Models
         public DateTime ValidFrom { get; set; }
         public DateTime ValidTo { get; set; }
         public Client Client { get; set; }
+        public List<Ticket> Tickets { get; set; }
 
         public Contract(ContractType type, ContractStatus status, DateTime validFrom, DateTime validTo, Client client)
         {

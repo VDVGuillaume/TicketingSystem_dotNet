@@ -53,30 +53,7 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.TicketTypes.Add(ticketTypeBug);
                 _dbContext.TicketTypes.Add(ticketTypeChangeRequest);
                 _dbContext.TicketTypes.Add(ticketTypeSupport);
-
-                //Seed tickets
-                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1);
-                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1);
-                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1);
-
-                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1) { Status = TicketStatus.InBehandeling};
-                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1) { Status = TicketStatus.Afgehandeld };
-                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1) { Status = TicketStatus.Geannuleerd };
-
-                //Seed Comments 
-                var commentTicket1 = new Comment {Text = "Dit is een korte comment",CreatedBy=customerUser.UserName,DateAdded= DateTime.Today};
-                var commentTicket2 = new Comment { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum ", CreatedBy = customerUser.UserName, DateAdded = DateTime.Today };
-                ticketBugInProgress.Comments.Add(commentTicket1);
-                ticketBugInProgress.Comments.Add(commentTicket2);
-                
-                _dbContext.Tickets.Add(ticketSupportCreated);
-                _dbContext.Tickets.Add(ticketChangeRequestCreated);
-                _dbContext.Tickets.Add(ticketBugCreated);
-                _dbContext.Tickets.Add(ticketBugInProgress);
-                _dbContext.Tickets.Add(ticketBugClosed);
-                _dbContext.Tickets.Add(ticketBugCancelled);
-                _dbContext.Comments.Add(commentTicket1);
-
+               
                 //Seed TicketCreationTypes
                 var ticketCreationTypeEmail = new TicketCreationType("Email");
                 var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
@@ -84,7 +61,7 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);
-
+                
                 //Seed ContractTypes
                 var contractType1 = new ContractType("All TicketCreationType Options, 24/7", true, TicketCreationTime.Altijd);
                 contractType1.TicketCreationTypes.Add(ticketCreationTypeEmail);
@@ -109,6 +86,29 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.Contracts.Add(contract2);
                 _dbContext.Contracts.Add(contract3);
                 _dbContext.Contracts.Add(contract4);
+
+                //Seed tickets
+                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1, contract2);
+                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1, contract2);
+                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1, contract2);
+
+                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.InBehandeling};
+                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Afgehandeld };
+                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Geannuleerd };
+
+                //Seed Comments 
+                var commentTicket1 = new Comment {Text = "Dit is een korte comment",CreatedBy=customerUser.UserName,DateAdded= DateTime.Today};
+                var commentTicket2 = new Comment { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum ", CreatedBy = customerUser.UserName, DateAdded = DateTime.Today };
+                ticketBugInProgress.Comments.Add(commentTicket1);
+                ticketBugInProgress.Comments.Add(commentTicket2);
+                
+                _dbContext.Tickets.Add(ticketSupportCreated);
+                _dbContext.Tickets.Add(ticketChangeRequestCreated);
+                _dbContext.Tickets.Add(ticketBugCreated);
+                _dbContext.Tickets.Add(ticketBugInProgress);
+                _dbContext.Tickets.Add(ticketBugClosed);
+                _dbContext.Tickets.Add(ticketBugCancelled);
+                _dbContext.Comments.Add(commentTicket1);
 
                 _dbContext.SaveChanges();
             }

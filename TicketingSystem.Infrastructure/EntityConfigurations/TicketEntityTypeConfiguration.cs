@@ -20,6 +20,9 @@ namespace TicketingSystem.Infrastructure.EntityConfigurations
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(t => t.Contract)
+                .WithMany(t => t.Tickets)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
