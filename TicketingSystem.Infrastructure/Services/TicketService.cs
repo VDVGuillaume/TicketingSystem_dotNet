@@ -42,6 +42,10 @@ namespace TicketingSystem.Infrastructure.Services
 
         public async Task<Ticket> CreateTicket(CreateTicketCommand request)
         {
+            // validate client
+            if (request.Client == null)
+                throw new ValidationException(Constants.ERROR_CLIENT_NOT_FOUND);
+
             // validate if ticketType is valid input
             var ticketType = await _mediator.Send(new GetTicketTypeByNameQuery { Name = request.Type });
             if (ticketType == null)

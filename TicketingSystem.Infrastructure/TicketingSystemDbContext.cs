@@ -22,6 +22,11 @@ namespace TicketingSystem.Infrastructure
             
         }
 
+        public TicketingSystemDbContext()
+        {
+
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             base.OnModelCreating(modelBuilder);
