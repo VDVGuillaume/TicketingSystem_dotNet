@@ -238,7 +238,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
                 if (client == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Client not found.");
+                    ModelState.AddModelError(string.Empty, "Klant is niet gevonden.");
                     return View(model);
                 }
             }
@@ -251,7 +251,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             {
                 if (client == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Client is required.");
+                    ModelState.AddModelError(string.Empty, "Klant is verplicht.");
                     return View(model);
                 }
 
