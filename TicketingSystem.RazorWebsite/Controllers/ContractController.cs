@@ -32,5 +32,30 @@ namespace TicketingSystem.RazorWebsite.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Create() 
+        {
+            var model = new ContractCreateViewModel();
+
+            //TODO get contract types and convert them to selectlistitems
+            model.ContractTypes = new List<SelectListItem>();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(ContractCreateViewModel model)
+        {
+            //TODO remove this after httpget has implemented fetching of contract types
+            model.ContractTypes = new List<SelectListItem>();
+
+            if (ModelState.IsValid) 
+            {
+                // code goes here...
+            }
+
+            return View(model);
+        }
     }
 }
