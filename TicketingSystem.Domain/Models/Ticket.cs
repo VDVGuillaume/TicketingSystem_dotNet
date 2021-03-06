@@ -33,7 +33,7 @@ namespace TicketingSystem.Domain.Models
         [Required]
         public Contract Contract { get; set; }
 
-        public Ticket(string title, string description, TicketType type, Client client, Contract contract)
+        public Ticket(string title, string description, TicketType type, Client client, Contract contract, ApplicationUser assignedEngineer = null)
         {
             this.Title = title;
             this.Description = description;
@@ -43,6 +43,7 @@ namespace TicketingSystem.Domain.Models
             Comments = new List<Comment>();
             Attachments = new List<Attachment>();
             Contract = contract ?? throw new ArgumentNullException();
+            this.AssignedEngineer = assignedEngineer;
         }
 
         private Ticket()

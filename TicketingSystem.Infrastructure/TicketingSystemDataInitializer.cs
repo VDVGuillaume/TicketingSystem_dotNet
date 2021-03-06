@@ -99,10 +99,10 @@ namespace TicketingSystem.Infrastructure
 
                 //Seed tickets
                 var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1, contract2);
-                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1, contract2);
+                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1, contract2, technicianUser1);
                 var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1, contract2);
 
-                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.InBehandeling};
+                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1, contract2, technicianUser2) { Status = TicketStatus.InBehandeling};
                 var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Afgehandeld };
                 var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Geannuleerd };
 
