@@ -21,7 +21,7 @@
 
     @if (User.IsInRole("SupportManager"))
     {
-        <h1><input asp-for="Input.Title" class="form-control" value="@Model.Ticket.Title" /></h1>
+        <p><input asp-for="Input.Title" class="form-control input-title" value="@Model.Ticket.Title" /></p>
 
         @if (ViewData.ModelState["ValidationError"]?.Errors.Count() > 0)
         {

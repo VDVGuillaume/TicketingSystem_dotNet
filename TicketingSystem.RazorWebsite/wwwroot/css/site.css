@@ -90,6 +90,13 @@ body {
     pointer-events: none;
 }
 
+.input-title {
+    color: #12498d;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
 
 /* ACTEMIUM STYLE */
 body {
