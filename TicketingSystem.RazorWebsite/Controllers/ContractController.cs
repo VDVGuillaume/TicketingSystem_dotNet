@@ -80,10 +80,10 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
             var filteredContracts = contracts.Where(x => contractStatusFilter.Contains(x.Status));
 
-            var ticketsIndexDto = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(filteredContracts.ToList());
+            var contractsIndexDto = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(filteredContracts.ToList());
             var model = new ContractIndexViewModel
             {
-                Contracts = ticketsIndexDto,
+                Contracts = contractsIndexDto,
                 FilterInput = new FilterInputModel
                 {
                     FilterStatusPending = contractStatusFilter.Contains(ContractStatus.InAanvraag),
@@ -206,5 +206,25 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Contract/Index"));
         }
 
+        [Authorize(Roles = "Customer,SupportManager")]
+        [HttpPost]
+        public async Task<IActionResult> Cancel([FromQuery] int id, ContractDetailsViewModel model)
+        {
+            try
+            {
+                var contract = await _mediator.Send(new CancelContractCommand
+                {
+                    ContractId = id
+                });
+
+                model.Contract = _mapper.Map<Contract, ContractDetailInfoViewModel>(contract);
+                return View("Details", model);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError("ValidationError", ex.Message);
+                return View("Details", model);
+            }
+        }
     }
 }
