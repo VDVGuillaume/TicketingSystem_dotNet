@@ -126,9 +126,21 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View(model);
         }
 
-        public IActionResult Details()
+        [HttpGet]
+        [Authorize(Roles = "Customer,SupportManager")]
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var contract = await _mediator.Send(new GetContractByIdQuery { Id = id });
+
+            if (contract == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var contractDetailsDto = _mapper.Map<Contract, ContractDetailInfoViewModel>(contract);
+            var model = new ContractDetailsViewModel { Contract = contractDetailsDto };
+
+            return View(model);
         }
 
         [HttpGet]
