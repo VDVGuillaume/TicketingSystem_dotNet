@@ -171,10 +171,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ContractCreateViewModel model)
         {
-
-
             Client client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
-           
 
             if (ModelState.IsValid)
             {
@@ -201,9 +198,11 @@ namespace TicketingSystem.RazorWebsite.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message);
                     return View(model);
                 }
+
+                return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Contract/Index"));
             }
 
-            return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Contract/Index"));
+            return View(model);
         }
 
         [Authorize(Roles = "Customer,SupportManager")]
