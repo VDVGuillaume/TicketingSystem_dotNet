@@ -46,9 +46,8 @@ namespace TicketingSystem.Domain.Models
             this.AssignedEngineer = assignedEngineer;
         }
 
-        private Ticket()
+        public Ticket()
         {
-
         }
     }
 }

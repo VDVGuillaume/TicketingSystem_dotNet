@@ -167,13 +167,30 @@ namespace TicketingSystem.Xunit.Tests.Services
             _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
             _mediatorMock.Verify(x => x.Send(It.Is<GetActiveContractByClientQuery>(y => y.Client == client), It.IsAny<CancellationToken>()), Times.Once());
 
-               
+            
             Assert.NotNull(ticketInDB);
             Assert.Equal(contract, ticketInDB.Contract);
             Assert.Equal(description, ticketInDB.Description);
             Assert.Equal(title, ticketInDB.Title);
             Assert.Equal(expectedTicketStatus, ticketInDB.Status);
             Assert.Equal(client, ticketInDB.Client);
+        }
+
+        [Fact]
+        public async Task CancelTicket_InvalidTicket_Should_Return_Exception()
+        {
+            var ticketnr = 999;
+            string expectedErrorMessage = Constants.ERROR_TICKET_NOT_FOUND;
+
+            //arrange
+            var command = new CancelTicketCommand
+            {
+                Ticketnr = ticketnr
+            };
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CancelTicket(command));
+            Assert.Equal(expectedErrorMessage, exception.Message);
         }
     }
 }
