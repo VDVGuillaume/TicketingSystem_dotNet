@@ -43,7 +43,11 @@ namespace TicketingSystem.Infrastructure
                 var customerUser = new ApplicationUser { UserName = "customer", Email = "customer@gmail.be", Client = client1 };
                 await _userManager.CreateAsync(customerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(customerUser, "Customer");
-                
+
+                var customerUser2 = new ApplicationUser { UserName = "customer2", Email = "customer@gmail.be", Client = client2 };
+                await _userManager.CreateAsync(customerUser2, "P@ssword1");
+                await _userManager.AddToRoleAsync(customerUser2, "Customer");
+
                 var supportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
                 await _userManager.AddToRoleAsync(supportManagerUser, "SupportManager");
@@ -91,7 +95,7 @@ namespace TicketingSystem.Infrastructure
                 var contract1 = new Contract(contractType2, ContractStatus.Beëindigd, new DateTime(2020, 01, 01), new DateTime(2020, 12, 31), client1);
                 var contract2 = new Contract(contractType1, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client1);
                 var contract3 = new Contract(contractType1, ContractStatus.InAanvraag, new DateTime(2022, 01, 01), new DateTime(2022, 12, 31), client1);
-                var contract4 = new Contract(contractType2, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client2);
+                var contract4 = new Contract(contractType2, ContractStatus.Beëindigd, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client2);
                 _dbContext.Contracts.Add(contract1);
                 _dbContext.Contracts.Add(contract2);
                 _dbContext.Contracts.Add(contract3);
