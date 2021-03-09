@@ -9,8 +9,7 @@
         public const string ERROR_TICKET_STATUS_CLOSED = "Ticket is reeds afgesloten.";
         public const string ERROR_TICKET_TYPE_NOT_FOUND = "Ticket type niet gevonden.";
         public const string ERROR_EMPTY_COMMENT = "Er werd geen opmerking ingevuld";
-        public const string ERROR_ACTIVE_CONTRACT_NOT_FOUND = "Er is geen contract actief voor deze klant.";
-        public const string ERROR_ACTIVE_CONTRACT_FOUND = "Er is reeds een contract actief voor deze klant.";
+        public const string ERROR_ACTIVE_CONTRACT_NOT_FOUND = "Er is geen contract actief voor deze klant.";      
         public const string ERROR_CONTRACT_FUTURE_DATE = "De geldigheidsdatum dient in de toekomst te liggen.";
         public const string ERROR_CLIENT_NOT_FOUND = "Klant is niet gevonden.";
     }

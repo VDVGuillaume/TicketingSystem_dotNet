@@ -63,13 +63,7 @@ namespace TicketingSystem.Infrastructure.Services
             {
                 throw new ValidationException(Constants.ERROR_CONTRACT_FUTURE_DATE);
             }
-
-            // Throw exception when there already is an active contract
-            var activeContract = await _mediator.Send(new GetActiveContractByClientQuery { Client = request.Client });
-            if (activeContract != null)
-            {
-                throw new ValidationException(Constants.ERROR_ACTIVE_CONTRACT_FOUND);
-            }
+          
 
             // create new ticket
             var contract = new Contract( contractType, request.Status, request.ValidFrom, request.ValidTo, request.Client);
