@@ -8,38 +8,61 @@ using TicketingSystem.Domain.Models;
 
 namespace TicketingSystem.Xunit.Tests.Data
 {
-   
-   public class DummyApplicationDbContext
-        {
-            
-            public IEnumerable<Ticket> Tickets { get; }
-            public Ticket TicketBugInProgress { get; }
-            public Ticket TicketBugClosed { get; }
-            public Ticket TicketBugCancelled { get; }
-            public Ticket TicketSupportCreated { get; }
-            public Ticket TicketChangeRequestCreated { get; }
-            public Ticket TicketBugCreated { get; }
+    public class DummyApplicationDbContext
+    {   
+        public IEnumerable<Ticket> Tickets { get; }
+        public Ticket TicketBugInProgress { get; }
+        public Ticket TicketBugClosed { get; }
+        public Ticket TicketBugCancelled { get; }
+        public Ticket TicketSupportCreated { get; }
+        public Ticket TicketChangeRequestCreated { get; }
+        public Ticket TicketBugCreated { get; }
 
-            public TicketType TicketTypeBug { get; }
-            public TicketType TicketTypeChangeRequest { get; }
-            public TicketType TicketTypeSupport { get; }
+        public TicketType TicketTypeBug { get; }
+        public TicketType TicketTypeChangeRequest { get; }
+        public TicketType TicketTypeSupport { get; }
 
-            public ApplicationUser CustomerUser { get; } 
-            public ApplicationUser SupportManagerUser { get; }
+        public ContractType ContractTypeAll { get; }
 
-            public IdentityRole CustomerRole { get; }
-            public IdentityRole SupportManagerRole { get; }
+        public Contract ContractAll { get; }
+
+        public TicketCreationType TicketCreationTypeEmail { get; }
+        public TicketCreationType TicketCreationTypePhone { get; }
+        public TicketCreationType TicketCreationTypeApplication { get; }
+
+        public Client Client1 { get; }
+
+        public ApplicationUser CustomerUser { get; } 
+        public ApplicationUser SupportManagerUser { get; }
+
+        public IdentityRole CustomerRole { get; }
+        public IdentityRole SupportManagerRole { get; }
 
         public DummyApplicationDbContext()
-            {
+        {
             CustomerRole = new IdentityRole("Customer");
             SupportManagerRole = new IdentityRole("SupportManager");
-            
+
+            //Seed clients
+            Client1 = new Client("Klant1");
 
             //Seed users
-            CustomerUser = new ApplicationUser { UserName = "customer", Email = "customer@gmail.be" };          
+            CustomerUser = new ApplicationUser { UserName = "customer", Email = "customer@gmail.be", Client = Client1 };          
             SupportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
-            
+
+            //Seed TicketCreationTypes
+            TicketCreationTypeEmail = new TicketCreationType("Email");
+            TicketCreationTypePhone = new TicketCreationType("Telefonisch");
+            TicketCreationTypeApplication = new TicketCreationType("Applicatie");
+
+            //Seed contractsType
+            ContractTypeAll = new ContractType("Alle creatie types, 24/7", true, TicketCreationTime.Altijd);
+            ContractTypeAll.TicketCreationTypes.Add(TicketCreationTypeEmail);
+            ContractTypeAll.TicketCreationTypes.Add(TicketCreationTypePhone);
+            ContractTypeAll.TicketCreationTypes.Add(TicketCreationTypeApplication);
+
+            //Seed contracts
+            ContractAll = new Contract(ContractTypeAll, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), Client1);
 
             //Seed ticketTypes
             TicketTypeBug = new TicketType { Name = "Bug", RequiredSLA = 1 };
@@ -48,9 +71,9 @@ namespace TicketingSystem.Xunit.Tests.Data
           
 
             ////Seed tickets
-            //TicketSupportCreated = new Ticket("TitleSupport", "TestDescription", TicketTypeSupport, client1);
-            //TicketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", TicketTypeChangeRequest, client1);
-            //TicketBugCreated = new Ticket("TitleBug", "TestDescription", TicketTypeBug, client1);
+            TicketSupportCreated = new Ticket("TitleSupport", "TestDescription", TicketTypeSupport, Client1, ContractAll);
+            //TicketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", TicketTypeChangeRequest, Client1, ContractAll);
+            //TicketBugCreated = new Ticket("TitleBug", "TestDescription", TicketTypeBug, Client1, ContractAll);
 
             //TicketBugInProgress = new Ticket("TitleBug2", "TestDescription", TicketTypeBug, client1) { Status = TicketStatus.InBehandeling };
             //TicketBugClosed = new Ticket("TitleBug3", "TestDescription", TicketTypeBug, CustomerUser) { Status = TicketStatus.Afgehandeld };
@@ -59,7 +82,4 @@ namespace TicketingSystem.Xunit.Tests.Data
             Tickets = new[] { TicketBugCancelled, TicketBugClosed, TicketBugInProgress, TicketBugCreated, TicketChangeRequestCreated, TicketSupportCreated };
         }
     }
-    }
-
-
-
+}
