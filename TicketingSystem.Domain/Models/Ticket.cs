@@ -44,6 +44,7 @@ namespace TicketingSystem.Domain.Models
             Attachments = new List<Attachment>();
             Contract = contract ?? throw new ArgumentNullException();
             this.AssignedEngineer = assignedEngineer;
+            this.Status = TicketStatus.Aangemaakt;
         }
 
         public Ticket()

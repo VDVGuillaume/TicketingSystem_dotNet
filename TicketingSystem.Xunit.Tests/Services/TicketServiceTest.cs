@@ -192,5 +192,65 @@ namespace TicketingSystem.Xunit.Tests.Services
             var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CancelTicket(command));
             Assert.Equal(expectedErrorMessage, exception.Message);
         }
+
+        [Fact]
+        public async Task CancelTicket_Should_Succeed()
+        {
+            Ticket ticket = _dbContext.Tickets.FirstOrDefaultAsync(x => x.Status == TicketStatus.InBehandeling || x.Status == TicketStatus.Aangemaakt).Result;
+
+            if (ticket == null)
+            {
+                var client1 = new Client("Klant1");
+                _dbContext.Client.Add(client1);
+
+                var ticketCreationTypeEmail = new TicketCreationType("Email");
+                var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
+                var ticketCreationTypeApplication = new TicketCreationType("Applicatie");
+                _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
+                _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);
+
+                var contractType1 = new ContractType("Alle creatie types, 24/7", true, TicketCreationTime.Altijd);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypePhone);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypeApplication);
+                _dbContext.ContractTypes.Add(contractType1);
+
+                var contract1 = new Contract(contractType1, ContractStatus.Lopend, new DateTime(2020, 01, 01), new DateTime(2020, 12, 31), client1);
+                _dbContext.Contracts.Add(contract1);
+
+                var ticketTypeBug = new TicketType { Name = "Bug", RequiredSLA = 1 };
+                _dbContext.TicketTypes.Add(ticketTypeBug);
+
+                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1, contract1);
+                _dbContext.Tickets.Add(ticketBugCreated);
+
+                _dbContext.SaveChanges();
+
+                ticket = _dbContext.Tickets.FirstOrDefaultAsync(x => x.Status == TicketStatus.InBehandeling || x.Status == TicketStatus.Aangemaakt).Result;
+            }
+            
+            //arrange
+            var command = new CancelTicketCommand
+            {
+                Ticketnr = ticket.Ticketnr
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketByIdQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(ticket));
+
+            //act
+            var canceledTicket = await _service.CancelTicket(command);
+            var ticketInDB = await _dbContext.Tickets.FirstOrDefaultAsync(x => x.Ticketnr == canceledTicket.Ticketnr);
+
+            //assert
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketByIdQuery>(y => y.Id == ticket.Ticketnr), It.IsAny<CancellationToken>()), Times.Once());
+
+            Assert.NotNull(ticketInDB);
+            Assert.Equal(ticket.Ticketnr, ticketInDB.Ticketnr);
+            Assert.Equal(TicketStatus.Geannuleerd, ticketInDB.Status);
+        }
     }
 }
