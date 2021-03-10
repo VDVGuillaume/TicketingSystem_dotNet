@@ -12,5 +12,6 @@
         public const string ERROR_ACTIVE_CONTRACT_NOT_FOUND = "Er is geen contract actief voor deze klant.";      
         public const string ERROR_CONTRACT_FUTURE_DATE = "De geldigheidsdatum dient in de toekomst te liggen.";
         public const string ERROR_CLIENT_NOT_FOUND = "Klant is niet gevonden.";
+        public const string ERROR_CONTRACT_TYPE_NOT_FOUND = "Contract type is niet gevonden";
     }
 }

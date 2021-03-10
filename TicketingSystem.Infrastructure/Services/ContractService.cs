@@ -54,7 +54,7 @@ namespace TicketingSystem.Infrastructure.Services
             var contractType = await _mediator.Send(new GetContractTypeByNameQuery { Name = request.Type });
             if (contractType == null)
             {
-                throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
+                throw new ValidationException(Constants.ERROR_CONTRACT_TYPE_NOT_FOUND);
             }                        
 
             //Throw exception on validTo < validfrom
