@@ -59,7 +59,7 @@ namespace TicketingSystem.Infrastructure.Services
 
             //Throw exception on validTo < validfrom
 
-            if(request.ValidFrom > request.ValidTo)
+            if(request.ValidFrom > request.ValidTo || request.ValidFrom < DateTime.Today)
             {
                 throw new ValidationException(Constants.ERROR_CONTRACT_FUTURE_DATE);
             }
