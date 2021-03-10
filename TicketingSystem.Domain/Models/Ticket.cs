@@ -47,7 +47,7 @@ namespace TicketingSystem.Domain.Models
             this.Status = TicketStatus.Aangemaakt;
         }
 
-        public Ticket()
+        private Ticket()
         {
         }
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Application;
 using TicketingSystem.Domain.Application.Commands;
@@ -60,6 +61,8 @@ namespace TicketingSystem.Infrastructure.Services
             {
                 throw new ValidationException(Constants.ERROR_ACTIVE_CONTRACT_NOT_FOUND);
             }
+
+            //if (contract.Type.TicketCreationTypes.Select(x => x.Name == "Applicatie").Any()) {  }
 
             // create new ticket
             var ticket = new Ticket(request.Title, request.Description, ticketType, request.Client, contract);

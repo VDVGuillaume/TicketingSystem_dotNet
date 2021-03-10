@@ -71,7 +71,7 @@ namespace TicketingSystem.Xunit.Tests.Data
           
 
             ////Seed tickets
-            TicketSupportCreated = new Ticket { Title ="TitleSupport", Description="TestDescription", Type=TicketTypeSupport, Client=Client1, Contract=ContractAll };
+            //TicketSupportCreated = new Ticket { Title ="TitleSupport", Description="TestDescription", Type=TicketTypeSupport, Client=Client1, Contract=ContractAll };
             
             //TicketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", TicketTypeChangeRequest, Client1, ContractAll);
             //TicketBugCreated = new Ticket("TitleBug", "TestDescription", TicketTypeBug, Client1, ContractAll);
