@@ -109,7 +109,11 @@ namespace TicketingSystem.Infrastructure
                 var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1, contract2, technicianUser2) { Status = TicketStatus.InBehandeling};
                 var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Afgehandeld };
                 var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Geannuleerd };
+                var ticketAttachment = new Ticket("TicketAttachments", "Dit ticket dient als demo om attachments te tonen...", ticketTypeBug, client1, contract2) { Status = TicketStatus.InBehandeling };
 
+                //Seed attachments
+                ticketAttachment.Attachments.Add(new Attachment("log.txt", "attachments/7/log.txt"));
+                ticketAttachment.Attachments.Add(new Attachment("errors.txt", "attachments/7/errors.txt"));
                 //Seed Comments 
                 var commentTicket1 = new Comment {Text = "Dit is een korte comment",CreatedBy=customerUser.UserName,DateAdded= DateTime.Today};
                 var commentTicket2 = new Comment { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum ", CreatedBy = customerUser.UserName, DateAdded = DateTime.Today };
@@ -122,6 +126,7 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.Tickets.Add(ticketBugInProgress);
                 _dbContext.Tickets.Add(ticketBugClosed);
                 _dbContext.Tickets.Add(ticketBugCancelled);
+                _dbContext.Tickets.Add(ticketAttachment);
                 _dbContext.Comments.Add(commentTicket1);
 
                 _dbContext.SaveChanges();
