@@ -1,36 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Class Name="TicketingSystem.Domain.Models.Attachment">
-    <Position X="0.5" Y="2" Width="1.5" />
+    <Position X="0.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAQAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Attachment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketingSystem.Domain.Models.Comment">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAQAACAAAAAE=</HashCode>
       <FileName>Models\Comment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TicketingSystem.Domain.Models.ContractType">
-    <Position X="7.25" Y="0.75" Width="1.5" />
+    <Position X="10.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAQAAAAAAAAgAAAAAIBAAAA=</HashCode>
       <FileName>Models\ContractType.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="TicketCreationTypes" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="TicketingSystem.Domain.Models.Ticket">
     <Position X="4.5" Y="0.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAACAAEAAAgAEEAAAAAAAAAAAAAAAgAAQAAAAAAIAQ=</HashCode>
+      <HashCode>AAAACAAEAAAgAEEAAAAAAAAAAAAAAAgAAQAIAAAAIAQ=</HashCode>
       <FileName>Models\Ticket.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Status" />
-      <Property Name="Client" />
       <Property Name="Type" />
+      <Property Name="Contract" />
+      <Property Name="Client" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Comments" />
@@ -45,21 +49,60 @@
     </TypeIdentifier>
   </Class>
   <Class Name="TicketingSystem.Domain.Models.UserLoginAttempt">
-    <Position X="7.25" Y="2" Width="2" />
+    <Position X="6.25" Y="4.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAQAAAAAAAgAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>Models\UserLoginAttempt.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Microsoft.AspNetCore.Identity.ApplicationUser">
-    <Position X="7.25" Y="4" Width="2.5" />
-    <TypeIdentifier />
+  <Class Name="TicketingSystem.Domain.Models.ApplicationUser">
+    <Position X="12" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketingSystem.Domain.Models.Contract">
+    <Position X="7.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAAAAAAAAAAAAAAAAAAACIAASAAAAAAAAQ=</HashCode>
+      <FileName>Models\Contract.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+      <Property Name="Status" />
+      <Property Name="Client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TicketingSystem.Domain.Models.TicketCreationType">
+    <Position X="12.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAQAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TicketCreationType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketingSystem.Domain.Models.Client">
+    <Position X="8.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Models\Client.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Enum Name="TicketingSystem.Domain.Models.TicketStatus">
-    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Position X="0.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAEAAAAAAAAAAAAAAAAAABAAABAAAA=</HashCode>
       <FileName>Models\Ticket.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TicketingSystem.Domain.Models.ContractStatus">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\Contract.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
