@@ -22,6 +22,7 @@ namespace TicketingSystem.Domain.Models
         public TicketStatus Status { get; set; }
         [Required]
         public DateTime DateAdded { get; set; }
+        public DateTime DateClosed { get; set; }
         public string Description { get; set; }
         [Required]
         public Client Client { get; set; }

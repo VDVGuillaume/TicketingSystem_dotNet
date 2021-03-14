@@ -156,6 +156,7 @@ namespace TicketingSystem.Infrastructure.Services
             ValidateTicketStatus(ticket);
 
             ticket.Status = TicketStatus.Geannuleerd;
+            ticket.DateClosed = DateTime.Now;
 
             await _dbContext.SaveChangesAsync();
 
