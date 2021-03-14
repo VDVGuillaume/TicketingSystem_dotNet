@@ -12,6 +12,8 @@ namespace TicketingSystem.Domain.Application.Commands
         public DateTime ValidFrom { get; set; }
         public DateTime ValidTo { get; set; }
         public Client Client { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateClosed { get; set; }
 
     }
 }

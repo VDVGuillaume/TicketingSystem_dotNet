@@ -35,13 +35,14 @@ namespace TicketingSystem.Infrastructure.Services
         public async Task<Contract> CancelContract(CancelContractCommand request)
         {
             var contract = await _mediator.Send(new GetContractByIdQuery { Id = request.ContractId });
-
+           
             //validate
             if (contract == null)
                 throw new ValidationException(Constants.ERROR_CONTRACT_NOT_FOUND);
             ValidateContractStatus(contract);
 
             contract.Status = ContractStatus.Beëindigd;
+            contract.DateClosed = DateTime.Now;
 
             await _dbContext.SaveChangesAsync();
 
@@ -67,6 +68,7 @@ namespace TicketingSystem.Infrastructure.Services
 
             // create new ticket
             var contract = new Contract( contractType, request.Status, request.ValidFrom, request.ValidTo, request.Client);
+            contract.DateCreated = DateTime.Now;
             await _dbContext.Contracts.AddAsync(contract);
 
             // save ticket
