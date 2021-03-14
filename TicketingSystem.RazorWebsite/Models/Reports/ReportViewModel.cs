@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +14,9 @@ namespace TicketingSystem.RazorWebsite.Models.Reports
 
         [TempData]
         public string ErrorMessage { get; set; }
+
+        //public SortedDictionary<DateTime, int> ChartData { get; set; }
+        public string ChartData { get; set; }
 
     }
 }

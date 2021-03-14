@@ -50,47 +50,56 @@ namespace TicketingSystem.RazorWebsite.Controllers
         public async Task<IActionResult> OpenTickets()
         {
             IQueryable<Ticket> tickets;
-            IQueryable<Contract> contracts;
 
             if (User.IsInRole("SupportManager"))
             {
                 tickets = await _mediator.Send(new GetTicketsQuery());
-                contracts = await _mediator.Send(new GetContractsQuery());
             }
             else
             {
                 var client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
                 tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = client.Id });
-                contracts = await _mediator.Send(new GetContractsByClientIdQuery { ClientId = client.Id });
             }
 
-            var openTickets = tickets.Where(x => x.Status == TicketStatus.Aangemaakt || x.Status == TicketStatus.InBehandeling);
-            var closedTickets = tickets.Where(x => x.Status == TicketStatus.Afgehandeld || x.Status == TicketStatus.Geannuleerd);
-            var activeContracts = contracts.Where(x => x.Status == ContractStatus.InAanvraag || x.Status == ContractStatus.Lopend).OrderBy(x => x.ValidFrom).Take(10);
-
-            int totalTickets = tickets.Count();
-            int totalOpenTickets = openTickets.Count();
-            int totalClosedTickets = closedTickets.Count();
-            //string averageSolutionTime = getAverageSolutionTime(closedTickets.ToList(), totalClosedTickets);
-
-            openTickets = openTickets.Take(10);
-            closedTickets = closedTickets.OrderByDescending(x => x.Ticketnr).Take(10);
-            /*
-            var model = new DashboardViewModel
+            SortedDictionary<DateTime, int> dateIncrements = new SortedDictionary<DateTime, int>();
+            foreach (Ticket ticket in tickets)
             {
-                OpenTickets = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(openTickets.ToList()),
-                ClosedTickets = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(closedTickets.ToList()),
-                ActiveContracts = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(activeContracts.ToList()),
-                Statistics = new StatisticsBaseInfoViewModel
+                if (ticket.DateAdded > DateTime.MinValue)
                 {
-                    TotalTickets = totalTickets,
-                    OpenTickets = totalOpenTickets,
-                    ClosedTickets = totalClosedTickets,
-                    AverageSolutionTime = averageSolutionTime
+                    if (dateIncrements.ContainsKey(ticket.DateAdded.Date))
+                        dateIncrements[ticket.DateAdded.Date] += 1;
+                    else
+                        dateIncrements.Add(ticket.DateAdded.Date, 1);
                 }
-            };
+
+                if (ticket.DateClosed > DateTime.MinValue)
+                {
+                    if (dateIncrements.ContainsKey(ticket.DateClosed.Date))
+                        dateIncrements[ticket.DateClosed.Date] -= 1;
+                    else
+                        dateIncrements.Add(ticket.DateClosed.Date, -1);
+                }
+            }
+
+            int currentCount = 0;
+            /*
+            SortedDictionary<DateTime, int> chartData = new SortedDictionary<DateTime, int>();
+            foreach (KeyValuePair<DateTime,int> kvp in dateIncrements)
+            {
+                currentCount += kvp.Value;
+                chartData.Add(kvp.Key, currentCount);
+            }
             */
-            var model = new ReportViewModel();
+            string chartData = string.Empty;
+            foreach (KeyValuePair<DateTime, int> kvp in dateIncrements)
+            {
+                currentCount += kvp.Value;
+                chartData += $"[new Date({kvp.Key.Year}, {kvp.Key.Month-1}, {kvp.Key.Day}), {currentCount}], ";
+            }
+            if (chartData.EndsWith(", "))
+                chartData = chartData.Remove(chartData.Length - 2, 2);
+
+            var model = new ReportViewModel() { ChartData = chartData };
             return View(model);
         }
     }
