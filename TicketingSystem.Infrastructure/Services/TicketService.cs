@@ -131,6 +131,8 @@ namespace TicketingSystem.Infrastructure.Services
                 ticket.AssignedEngineer = assignedEngineer;
 
             await _dbContext.SaveChangesAsync();
+           
+            await AddAttachment(new AddAttachmentCommand { Attachments = request.Attachments }, ticket);
 
             return ticket;
         }

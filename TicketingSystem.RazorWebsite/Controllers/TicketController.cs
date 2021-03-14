@@ -219,7 +219,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
                             Title = model.Input.Title,
                             Description = model.Input.Description,
                             Type = model.Input.Type,
-                            AssignedEngineer = model.Input.AssignedEngineer
+                            AssignedEngineer = model.Input.AssignedEngineer,
+                            Attachments = model.Input.Attachments
                         });
                     }
                     else
@@ -227,7 +228,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
                         await _mediator.Send(new UpdateTicketCommand
                         {
                             Ticketnr = id,
-                            Description = model.Input.Description
+                            Description = model.Input.Description,
+                            Attachments = model.Input.Attachments
                         });
                     }
                 }

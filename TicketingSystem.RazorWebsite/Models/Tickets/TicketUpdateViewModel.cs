@@ -32,6 +32,9 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
             public string Description { get; set; }
             public string Type { get; set; }
             public string AssignedEngineer { get; set; }
+
+            [Display(Name = "Bijlage")]
+            public List<IFormFile> Attachments { get; set; }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using TicketingSystem.Domain.Models;
@@ -12,5 +13,6 @@ namespace TicketingSystem.Domain.Application.Commands
         public string Description;
         public string AssignedEngineer;
         public string Type;
+        public List<IFormFile> Attachments { get; set; }
     }
 }

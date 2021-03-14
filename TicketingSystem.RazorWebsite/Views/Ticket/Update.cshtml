@@ -3,7 +3,7 @@
     ViewData["Title"] = "Ticket aanpassen";
 }
 
-<form asp-action="Update" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
+<form asp-action="Update" enctype="multipart/form-data" asp-controller="Ticket" asp-route-id="@Model.Ticket.Id" asp-route-returnUrl="@(Url.Action("Details", "Ticket", new { id = @Model.Ticket.Id }))">
     @Html.HiddenFor(x => x.Ticket.Id)
     @Html.HiddenFor(x => x.Ticket.Title)
     @Html.HiddenFor(x => x.Ticket.Type)
@@ -11,6 +11,7 @@
     @Html.HiddenFor(x => x.Ticket.Client)
     @Html.HiddenFor(x => x.Ticket.DateAdded)
     @Html.HiddenFor(x => x.Ticket.Description)
+    @Html.HiddenFor(x => x.Ticket.Attachments)
 
     @for (int i = 0; i < Model.TicketTypes.Count; i++)
     {
@@ -124,6 +125,17 @@
                 <p><span asp-validation-for="Input.Description" class="text-danger"></span></p>
             </div>
         </div>
+        <div class="form-group row">
+             <div class="col-lg-3 font-weight-bold"><label asp-for="Input.Attachments"></label></div>
+             <div class="col-lg-9">
+                 <div class="custom-file">
+                     <input multiple asp-for="Input.Attachments" type="file" class="form-control custom-file-input" />
+                     <label class="custom-file-label">Kies een bestand...</label>
+                 </div>
+                 <span asp-validation-for="Input.Attachments" class="text-danger"></span>
+             </div>
+        </div>   
+            
         @*<div class="row">
                 <div class="col-12">
                     <p>
@@ -139,6 +151,22 @@
         <input type="submit" value="Aanpassen" class="btn btn-primary" />
     </div>
 </form>
-        @section Scripts {
-            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }
+
+      @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $(document).ready(function () {
+        $('.custom-file-input').on("change", function () {
+            var fileLabel = $(this).next('.custom-file-label');
+            var files = $(this)[0].files;
+            if (files.length > 1) {
+                fileLabel.html(files.length + ' bestanden geselecteerd');
+            } else if (files.length == 1) {
+                fileLabel.html(files[0].name);
+            }
+        });
+    });
+</script>
+
+}
