@@ -57,7 +57,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("User ingelogd.");
                     return LocalRedirect(model.ReturnUrl ?? Url.Content("~/Dashboard/Index"));
                 }
                 if (result.RequiresTwoFactor)
@@ -66,13 +66,13 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
-                    ModelState.AddModelError(string.Empty, "User account locked out.");
+                    _logger.LogWarning("User account is gelocked.");
+                    ModelState.AddModelError(string.Empty, "User account is gelocked.");
                     return View(model);
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Login mislukt!");
                     return View(model);
                 }
             }
