@@ -33,9 +33,9 @@ namespace TicketingSystem.Xunit.Tests.Services
         }
 
         [Theory]
-        [InlineData("Email/Telefonisch, 24/7", "klant1", "2020-8-25", "2020-8-29","Email")]
-        [InlineData("Alle creatie types, 24/7", "klant2", "2020-10-05", "2020-10-21","Telefonisch")]
-        [InlineData("Email/Applicatie, Weekdagen", "klant3", "2020-9-15", "2020-11-16","Applicatie")]       
+        [InlineData("Email/Telefonisch, 24/7", "klant1", "2021-8-25", "2021-8-29","Email")]
+        [InlineData("Alle creatie types, 24/7", "klant2", "2021-10-05", "2021-10-21","Telefonisch")]
+        [InlineData("Email/Applicatie, Weekdagen", "klant3", "2021-9-15", "2021-11-16","Applicatie")]       
         public async Task CreateContract_Should_Succeed(string type, string clientName, string validFrom, string validTo,string creationType)
         {
             var expectedContractStatus = ContractStatus.InAanvraag;
@@ -77,7 +77,7 @@ namespace TicketingSystem.Xunit.Tests.Services
         [Theory]
         [InlineData("Email/Telefonisch, 24/7", "klant1", "2020-02-25", "2020-8-29","Email")]
         [InlineData("Alle creatie types, 24/7", "klant2", "2020-01-05", "2020-10-21","Telefonisch")]
-        [InlineData("Email/Applicatie, Weekdagen", "klant3", "2020-03-08", "2020-11-16","Applicatie")]
+        [InlineData("Email/Applicatie, Weekdagen", "klant3", "2021-03-08", "2020-11-16","Applicatie")]
         public async Task CreateContract_InvalidStartDate_ThrowsException(string type, string clientName, string validFrom, string validTo,string creationType)
         {
             
