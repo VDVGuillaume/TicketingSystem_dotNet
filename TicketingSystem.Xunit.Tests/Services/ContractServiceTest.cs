@@ -107,7 +107,38 @@ namespace TicketingSystem.Xunit.Tests.Services
 
         }
 
+        [Theory]
+        [InlineData("Email/Telefonisch, 24/7", "klant1", "2021-08-25", "2021-8-24", "Email")]
+        [InlineData("Alle creatie types, 24/7", "klant2", "2021-09-05", "2021-09-01", "Telefonisch")]
+        [InlineData("Email/Applicatie, Weekdagen", "klant3", "2021-10-08", "2021-10-07", "Applicatie")]
+        public async Task CreateContract_InvalidEndDate_ThrowsException(string type, string clientName, string validFrom, string validTo, string creationType)
+        {
 
+            var client = new Client(clientName);
+            var ticketCreationType = new TicketCreationType(creationType);
+            string expectedErrorMessage = Constants.ERROR_CONTRACT_FUTURE_DATE;
+
+            //arrange
+            var command = new CreateContractCommand
+            {
+                Client = client,
+                Type = type,
+                ValidFrom = DateTime.Parse(validFrom),
+                ValidTo = DateTime.Parse(validTo),
+            };
+
+            _mediatorMock.Setup(x =>
+                         x.Send(It.IsAny<GetContractTypeByNameQuery>(),
+                         It.IsAny<CancellationToken>()))
+                       .Returns(Task.FromResult(new ContractType(type, true, TicketCreationTime.Altijd)));
+
+            //act & assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CreateContract(command));
+            Assert.Equal(expectedErrorMessage, exception.Message);
+
+            _mediatorMock.Verify(x => x.Send(It.Is<GetContractTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
+
+        }
 
 
 
