@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,18 +56,54 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 contracts = await _mediator.Send(new GetContractsByClientIdQuery { ClientId = client.Id });
             }
 
-            var openTickets = tickets.Where(x => x.Status == TicketStatus.Aangemaakt || x.Status == TicketStatus.InBehandeling).Take(10);
-            var closedTickets = tickets.Where(x => x.Status == TicketStatus.Afgehandeld || x.Status == TicketStatus.Geannuleerd).OrderByDescending(x => x.Ticketnr).Take(10);
+            var openTickets = tickets.Where(x => x.Status == TicketStatus.Aangemaakt || x.Status == TicketStatus.InBehandeling);
+            var closedTickets = tickets.Where(x => x.Status == TicketStatus.Afgehandeld || x.Status == TicketStatus.Geannuleerd);
             var activeContracts = contracts.Where(x => x.Status == ContractStatus.InAanvraag || x.Status == ContractStatus.Lopend).OrderBy(x => x.ValidFrom).Take(10);
+
+            int totalTickets = tickets.Count();
+            int totalOpenTickets = openTickets.Count();
+            int totalClosedTickets = closedTickets.Count();
+            string averageSolutionTime = getAverageSolutionTime(closedTickets.ToList(), totalClosedTickets);
+
+            openTickets = openTickets.Take(10);
+            closedTickets = closedTickets.OrderByDescending(x => x.Ticketnr).Take(10);
 
             var model = new DashboardViewModel 
             {
                 OpenTickets = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(openTickets.ToList()),
                 ClosedTickets = _mapper.Map<List<Ticket>, List<TicketBaseInfoViewModel>>(closedTickets.ToList()),
-                ActiveContracts = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(activeContracts.ToList())
+                ActiveContracts = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(activeContracts.ToList()),
+                Statistics = new StatisticsBaseInfoViewModel { TotalTickets = totalTickets, OpenTickets = totalOpenTickets, 
+                    ClosedTickets = totalClosedTickets, AverageSolutionTime = averageSolutionTime }
             };
 
             return View(model);
+        }
+
+        private string getAverageSolutionTime(List<Ticket> closedTickets, int totalClosedTickets)
+        {
+            TimeSpan totalTime = TimeSpan.Zero;
+            foreach (Ticket ticket in closedTickets)
+            {
+                if (ticket.DateAdded > DateTime.MinValue && ticket.DateClosed > DateTime.MinValue)
+                    totalTime += ticket.DateClosed.Subtract(ticket.DateAdded);
+                else
+                    totalClosedTickets -= 1;
+            }
+
+            if (totalTime == TimeSpan.Zero || totalClosedTickets <= 0)
+                return "Geen gemiddelde tijd";
+
+            totalTime /= totalClosedTickets;
+
+            string averageSolutionTime = string.Empty;
+            if (totalTime.Days > 1)
+                averageSolutionTime += totalTime.Days + " dagen, ";
+            else if (totalTime.Days == 1)
+                averageSolutionTime += totalTime.Days + " dag, ";
+            averageSolutionTime += totalTime.Hours + " uur, " + totalTime.Minutes + " minuten.";
+
+            return averageSolutionTime;
         }
     }
 }

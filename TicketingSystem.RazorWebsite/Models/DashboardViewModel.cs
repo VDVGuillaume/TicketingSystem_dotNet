@@ -9,5 +9,6 @@ namespace TicketingSystem.RazorWebsite.Models
         public List<TicketBaseInfoViewModel> OpenTickets { get; set; }
         public List<TicketBaseInfoViewModel> ClosedTickets { get; set; }
         public List<ContractBaseInfoViewModel> ActiveContracts { get; set; }
+        public StatisticsBaseInfoViewModel Statistics { get; set; }
     }
 }
