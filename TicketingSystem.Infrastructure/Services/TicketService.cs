@@ -71,7 +71,17 @@ namespace TicketingSystem.Infrastructure.Services
             // save ticket
             // this step comes before adding the attachments because we want to link the attachment location to the ticket ID
             _dbContext.SaveChanges();
+                       
 
+            await AddAttachment(new AddAttachmentCommand { Attachments = request.Attachments}, ticket);
+
+            return ticket;
+        }
+
+        
+
+        public async Task AddAttachment(AddAttachmentCommand request, Ticket ticket)
+        {
             //create attachments
             if (request.Attachments != null)
             {
@@ -91,12 +101,11 @@ namespace TicketingSystem.Infrastructure.Services
                     }
                 }
             }
-
             // save attachments
             _dbContext.SaveChanges();
-
-            return ticket;
         }
+
+
 
         public async Task<Ticket> UpdateTicket(UpdateTicketCommand request)
         {

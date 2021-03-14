@@ -10,5 +10,6 @@ namespace TicketingSystem.Infrastructure.Services.Interfaces
         Task<Ticket> UpdateTicket(UpdateTicketCommand request);
         Task<Ticket> CancelTicket(CancelTicketCommand request);
         Task<Comment> PostComment(PostCommentCommand request);
+        
     }
 }
