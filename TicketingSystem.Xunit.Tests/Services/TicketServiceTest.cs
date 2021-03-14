@@ -86,6 +86,130 @@ namespace TicketingSystem.Xunit.Tests.Services
         }
 
         [Fact]
+        public async Task UpdateTicket_InvalidTicket_Should_Return_Exception()
+        {
+            // set expected
+            var ticketId = 1;
+            var description = "een beschrijving";
+            var title = "een titel";
+            var type = "request";
+            string expectedErrorMessage = Constants.ERROR_TICKET_NOT_FOUND;
+
+            //arrange
+            var command = new UpdateTicketCommand
+            {
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = type,
+                Ticketnr = ticketId
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.Is<GetTicketByIdQuery>(y => y.Id == ticketId),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult((Ticket)null));
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.UpdateTicket(command));
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketByIdQuery>(y => y.Id == ticketId), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task UpdateTicket_InvalidType_Should_Return_Exception()
+        {
+            var oldTicketType = new TicketType { Name = "Request" };
+            var oldClient = new Client("client1");
+            var oldContractType = new ContractType("contracttype", true, TicketCreationTime.Altijd);
+            var oldContract = new Contract(oldContractType, ContractStatus.Lopend, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(10), oldClient);
+
+            // set expected
+            var ticketId = 1;
+            var description = "een beschrijving";
+            var title = "een titel";
+            var ticketType = "request";
+            string expectedErrorMessage = Constants.ERROR_TICKET_TYPE_NOT_FOUND;
+
+            //arrange
+            var command = new UpdateTicketCommand
+            {
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = ticketType,
+                Ticketnr = ticketId
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.Is<GetTicketByIdQuery>(y => y.Id == ticketId),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new Ticket("oude titel","oude beschrijving", oldTicketType, oldClient, oldContract)));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == ticketType),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult((TicketType)null));
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.UpdateTicket(command));
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == ticketType), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task UpdateTicket_Should_Exceed()
+        {
+            var oldTicketType = new TicketType { Name = "Request" };
+            var oldClient = new Client("client1");
+            var oldContractType = new ContractType("contracttype", true, TicketCreationTime.Altijd);
+            var oldContract = new Contract(oldContractType, ContractStatus.Lopend, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(10), oldClient);
+
+            // set expected
+            var ticketId = 1;
+            var description = "een beschrijving";
+            var title = "een titel";
+            var ticketType = "request";
+            string expectedErrorMessage = Constants.ERROR_TICKET_TYPE_NOT_FOUND;
+
+            //arrange
+            var command = new UpdateTicketCommand
+            {
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = ticketType,
+                Ticketnr = ticketId
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.Is<GetTicketByIdQuery>(y => y.Id == ticketId),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new Ticket("oude titel", "oude beschrijving", oldTicketType, oldClient, oldContract)));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketTypeByNameQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new TicketType { Name = ticketType }));
+
+
+            var updatedTicket = await _service.UpdateTicket(command);
+
+            //assert
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == ticketType), It.IsAny<CancellationToken>()), Times.Once());
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketByIdQuery>(y => y.Id == ticketId), It.IsAny<CancellationToken>()), Times.Once());
+
+
+            Assert.NotNull(updatedTicket);
+            Assert.Equal(description, updatedTicket.Description);
+            Assert.Equal(title, updatedTicket.Title);
+            Assert.Equal(ticketType, updatedTicket.Type.Name);
+        }
+
+        [Fact]
         public async Task CreateTicket_NoActiveContract_Should_Return_Exception()
         {
             // set expected
