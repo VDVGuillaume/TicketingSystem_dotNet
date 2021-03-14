@@ -16,13 +16,15 @@ namespace TicketingSystem.RazorWebsite.Models
         public class InputModel
         {
             [Required]
+            [Display(Name = "Gebruikersnaam")]
             public string Username { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Paswoord")]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Login onthouden?")]
             public bool RememberMe { get; set; }
         }
     }

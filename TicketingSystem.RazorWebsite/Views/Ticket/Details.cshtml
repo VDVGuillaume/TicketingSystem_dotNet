@@ -41,7 +41,7 @@
     @foreach (var attachment in Model.Ticket.Attachments)
     {
 <div class="row">
-    <div class="col-lg-3 font-weight-bold"><p>attachment</p></div>
+    <div class="col-lg-3 font-weight-bold"><p>Bijlage</p></div>
     <div class="col-lg-9">
         <a  asp-controller="Ticket" asp-action="DownloadAttachment" asp-route-attachmentId="@attachment.Id">
             @attachment.Name
