@@ -20,15 +20,15 @@ namespace TicketingSystem.RazorWebsite.Models.Contracts
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Startdatum is verplicht.")]
             [DataType(DataType.Date), DisplayFormat(DataFormatString = "0:dd/MM/yyyy", ApplyFormatInEditMode = true)]
             [Display(Name = "Startdatum")]
             public DateTime StartDate { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Einddatum is verplicht.")]
             [DataType(DataType.Date), DisplayFormat(DataFormatString = "0:dd/MM/yyyy", ApplyFormatInEditMode = true)]
             [Display(Name = "Einddatum")]
             public DateTime EndDate { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Type is verplicht.")]
             [Display(Name = "Type")]
             public string Type { get; set; }
             [Display(Name = "Klant")]

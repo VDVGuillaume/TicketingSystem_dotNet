@@ -22,15 +22,15 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Titel is verplicht.")]
             [Display(Name ="Titel")]
             public string Title { get; set; }
-            [Required]
+            [Required(ErrorMessage ="Omschrijving is verplicht.")]
             [Display(Name = "Omschrijving")]
             public string Description { get; set; }
             [Display(Name = "Klant")]
             public string ClientName { get; set; }
-            [Required]
+            [Required(ErrorMessage ="Type is verplicht.")]
             [Display(Name = "Type")]
             public string Type { get; set; }
 

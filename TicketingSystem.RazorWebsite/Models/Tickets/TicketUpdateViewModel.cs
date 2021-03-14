@@ -28,7 +28,7 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
         public class InputModel
         {
             public string Title { get; set; }
-            [Required]
+            [Required(ErrorMessage ="Omschrijving is verplicht.")]
             public string Description { get; set; }
             public string Type { get; set; }
             public string AssignedEngineer { get; set; }

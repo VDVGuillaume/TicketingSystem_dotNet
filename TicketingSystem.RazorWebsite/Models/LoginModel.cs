@@ -15,11 +15,11 @@ namespace TicketingSystem.RazorWebsite.Models
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Gebruikersnaam is verplicht.")]
             [Display(Name = "Gebruikersnaam")]
             public string Username { get; set; }
 
-            [Required]
+            [Required(ErrorMessage ="Paswoord is verplicht.")]
             [DataType(DataType.Password)]
             [Display(Name = "Paswoord")]
             public string Password { get; set; }
