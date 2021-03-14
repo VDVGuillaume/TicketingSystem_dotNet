@@ -97,6 +97,11 @@ body {
     line-height: 1.2;
 }
 
+.statistic p {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
 
 /* ACTEMIUM STYLE */
 body {

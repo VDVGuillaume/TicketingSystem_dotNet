@@ -131,20 +131,38 @@
     }
     <div class="col-lg">
         <h2>Statistieken</h2>
-        <p>Nog eens nagaan welke statistieken we willen tonen. Bijvoorbeeld:</p>
-        <ul>
-            <li>Totaal aantal tickets: 2</li>
-            <li>Aantal openstaande tickets: 2</li>
-            <li>Aantal gesloten tickets: 0</li>
-            <li>Aantal tickets tijdig gesloten (SLA's): 0%</li>
-        </ul>
-    </div>
-</div>
-    <div class="row">
-        <div class="col-12">
-            <h2>&nbsp;</h2>
-            <p><a href="FAQ">Raadplegen FAQ</a></p>
-            <p><a href="FAQ">Andere links?</a></p>
+        <div class="row">
+            <div class="col-lg-6 statistic">
+                <p>Totaal aantal tickets:</p>
+            </div>
+            <div class="col-lg-6">
+                <p>@Model.Statistics.TotalTickets</p>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-lg-6 statistic">
+                <p>Aantal open tickets:</p>
+            </div>
+            <div class="col-lg-6">
+                <p>@Model.Statistics.OpenTickets</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 statistic">
+                <p>Aantal gesloten ticket:</p>
+            </div>
+            <div class="col-lg-6">
+                <p>@Model.Statistics.ClosedTickets</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 statistic">
+                <p>Gemiddelde oplossingstijd:</p>
+            </div>
+            <div class="col-lg-6">
+                <p>@Model.Statistics.AverageSolutionTime</p>
+            </div>
+        </div>
+    </div>
     </div>
 </div>

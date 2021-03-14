@@ -102,14 +102,21 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.Contracts.Add(contract4);
 
                 //Seed tickets
-                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1, contract2);
-                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1, contract2, technicianUser1);
-                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1, contract2);
+                var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1, contract2)
+                    { DateAdded = DateTime.Now.AddDays(-2).AddMinutes(54) };
+                var ticketChangeRequestCreated = new Ticket("TitleChangeRequest", "TestDescription", ticketTypeChangeRequest, client1, contract2, technicianUser1)
+                    { DateAdded = DateTime.Now.AddMinutes(-354) };
+                var ticketBugCreated = new Ticket("TitleBug", "TestDescription", ticketTypeBug, client1, contract2)
+                    { DateAdded = DateTime.Now.AddMinutes(-71) };
 
-                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1, contract2, technicianUser2) { Status = TicketStatus.InBehandeling};
-                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Afgehandeld };
-                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1, contract2) { Status = TicketStatus.Geannuleerd };
-                var ticketAttachment = new Ticket("TicketAttachments", "Dit ticket dient als demo om attachments te tonen...", ticketTypeBug, client1, contract2) { Status = TicketStatus.InBehandeling };
+                var ticketBugInProgress = new Ticket("TitleBug2metComments", "TestDescription", ticketTypeBug, client1, contract2, technicianUser2)
+                    { Status = TicketStatus.InBehandeling, DateAdded = DateTime.Now.AddDays(-1).AddMinutes(48) };
+                var ticketBugClosed = new Ticket("TitleBug3", "TestDescription", ticketTypeBug, client1, contract2)
+                    { Status = TicketStatus.Afgehandeld, DateAdded = DateTime.Now.AddDays(-10).AddMinutes(523), DateClosed = DateTime.Now.AddDays(-7).AddMinutes(298) };
+                var ticketBugCancelled = new Ticket("TitleBug4", "TestDescription", ticketTypeBug, client1, contract2)
+                    { Status = TicketStatus.Geannuleerd, DateAdded = DateTime.Now.AddDays(-5).AddMinutes(105), DateClosed = DateTime.Now.AddDays(-5).AddMinutes(156) };
+                var ticketAttachment = new Ticket("TicketAttachments", "Dit ticket dient als demo om attachments te tonen...", ticketTypeBug, client1, contract2)
+                    { Status = TicketStatus.InBehandeling, DateAdded = DateTime.Now.AddDays(-2).AddMinutes(265) };
 
                 //Seed attachments
                 ticketAttachment.Attachments.Add(new Attachment("log.txt", "attachments/7/log.txt"));

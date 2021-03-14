@@ -101,7 +101,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 averageSolutionTime += totalTime.Days + " dagen, ";
             else if (totalTime.Days == 1)
                 averageSolutionTime += totalTime.Days + " dag, ";
-            averageSolutionTime += totalTime.Hours + " uur, " + totalTime.Minutes + " minuten.";
+            averageSolutionTime += totalTime.Hours + " uur, " + totalTime.Minutes + " minuten";
 
             return averageSolutionTime;
         }
