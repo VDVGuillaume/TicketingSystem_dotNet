@@ -1,0 +1,59 @@
+﻿@model TicketingSystem.RazorWebsite.Models.Reports.ReportViewModel
+@{
+    ViewData["Title"] = "Rapporten";
+}
+
+<h1>Rapporten</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Verloop aantal openstaande tickets</h2>
+            <div id="chart_OpenTickets"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Datum');
+        data.addColumn('number', 'Aantal open tickets');
+
+        data.addRows([
+            [new Date(2015, 0, 1), 5],
+            [new Date(2015, 0, 13), 3], [new Date(2015, 0, 14), 3], [new Date(2015, 0, 15), 5],
+            [new Date(2015, 0, 16), 7], [new Date(2015, 0, 17), 6], [new Date(2015, 0, 18), 6],
+            [new Date(2015, 0, 19), 3], [new Date(2015, 0, 20), 1], [new Date(2015, 0, 21), 2],
+            [new Date(2015, 0, 22), 4], [new Date(2015, 0, 23), 6], [new Date(2015, 0, 24), 5],
+            [new Date(2015, 0, 26), 4], [new Date(2015, 0, 27), 9],
+            [new Date(2015, 0, 28), 8], [new Date(2015, 0, 29), 6], [new Date(2015, 0, 30), 4],
+            [new Date(2015, 0, 31), 6], [new Date(2015, 1, 1), 7], [new Date(2015, 1, 2), 9]
+        ]);
+
+
+        var options = {
+            title: 'Verloop aantal openstaande tickets',
+            width: 900,
+            height: 500,
+            hAxis: {
+                format: 'dd/MM/yyyy',
+                gridlines: { count: 15 }
+            },
+            vAxis: {
+                gridlines: { color: 'none' },
+                minValue: 0
+            }
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('chart_OpenTickets'));
+
+        chart.draw(data, options);
+
+        var button = document.getElementById('change');
+    }
+</script>

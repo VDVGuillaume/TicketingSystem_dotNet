@@ -54,7 +54,6 @@
                 </h2>
             </a>
             <table class="table table-hover">
-                <tbody>
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -62,21 +61,22 @@
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
-                @if (Model.ClosedTickets.Count > 0)
-                {
-                    @foreach (var ticket in Model.ClosedTickets)
+                <tbody>
+                    @if (Model.ClosedTickets.Count > 0)
                     {
-            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
-                <th scope="row">@ticket.Id</th>
-                <td>@ticket.Title</td>
-                <td style="color:@ticket.StatusColor">@ticket.Status</td>
-            </tr>
+                        @foreach (var ticket in Model.ClosedTickets)
+                        {
+                            <tr class="pointer-event" onclick="location.href = '@(Url.Action("Details", "Ticket", new { id = ticket.Id }))'" style="cursor:pointer">
+                                <th scope="row">@ticket.Id</th>
+                                <td>@ticket.Title</td>
+                                <td style="color:@ticket.StatusColor">@ticket.Status</td>
+                            </tr>
+                        }
                     }
-                }
-                else
-                {
-                    <tr><td colspan="3">Er zijn geen afgesloten tickets...</td></tr>
-                }
+                    else
+                    {
+                        <tr><td colspan="3">Er zijn geen afgesloten tickets...</td></tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -129,40 +129,48 @@
             </table>
         </div>
     }
-    <div class="col-lg">
-        <h2>Statistieken</h2>
-        <div class="row">
-            <div class="col-lg-6 statistic">
-                <p>Totaal aantal tickets:</p>
+        <div class="col-lg">
+            <h2>Statistieken</h2>
+            <div class="row">
+                <div class="col-lg-6 statistic">
+                    <p>Totaal aantal tickets:</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>@Model.Statistics.TotalTickets</p>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <p>@Model.Statistics.TotalTickets</p>
+            <div class="row">
+                <div class="col-lg-6 statistic">
+                    <p>Aantal open tickets:</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>@Model.Statistics.OpenTickets</p>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 statistic">
-                <p>Aantal open tickets:</p>
+            <div class="row">
+                <div class="col-lg-6 statistic">
+                    <p>Aantal gesloten ticket:</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>@Model.Statistics.ClosedTickets</p>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <p>@Model.Statistics.OpenTickets</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 statistic">
-                <p>Aantal gesloten ticket:</p>
-            </div>
-            <div class="col-lg-6">
-                <p>@Model.Statistics.ClosedTickets</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 statistic">
-                <p>Gemiddelde oplossingstijd:</p>
-            </div>
-            <div class="col-lg-6">
-                <p>@Model.Statistics.AverageSolutionTime</p>
+            <div class="row">
+                <div class="col-lg-6 statistic">
+                    <p>Gemiddelde oplossingstijd:</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>@Model.Statistics.AverageSolutionTime</p>
+                </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg">
+            <h2>Rapporten</h2>
+            <p><a asp-controller="Report" asp-action="OpenTickets">Verloop openstaande tickets</a></p>
+            <p><a asp-controller="Report" asp-action="OpenTickets">Rapport 2</a></p>
+            <p><a asp-controller="Report" asp-action="OpenTickets">Rapport 3</a></p>
+        </div>
     </div>
 </div>
