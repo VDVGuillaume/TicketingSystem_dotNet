@@ -1,22 +1,21 @@
 ﻿@model Models.Tickets.TicketViewModel
 
-@{
-    ViewData["Title"] = "CreateTicket";
-}
+@{ ViewData["Title"] = "CreateTicket"; }
 
 <h1>CreateTicket</h1>
 
 <h4>TicketViewModel</h4>
 <hr />
+@if (Model.HasActiveContract)
+{
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateTicket" enctype="multipart/form-data" method="post">
             @for (int i = 0; i < Model.TicketTypes.Count; i++)
             {
-                @Html.HiddenFor(model => Model.TicketTypes[i].Selected)
-                @Html.HiddenFor(model => Model.TicketTypes[i].Value)
-                @Html.HiddenFor(model => Model.TicketTypes[i].Text)
-            }
+@Html.HiddenFor(model => Model.TicketTypes[i].Selected)
+                    @Html.HiddenFor(model => Model.TicketTypes[i].Value)
+                                        @Html.HiddenFor(model => Model.TicketTypes[i].Text)}
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Title"></label>
@@ -46,18 +45,23 @@
 
             @if (User.IsInRole("SupportManager"))
             {
-                <div class="form-group">
-                    <label asp-for="Input.ClientName"></label>
-                    <select asp-for="Input.ClientName" asp-items="Model.Clients" class="form-control"></select>
-                    <span asp-validation-for="Input.ClientName" class="text-danger"></span>
-                </div>
-            }
+<div class="form-group">
+    <label asp-for="Input.ClientName"></label>
+    <select asp-for="Input.ClientName" asp-items="Model.Clients" class="form-control"></select>
+    <span asp-validation-for="Input.ClientName" class="text-danger"></span>
+</div>            }
             <div class="form-group">
                 <input type="submit" value="Maak aan" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
+</div>}
+
+else
+{
+<span class="text-danger">Ticket aanmaken is niet mogelijk, er is geen lopend contract.</span>
+<hr />
+}
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -66,18 +70,18 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
-    $(document).ready(function () {
-        $('.custom-file-input').on("change", function () {
-            var fileLabel = $(this).next('.custom-file-label');
-            var files = $(this)[0].files;
-            if (files.length > 1) {
-                fileLabel.html(files.length + ' bestanden geselecteerd');
-            } else if (files.length == 1) {
-                fileLabel.html(files[0].name);
-            }
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileLabel = $(this).next('.custom-file-label');
+                var files = $(this)[0].files;
+                if (files.length > 1) {
+                    fileLabel.html(files.length + ' bestanden geselecteerd');
+                } else if (files.length == 1) {
+                    fileLabel.html(files[0].name);
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 }

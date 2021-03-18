@@ -20,6 +20,8 @@ namespace TicketingSystem.RazorWebsite.Models.Tickets
 
         public List<SelectListItem> Clients { get; set; }
 
+        public bool HasActiveContract { get; set; }
+
         public class InputModel
         {
             [Required(ErrorMessage ="Titel is verplicht.")]

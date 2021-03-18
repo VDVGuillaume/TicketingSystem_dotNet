@@ -250,7 +250,10 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var model = new TicketViewModel();
 
             model.TicketTypes = await GetTicketTypes();
-            model.Clients = await GetClients();
+            model.Clients = await GetClients();            
+            Client client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
+            var result = await _mediator.Send(new GetActiveContractByClientIdQuery {ClientId = client.Id});
+            model.HasActiveContract = result.Any();
 
             return View(model);
         }
