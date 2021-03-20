@@ -154,5 +154,28 @@ namespace TicketingSystem.RazorWebsite.Controllers
             var model = new ReportViewModel() { AverageSolveTime = averageSolveTime, TicketSolveTimeCount = count };
             return View(model);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Customer,SupportManager")]
+        public async Task<IActionResult> Contracts()
+        {
+            IQueryable<Contract> contracts;
+
+            if (User.IsInRole("SupportManager"))
+            {
+                contracts = await _mediator.Send(new GetContractsQuery());
+            }
+            else
+            {
+                var client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
+                contracts = await _mediator.Send(new GetContractsByClientIdQuery { ClientId = client.Id });
+            }
+
+            var model = new ReportViewModel
+            {
+                Contracts = _mapper.Map<List<Contract>, List<ContractBaseInfoViewModel>>(contracts.ToList())
+            };
+            return View(model);
+        }
     }
 }

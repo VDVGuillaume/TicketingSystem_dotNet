@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TicketingSystem.RazorWebsite.Models.Contracts;
 
 namespace TicketingSystem.RazorWebsite.Models.Reports
 {
@@ -21,5 +22,6 @@ namespace TicketingSystem.RazorWebsite.Models.Reports
 
         public string AverageSolveTime { get; set; }
 
+        public List<ContractBaseInfoViewModel> Contracts { get; set; }
     }
 }

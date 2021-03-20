@@ -30,7 +30,8 @@ namespace TicketingSystem.RazorWebsite.Mapping
             CreateMap<Contract, ContractBaseInfoViewModel>()
                 .ForMember(target => target.Id, y => y.MapFrom(source => source.ContractId))
                 .ForMember(target => target.Status, y => y.MapFrom(source => source.Status.ToString()))
-                .ForMember(target => target.Type, y => y.MapFrom(source => source.Type.Name));
+                .ForMember(target => target.Type, y => y.MapFrom(source => source.Type.Name))
+                .ForMember(target => target.Client, y => y.MapFrom(source => source.Client.Name));
 
             CreateMap<Contract, ContractDetailInfoViewModel>()
                 .ForMember(target => target.Id, y => y.MapFrom(source => source.ContractId))

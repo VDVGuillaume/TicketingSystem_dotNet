@@ -9,6 +9,7 @@ namespace TicketingSystem.RazorWebsite.Models.Contracts
         public string Type { get; set; }
         public DateTime ValidFrom { get; set; }
         public DateTime ValidTo { get; set; }
+        public string Client { get; set; }
 
         public string StatusColor
         {

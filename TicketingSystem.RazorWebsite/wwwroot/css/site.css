@@ -107,6 +107,23 @@ body {
     min-height: 450px;
 }
 
+    .chart p {
+        line-height: 1em;
+        padding: 5px;
+        margin: 0;
+    }
+        .chart p strong {
+            line-height: 2em;
+        }
+
+    .chart hr {
+        padding: 0;
+        margin: 0;
+    }
+
+div.google-visualization-tooltip {
+    width: 200px;
+}
 
 /* ACTEMIUM STYLE */
 body {
