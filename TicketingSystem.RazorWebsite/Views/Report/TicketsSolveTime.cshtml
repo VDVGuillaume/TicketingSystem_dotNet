@@ -13,6 +13,9 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-12"><p><strong>Gemiddelde oplossingstijd:</strong> @Model.AverageSolveTime</p></div>
+    </div>
+    <div class="row">
         <div class="col-12"><p><a asp-action="Index">Terug naar overzicht rapporten</a></p></div>
     </div>
 </div>
@@ -23,29 +26,21 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Datum');
-        data.addColumn('number', 'Aantal open tickets');
-
-        data.addRows([
-            @Model.ChartData
+        var data = google.visualization.arrayToDataTable([
+            ["Tijd", "Aantal", { role: "style" }],
+            ["< 8 uur", @Model.TicketSolveTimeCount[0], "#D5F5E3"],
+            ["< 1 dag", @Model.TicketSolveTimeCount[1], "#FCF3CF"],
+            ["1-5 dagen", @Model.TicketSolveTimeCount[2], "#FAD7A0"],
+            ["> 5 dagen", @Model.TicketSolveTimeCount[3], "#E59866"]
         ]);
 
-
         var options = {
-            title: 'Verloop aantal openstaande tickets',
-            pointSize: 5,
-            hAxis: {
-                format: 'dd/MM/yyyy',
-                gridlines: { count: 15 }
-            },
-            vAxis: {
-                gridlines: { color: 'none' },
-                minValue: 0
-            }
+            title: "Oplossingstijden: aantal tickets",
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" },
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart_OpenTickets'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_OpenTickets'));
         chart.draw(data, options);
     }
 

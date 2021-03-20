@@ -15,8 +15,11 @@ namespace TicketingSystem.RazorWebsite.Models.Reports
         [TempData]
         public string ErrorMessage { get; set; }
 
-        //public SortedDictionary<DateTime, int> ChartData { get; set; }
         public string ChartData { get; set; }
+
+        public int[] TicketSolveTimeCount { get; set; }
+
+        public string AverageSolveTime { get; set; }
 
     }
 }

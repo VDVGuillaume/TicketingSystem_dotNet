@@ -82,14 +82,6 @@ namespace TicketingSystem.RazorWebsite.Controllers
             }
 
             int currentCount = 0;
-            /*
-            SortedDictionary<DateTime, int> chartData = new SortedDictionary<DateTime, int>();
-            foreach (KeyValuePair<DateTime,int> kvp in dateIncrements)
-            {
-                currentCount += kvp.Value;
-                chartData.Add(kvp.Key, currentCount);
-            }
-            */
             string chartData = string.Empty;
             foreach (KeyValuePair<DateTime, int> kvp in dateIncrements)
             {
@@ -100,6 +92,66 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 chartData = chartData.Remove(chartData.Length - 2, 2);
 
             var model = new ReportViewModel() { ChartData = chartData };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Customer,SupportManager")]
+        public async Task<IActionResult> TicketsSolveTime()
+        {
+            IQueryable<Ticket> tickets;
+
+            if (User.IsInRole("SupportManager"))
+            {
+                tickets = await _mediator.Send(new GetTicketsQuery());
+            }
+            else
+            {
+                var client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
+                tickets = await _mediator.Send(new GetTicketsByClientIdQuery { ClientId = client.Id });
+            }
+
+            int[] count = new int[4] { 0, 0, 0, 0 };
+            int totalCount = 0;
+            TimeSpan solveTime;
+            TimeSpan totalSolveTime = new TimeSpan(0);
+            foreach (Ticket ticket in tickets)
+            {
+                if (ticket.DateAdded > DateTime.MinValue && ticket.DateClosed > DateTime.MinValue)
+                {
+                    solveTime = ticket.DateClosed.Subtract(ticket.DateAdded);
+
+                    if (solveTime <= new TimeSpan(8, 0, 0))
+                    {
+                        count[0]++;
+                    }
+                    else if (solveTime <= new TimeSpan(24, 0, 0))
+                    {
+                        count[1]++;
+                    }
+                    else if (solveTime <= new TimeSpan(5, 0, 0, 0))
+                    {
+                        count[2]++;
+                    }
+                    else if (solveTime > new TimeSpan(5, 0, 0, 0))
+                    {
+                        count[3]++;
+                    }
+                    totalCount++;
+                    totalSolveTime += solveTime;
+                }
+            }
+
+            solveTime = totalSolveTime / totalCount;
+
+            string averageSolveTime = string.Empty;
+            if (solveTime.Days > 1)
+                averageSolveTime += solveTime.Days + " dagen, ";
+            else if (solveTime.Days == 1)
+                averageSolveTime += solveTime.Days + " dag, ";
+            averageSolveTime += solveTime.Hours + " uur, " + solveTime.Minutes + " minuten";
+
+            var model = new ReportViewModel() { AverageSolveTime = averageSolveTime, TicketSolveTimeCount = count };
             return View(model);
         }
     }
