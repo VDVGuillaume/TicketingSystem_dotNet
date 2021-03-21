@@ -142,7 +142,9 @@ namespace TicketingSystem.RazorWebsite.Controllers
                 }
             }
 
-            solveTime = totalSolveTime / totalCount;
+            solveTime = totalCount == 0 ?
+                TimeSpan.Zero
+                : totalSolveTime / totalCount;
 
             string averageSolveTime = string.Empty;
             if (solveTime.Days > 1)
