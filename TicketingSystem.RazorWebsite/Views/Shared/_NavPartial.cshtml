@@ -27,9 +27,12 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="/Ticket" asp-action="Index">Ticket</a>
                 </li>
+                @if (User.IsInRole("Customer"))
+                {
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="/Contract" asp-action="Index">Contract</a>
                 </li>
+                }
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="/Report" asp-action="Index">Report</a>
                 </li>

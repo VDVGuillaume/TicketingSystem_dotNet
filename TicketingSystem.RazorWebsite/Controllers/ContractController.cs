@@ -63,20 +63,14 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Index([FromQuery] string statusFilter)
         {
             List<ContractStatus> contractStatusFilter = ConvertFilterToContractStatuses(statusFilter);
             IQueryable<Contract> contracts;
-            if (User.IsInRole("SupportManager"))
-            {
-                contracts = await _mediator.Send(new GetContractsQuery());
-            }
-            else
-            {
-                var client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
-                contracts = await _mediator.Send(new GetContractsByClientIdQuery { ClientId = client.Id });
-            }
+
+            var client = await _mediator.Send(new GetClientByUserQuery { Username = User.Identity.Name });
+            contracts = await _mediator.Send(new GetContractsByClientIdQuery { ClientId = client.Id });
 
             var filteredContracts = contracts.Where(x => contractStatusFilter.Contains(x.Status));
 
@@ -96,7 +90,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Index(ContractIndexViewModel model)
         {
             if (ModelState.IsValid)
@@ -127,7 +121,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(int id)
         {
             var contract = await _mediator.Send(new GetContractByIdQuery { Id = id });
@@ -156,7 +150,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
         }
 
 
-        [Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -167,7 +161,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         public async Task<IActionResult> Create(ContractCreateViewModel model)
         {
@@ -205,7 +199,7 @@ namespace TicketingSystem.RazorWebsite.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Customer,SupportManager")]
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         public async Task<IActionResult> Cancel([FromQuery] int id, ContractDetailsViewModel model)
         {
