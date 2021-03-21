@@ -38,11 +38,11 @@ namespace TicketingSystem.Xunit.Tests
                     break;
                 case 2:
                     signInResult = SignInResult.Failed;
-                    expectedModelStateErrorMessage = "Invalid login attempt.";
+                    expectedModelStateErrorMessage = "Login mislukt!";
                     break;
                 case 3:
                     signInResult = SignInResult.LockedOut;
-                    expectedModelStateErrorMessage = "User account locked out.";
+                    expectedModelStateErrorMessage = "User account is gelocked.";
                     break;
                 default:
                     throw new NotImplementedException();
