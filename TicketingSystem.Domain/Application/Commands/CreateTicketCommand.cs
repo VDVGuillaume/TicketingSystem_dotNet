@@ -14,5 +14,6 @@ namespace TicketingSystem.Domain.Application.Commands
         public string AssignedEngineer { get; set; }
         public string Type { get; set; }
         public List<IFormFile> Attachments { get; set; }
+        public DateTime DateRequested { get; set; }
     }
 }

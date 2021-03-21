@@ -55,14 +55,24 @@ namespace TicketingSystem.Infrastructure.Services
                 throw new ValidationException(Constants.ERROR_TICKET_TYPE_NOT_FOUND);
             }
 
-            // get active contract
+            // validate active contract
             var contract = await _mediator.Send(new GetActiveContractByClientQuery { Client = request.Client});
+            
             if (contract == null) 
-            {
                 throw new ValidationException(Constants.ERROR_ACTIVE_CONTRACT_NOT_FOUND);
-            }
+            if (!contract.Type.TicketCreationTypes.Any(x => x.Name == TicketCreationTypeName.Applicatie))
+                throw new ValidationException(Constants.ERROR_TICKET_CREATION_NOT_ALLOWED_APPLICATION);
 
-            //if (contract.Type.TicketCreationTypes.Select(x => x.Name == "Applicatie").Any()) {  }
+            if (contract.Type.TicketCreationTime == TicketCreationTime.Weekdagen) 
+            {
+                if (request.DateRequested.DayOfWeek == DayOfWeek.Saturday || request.DateRequested.DayOfWeek == DayOfWeek.Sunday) 
+                    // creation of tickets is not allowed in weekends with Weekdagen creationTime
+                    throw new ValidationException(Constants.ERROR_TICKETCREATIONTIME_WEEKENDS);
+
+                if (request.DateRequested.Hour < 8 || request.DateRequested.Hour >= 17) 
+                    // creation of tickets is not allowed outside of office hours with Weekdagen creationTime
+                    throw new ValidationException(Constants.ERROR_TICKETCREATIONTIME_OFFICE_HOURS);
+            }
 
             // create new ticket
             var ticket = new Ticket(request.Title, request.Description, ticketType, request.Client, contract);

@@ -69,9 +69,9 @@ namespace TicketingSystem.Infrastructure
                 _dbContext.TicketTypes.Add(ticketTypeSupport);
                
                 //Seed TicketCreationTypes
-                var ticketCreationTypeEmail = new TicketCreationType("Email");
-                var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
-                var ticketCreationTypeApplication = new TicketCreationType("Applicatie");
+                var ticketCreationTypeEmail = new TicketCreationType(TicketCreationTypeName.Email);
+                var ticketCreationTypePhone = new TicketCreationType(TicketCreationTypeName.Telefonisch);
+                var ticketCreationTypeApplication = new TicketCreationType(TicketCreationTypeName.Applicatie);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);

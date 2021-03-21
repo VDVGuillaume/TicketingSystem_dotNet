@@ -12,6 +12,7 @@ using TicketingSystem.Domain.Application.Queries;
 using TicketingSystem.Domain.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace TicketingSystem.Xunit.Tests.Services
 {
@@ -250,16 +251,113 @@ namespace TicketingSystem.Xunit.Tests.Services
         }
 
         [Theory]
-        [InlineData("een titel", "een beschrijving", "Support", "Klant1")]
-        [InlineData("", "", "Bug", "Klant1")]
-        [InlineData("een supercoole andere titel", "", "Bug", "GigaKlant")]
-        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa")]
-        public async Task CreateTicket_Should_Succeed(string title, string description, string type, string clientName)
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "20/03/2021")]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "21/03/2021")]
+        public async Task CreateTicket_InvalidTicketCreationTime_Weekend_Should_Return_Exception(string title, string description, string type, string clientName, string dateString)
         {
             var expectedTicketStatus = TicketStatus.Aangemaakt;
+            var expectedErrorMessage = Constants.ERROR_TICKETCREATIONTIME_WEEKENDS;
+            var date = DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            var client = new Client(clientName);
+            var contractType = new ContractType("always", true, TicketCreationTime.Weekdagen);
+            var ticketCreationType = new TicketCreationType(TicketCreationTypeName.Applicatie);
+            contractType.TicketCreationTypes.Add(ticketCreationType);
+            var contract = new Contract(contractType, ContractStatus.Lopend, DateTime.Today, DateTime.Today.AddYears(1), client);
+
+            //arrange
+            var command = new CreateTicketCommand
+            {
+                Client = client,
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = type,
+                DateRequested = date
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketTypeByNameQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new TicketType { Name = type }));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetActiveContractByClientQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(contract));
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CreateTicket(command));
+
+            //assert
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
+            _mediatorMock.Verify(x => x.Send(It.Is<GetActiveContractByClientQuery>(y => y.Client == client), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Theory]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "19/03/2021T20:05:00")]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "15/03/2021T20:05:00")]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "15/03/2021T17:01:00")]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "15/03/2021T07:59:00")]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa", "15/03/2021T04:30:00")]
+        public async Task CreateTicket_InvalidTicketCreationTime_OfficeHours_Should_Return_Exception(string title, string description, string type, string clientName, string dateString)
+        {
+            var expectedTicketStatus = TicketStatus.Aangemaakt;
+            var expectedErrorMessage = Constants.ERROR_TICKETCREATIONTIME_OFFICE_HOURS;
+            var date = DateTime.ParseExact(dateString, "dd/MM/yyyyTHH:mm:ss", CultureInfo.InvariantCulture);
+
+            var client = new Client(clientName);
+            var contractType = new ContractType("always", true, TicketCreationTime.Weekdagen);
+            var ticketCreationType = new TicketCreationType(TicketCreationTypeName.Applicatie);
+            contractType.TicketCreationTypes.Add(ticketCreationType);
+            var contract = new Contract(contractType, ContractStatus.Lopend, DateTime.Today, DateTime.Today.AddYears(1), client);
+
+            //arrange
+            var command = new CreateTicketCommand
+            {
+                Client = client,
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = type,
+                DateRequested = date
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketTypeByNameQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new TicketType { Name = type }));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetActiveContractByClientQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(contract));
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CreateTicket(command));
+
+            //assert
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
+            _mediatorMock.Verify(x => x.Send(It.Is<GetActiveContractByClientQuery>(y => y.Client == client), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+
+
+        [Theory]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa")]
+        public async Task CreateTicket_InvalidTicketCreationType_Should_Return_Exception(string title, string description, string type, string clientName)
+        {
+            var expectedTicketStatus = TicketStatus.Aangemaakt;
+            var expectedErrorMessage = Constants.ERROR_TICKET_CREATION_NOT_ALLOWED_APPLICATION;
 
             var client = new Client(clientName);
             var contractType = new ContractType("always", true, TicketCreationTime.Altijd);
+            var ticketCreationTypeEmail = new TicketCreationType(TicketCreationTypeName.Email);
+            contractType.TicketCreationTypes.Add(ticketCreationTypeEmail);
             var contract = new Contract(contractType, ContractStatus.Lopend, DateTime.Today, DateTime.Today.AddYears(1), client);
 
             //arrange
@@ -271,6 +369,148 @@ namespace TicketingSystem.Xunit.Tests.Services
                 Description = description,
                 Title = title,
                 Type = type
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketTypeByNameQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new TicketType { Name = type }));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetActiveContractByClientQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(contract));
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CreateTicket(command));
+
+            //assert
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
+            _mediatorMock.Verify(x => x.Send(It.Is<GetActiveContractByClientQuery>(y => y.Client == client), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Theory]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa")]
+        public async Task CreateTicket_InvalidTicketCreationTime_Should_Return_Exception(string title, string description, string type, string clientName)
+        {
+            var expectedTicketStatus = TicketStatus.Aangemaakt;
+            var expectedErrorMessage = Constants.ERROR_TICKET_CREATION_NOT_ALLOWED_APPLICATION;
+
+            var client = new Client(clientName);
+            var contractType = new ContractType("always", true, TicketCreationTime.Altijd);
+            var ticketCreationTypeEmail = new TicketCreationType(TicketCreationTypeName.Email);
+            contractType.TicketCreationTypes.Add(ticketCreationTypeEmail);
+            var contract = new Contract(contractType, ContractStatus.Lopend, DateTime.Today, DateTime.Today.AddYears(1), client);
+
+            //arrange
+            var command = new CreateTicketCommand
+            {
+                Client = client,
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = type
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketTypeByNameQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new TicketType { Name = type }));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetActiveContractByClientQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(contract));
+
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CreateTicket(command));
+
+            //assert
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
+            _mediatorMock.Verify(x => x.Send(It.Is<GetActiveContractByClientQuery>(y => y.Client == client), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Theory]
+        [InlineData("een titel", "een beschrijving", "Support", "Klant1", "15/03/2021T08:00:00")]
+        [InlineData("een titel", "een beschrijving", "Support", "Klant1", "15/03/2021T16:59:00")]
+        [InlineData("een titel", "een beschrijving", "Support", "Klant1", "15/03/2021T12:00:00")]
+        [InlineData("een titel", "een beschrijving", "Support", "Klant1", "15/03/2021T14:00:00")]
+        public async Task CreateTicket_WeekDays_Should_Succeed(string title, string description, string type, string clientName, string dateString)
+        {
+            var expectedTicketStatus = TicketStatus.Aangemaakt;
+            var date = DateTime.ParseExact(dateString, "dd/MM/yyyyTHH:mm:ss", CultureInfo.InvariantCulture);
+
+            var client = new Client(clientName);
+            var contractType = new ContractType("weekdagen", true, TicketCreationTime.Weekdagen);
+            contractType.TicketCreationTypes.Add(new TicketCreationType(TicketCreationTypeName.Applicatie));
+            var contract = new Contract(contractType, ContractStatus.Lopend, DateTime.Today, DateTime.Today.AddYears(1), client);
+
+            //arrange
+            var command = new CreateTicketCommand
+            {
+                Client = client,
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = type,
+                DateRequested = date
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetTicketTypeByNameQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(new TicketType { Name = type }));
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetActiveContractByClientQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(contract));
+
+            //act
+            var createdTicket = await _service.CreateTicket(command);
+            var ticketInDB = await _dbContext.Tickets.FirstOrDefaultAsync(x => x.Ticketnr == createdTicket.Ticketnr);
+
+            //assert
+            _mediatorMock.Verify(x => x.Send(It.Is<GetTicketTypeByNameQuery>(y => y.Name == type), It.IsAny<CancellationToken>()), Times.Once());
+            _mediatorMock.Verify(x => x.Send(It.Is<GetActiveContractByClientQuery>(y => y.Client == client), It.IsAny<CancellationToken>()), Times.Once());
+
+
+            Assert.NotNull(ticketInDB);
+            Assert.Equal(contract, ticketInDB.Contract);
+            Assert.Equal(description, ticketInDB.Description);
+            Assert.Equal(title, ticketInDB.Title);
+            Assert.Equal(expectedTicketStatus, ticketInDB.Status);
+            Assert.Equal(client, ticketInDB.Client);
+        }
+
+        [Theory]
+        [InlineData("een titel", "een beschrijving", "Support", "Klant1")]
+        [InlineData("", "", "Bug", "Klant1")]
+        [InlineData("een supercoole andere titel", "", "Bug", "GigaKlant")]
+        [InlineData("Aanmaken nieuwe gebruiker", "Andrès toe te voegen als gebruiker", "Request", "DaDiDa")]
+        public async Task CreateTicket_Should_Succeed(string title, string description, string type, string clientName)
+        {
+            var expectedTicketStatus = TicketStatus.Aangemaakt;
+
+            var client = new Client(clientName);
+            var contractType = new ContractType("always", true, TicketCreationTime.Altijd);
+            contractType.TicketCreationTypes.Add(new TicketCreationType(TicketCreationTypeName.Applicatie));
+            var contract = new Contract(contractType, ContractStatus.Lopend, DateTime.Today, DateTime.Today.AddYears(1), client);
+
+            //arrange
+            var command = new CreateTicketCommand
+            {
+                Client = client,
+                AssignedEngineer = null,
+                Attachments = null,
+                Description = description,
+                Title = title,
+                Type = type,
+                DateRequested = DateTime.Now
             };
 
             _mediatorMock.Setup(x =>
@@ -327,9 +567,9 @@ namespace TicketingSystem.Xunit.Tests.Services
                 var client1 = new Client("Klant1");
                 _dbContext.Client.Add(client1);
 
-                var ticketCreationTypeEmail = new TicketCreationType("Email");
-                var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
-                var ticketCreationTypeApplication = new TicketCreationType("Applicatie");
+                var ticketCreationTypeEmail = new TicketCreationType(TicketCreationTypeName.Email);
+                var ticketCreationTypePhone = new TicketCreationType(TicketCreationTypeName.Telefonisch);
+                var ticketCreationTypeApplication = new TicketCreationType(TicketCreationTypeName.Applicatie);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);

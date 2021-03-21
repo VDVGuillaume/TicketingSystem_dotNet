@@ -40,7 +40,8 @@ namespace TicketingSystem.Xunit.Tests.Services
         {
             var expectedContractStatus = ContractStatus.InAanvraag;
             var client = new Client(clientName);
-            var ticketCreationType= new TicketCreationType(creationType);
+            TicketCreationTypeName creationTypeName = Enum.Parse<TicketCreationTypeName>(creationType);
+            var ticketCreationType= new TicketCreationType(creationTypeName);
 
             //arrange
             var command = new CreateContractCommand
@@ -82,7 +83,8 @@ namespace TicketingSystem.Xunit.Tests.Services
         {
             
             var client = new Client(clientName);
-            var ticketCreationType = new TicketCreationType(creationType);
+            TicketCreationTypeName creationTypeName = Enum.Parse<TicketCreationTypeName>(creationType);
+            var ticketCreationType = new TicketCreationType(creationTypeName);
             string expectedErrorMessage = Constants.ERROR_CONTRACT_FUTURE_DATE;
 
             //arrange
@@ -115,7 +117,8 @@ namespace TicketingSystem.Xunit.Tests.Services
         {
 
             var client = new Client(clientName);
-            var ticketCreationType = new TicketCreationType(creationType);
+            TicketCreationTypeName creationTypeName = Enum.Parse<TicketCreationTypeName>(creationType);
+            var ticketCreationType = new TicketCreationType(creationTypeName);
             string expectedErrorMessage = Constants.ERROR_CONTRACT_FUTURE_DATE;
 
             //arrange

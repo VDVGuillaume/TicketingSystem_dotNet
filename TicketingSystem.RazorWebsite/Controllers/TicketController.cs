@@ -291,7 +291,8 @@ namespace TicketingSystem.RazorWebsite.Controllers
                         Description = model.Input.Description,
                         Type = model.Input.Type,
                         Client = client,
-                        Attachments = model.Input.Attachments
+                        Attachments = model.Input.Attachments,
+                        DateRequested = DateTime.Now
                     });
                 }
                 catch (ValidationException ex)

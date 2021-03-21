@@ -51,9 +51,9 @@ namespace TicketingSystem.Xunit.Tests.Data
             SupportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
 
             //Seed TicketCreationTypes
-            TicketCreationTypeEmail = new TicketCreationType("Email");
-            TicketCreationTypePhone = new TicketCreationType("Telefonisch");
-            TicketCreationTypeApplication = new TicketCreationType("Applicatie");
+            //TicketCreationTypeEmail = new TicketCreationType("Email");
+            //TicketCreationTypePhone = new TicketCreationType("Telefonisch");
+            //TicketCreationTypeApplication = new TicketCreationType("Applicatie");
 
             //Seed contractsType
             ContractTypeAll = new ContractType("Alle creatie types, 24/7", true, TicketCreationTime.Altijd);
