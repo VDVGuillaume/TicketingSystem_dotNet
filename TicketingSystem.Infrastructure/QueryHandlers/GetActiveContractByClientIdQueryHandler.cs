@@ -19,6 +19,7 @@ namespace TicketingSystem.Infrastructure.QueryHandlers
         {
             return _dbContext.Contracts
                 .Include(x => x.Type)
+                .Include(x => x.Type.TicketCreationTypes)
                 .Include(x => x.Client)
                 .Where(x => x.Client.Id == request.ClientId && x.Status == ContractStatus.Lopend);
 
