@@ -143,9 +143,75 @@ namespace TicketingSystem.Xunit.Tests.Services
 
         }
 
+        [Fact]
+        public async Task CancelContract_InvalidContract_Should_Return_Exception()
+        {
+            var contractnr = 999;
+            string expectedErrorMessage = Constants.ERROR_CONTRACT_NOT_FOUND;
 
+            //arrange
+            var command = new CancelContractCommand
+            {
+                ContractId = contractnr
+            };
 
+            //act && assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => _service.CancelContract(command));
+            Assert.Equal(expectedErrorMessage, exception.Message);
+        }
 
+        [Fact]
+        public async Task CancelContract_Should_Succeed()
+        {
+            Contract contract = _dbContext.Contracts.FirstOrDefaultAsync(x => x.Status == ContractStatus.InAanvraag || x.Status == ContractStatus.Lopend).Result;
 
+            if (contract == null)
+            {
+                var client1 = new Client("Klant1");
+                _dbContext.Client.Add(client1);
+
+                var ticketCreationTypeEmail = new TicketCreationType("Email");
+                var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
+                var ticketCreationTypeApplication = new TicketCreationType("Applicatie");
+                _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
+                _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);
+
+                var contractType1 = new ContractType("Alle creatie types, 24/7", true, TicketCreationTime.Altijd);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypeEmail);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypePhone);
+                contractType1.TicketCreationTypes.Add(ticketCreationTypeApplication);
+                _dbContext.ContractTypes.Add(contractType1);
+
+                var contract1 = new Contract(contractType1, ContractStatus.Lopend, new DateTime(2020, 01, 01), new DateTime(2020, 12, 31), client1);
+                _dbContext.Contracts.Add(contract1);
+
+                _dbContext.SaveChanges();
+
+                contract = _dbContext.Contracts.FirstOrDefaultAsync(x => x.Status == ContractStatus.InAanvraag || x.Status == ContractStatus.Lopend).Result;
+            }
+
+            //arrange
+            var command = new CancelContractCommand
+            {
+                ContractId = contract.ContractId
+            };
+
+            _mediatorMock.Setup(x =>
+                        x.Send(It.IsAny<GetContractByIdQuery>(),
+                        It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(contract));
+
+            //act
+            var canceledContract = await _service.CancelContract(command);
+            var contractInDB = await _dbContext.Contracts.FirstOrDefaultAsync(x => x.ContractId == canceledContract.ContractId);
+
+            //assert
+            _mediatorMock.Verify(x => x.Send(It.Is<GetContractByIdQuery>(y => y.Id == contract.ContractId), It.IsAny<CancellationToken>()), Times.Once());
+
+            Assert.NotNull(contractInDB);
+            Assert.Equal(contract.ContractId, contractInDB.ContractId);
+            Assert.Equal(ContractStatus.Beëindigd, contractInDB.Status);
+        }
     }
 }
