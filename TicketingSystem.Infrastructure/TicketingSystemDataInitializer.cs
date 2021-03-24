@@ -29,9 +29,11 @@ namespace TicketingSystem.Infrastructure
                 var client1 = new Client("Klant1");
                 var client2 = new Client("Klant2");
                 var client3 = new Client("Klant3");
+                var client4 = new Client("Klant4");
                 _dbContext.Client.Add(client1);
                 _dbContext.Client.Add(client2);
                 _dbContext.Client.Add(client3);
+                _dbContext.Client.Add(client4);
 
                 //Seed roles
                 var customerRole = new IdentityRole("Customer");
@@ -53,6 +55,10 @@ namespace TicketingSystem.Infrastructure
                 var customerUser3 = new ApplicationUser { UserName = "customer3", Email = "customer@gmail.be", Client = client3 };
                 await _userManager.CreateAsync(customerUser3, "P@ssword1");
                 await _userManager.AddToRoleAsync(customerUser3, "Customer");
+
+                var customerUser4 = new ApplicationUser { UserName = "customer4", Email = "customer@gmail.be", Client = client4 };
+                await _userManager.CreateAsync(customerUser4, "P@ssword1");
+                await _userManager.AddToRoleAsync(customerUser4, "Customer");
 
                 var supportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
@@ -102,10 +108,12 @@ namespace TicketingSystem.Infrastructure
                 var contract2 = new Contract(contractType1, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client1);
                 var contract3 = new Contract(contractType1, ContractStatus.InAanvraag, new DateTime(2022, 01, 01), new DateTime(2022, 12, 31), client1);
                 var contract4 = new Contract(contractType2, ContractStatus.Beëindigd, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client2);
+                var contractForClient4 = new Contract(contractType2, ContractStatus.Lopend, new DateTime(2021, 01, 01), new DateTime(2021, 12, 31), client4);
                 _dbContext.Contracts.Add(contract1);
                 _dbContext.Contracts.Add(contract2);
                 _dbContext.Contracts.Add(contract3);
                 _dbContext.Contracts.Add(contract4);
+                _dbContext.Contracts.Add(contractForClient4);
 
                 //Seed tickets
                 var ticketSupportCreated = new Ticket("TitleSupport", "TestDescription", ticketTypeSupport, client1, contract2)
