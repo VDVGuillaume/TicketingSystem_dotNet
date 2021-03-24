@@ -5,7 +5,7 @@
 <h1>Nieuw ticket</h1>
 
 <hr />
-@if (Model.HasActiveContract)
+@if (Model.HasActiveContract || User.IsInRole("SupportManager"))
 {
 <div class="row">
     <div class="col-md-4">
