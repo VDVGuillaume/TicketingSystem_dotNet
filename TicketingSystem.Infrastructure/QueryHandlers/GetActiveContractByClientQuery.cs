@@ -21,6 +21,7 @@ namespace TicketingSystem.Infrastructure.QueryHandlers
         {
             return _dbContext.Contracts
                 .Include(x => x.Client)
+                .Include(x => x.Type.TicketCreationTypes)
                 .FirstOrDefault(x => 
                         x.Client == request.Client
                     &&  x.Status == ContractStatus.Lopend); 
