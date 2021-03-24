@@ -28,8 +28,10 @@ namespace TicketingSystem.Infrastructure
                 //Seed clients
                 var client1 = new Client("Klant1");
                 var client2 = new Client("Klant2");
+                var client3 = new Client("Klant3");
                 _dbContext.Client.Add(client1);
                 _dbContext.Client.Add(client2);
+                _dbContext.Client.Add(client3);
 
                 //Seed roles
                 var customerRole = new IdentityRole("Customer");
@@ -47,6 +49,10 @@ namespace TicketingSystem.Infrastructure
                 var customerUser2 = new ApplicationUser { UserName = "customer2", Email = "customer@gmail.be", Client = client2 };
                 await _userManager.CreateAsync(customerUser2, "P@ssword1");
                 await _userManager.AddToRoleAsync(customerUser2, "Customer");
+
+                var customerUser3 = new ApplicationUser { UserName = "customer3", Email = "customer@gmail.be", Client = client3 };
+                await _userManager.CreateAsync(customerUser3, "P@ssword1");
+                await _userManager.AddToRoleAsync(customerUser3, "Customer");
 
                 var supportManagerUser = new ApplicationUser { UserName = "supportmanager", Email = "supportmanager@gmail.be" };
                 await _userManager.CreateAsync(supportManagerUser, "P@ssword1");
