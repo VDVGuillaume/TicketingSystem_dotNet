@@ -170,9 +170,9 @@ namespace TicketingSystem.Xunit.Tests.Services
                 var client1 = new Client("Klant1");
                 _dbContext.Client.Add(client1);
 
-                var ticketCreationTypeEmail = new TicketCreationType("Email");
-                var ticketCreationTypePhone = new TicketCreationType("Telefonisch");
-                var ticketCreationTypeApplication = new TicketCreationType("Applicatie");
+                var ticketCreationTypeEmail = new TicketCreationType(TicketCreationTypeName.Email);
+                var ticketCreationTypePhone = new TicketCreationType(TicketCreationTypeName.Telefonisch);
+                var ticketCreationTypeApplication = new TicketCreationType(TicketCreationTypeName.Applicatie);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeEmail);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypePhone);
                 _dbContext.TicketCreationTypes.Add(ticketCreationTypeApplication);
