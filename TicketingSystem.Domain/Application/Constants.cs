@@ -14,7 +14,7 @@
         public const string ERROR_CONTRACT_FUTURE_DATE = "De geldigheidsdatum dient in de toekomst te liggen.";
         public const string ERROR_CLIENT_NOT_FOUND = "Klant is niet gevonden.";
         public const string ERROR_CONTRACT_TYPE_NOT_FOUND = "Contract type is niet gevonden";
-        public const string ERROR_TICKETCREATIONTIME_WEEKENDS = "Aanmaken van tickets is niet toegelaten tijdens het weekend in het actief contract.";
-        public const string ERROR_TICKETCREATIONTIME_OFFICE_HOURS = "Aanmaken van tickets is niet toegelaten buiten kantoor uren in het actief contract.";
+        public const string ERROR_TICKETCREATIONTIME_WEEKENDS = "Aanmaken van tickets is niet toegelaten tijdens het weekend in het lopend contract.";
+        public const string ERROR_TICKETCREATIONTIME_OFFICE_HOURS = "Aanmaken van tickets is niet toegelaten buiten kantoor uren in het lopend contract.";
     }
 }
